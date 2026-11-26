@@ -1,0 +1,52 @@
+# Patch: xmchgshim.rc permissions & 4-stage bypass/charging-limit/OTG/WLS-REV init triggers
+--- a/vendor/etc/init/xmchgshim.rc
++++ b/vendor/etc/init/xmchgshim.rc
+@@ -1,6 +1,46 @@
+-# 反充 HAL 代理：ICharger/default，反充自己处理，其余转给移植者 HAL（ICharger/orighal）
++# Clean AIDL charger proxy without LD_PRELOAD (OTG, WLS REV, Custom Charging Limit & Multi-Stage Bypass Charging handled natively in xmchgshim)
++on boot
++    chown system system /sys/class/xm_power/typec/cc_toggle
++    chmod 0660 /sys/class/xm_power/typec/cc_toggle
++    chown system system /sys/devices/virtual/xm_power/typec/cc_toggle
++    chmod 0660 /sys/devices/virtual/xm_power/typec/cc_toggle
++    chown system system /sys/class/typec/port0/data_role
++    chmod 0660 /sys/class/typec/port0/data_role
++    chown system system /sys/class/qcom-battery/reverse_chg_mode
++    chmod 0660 /sys/class/qcom-battery/reverse_chg_mode
++    chown system system /sys/class/xm_power/charger/wls_rev_charge/reverse_chg_mode
++    chmod 0660 /sys/class/xm_power/charger/wls_rev_charge/reverse_chg_mode
++    chown system system /sys/class/xm_power/charger/charge_interface/charge_enable
++    chmod 0660 /sys/class/xm_power/charger/charge_interface/charge_enable
++
++on property:dev.bootcomplete=1
++    chown system system /sys/class/xm_power/charger/charge_interface/charge_enable
++    chmod 0660 /sys/class/xm_power/charger/charge_interface/charge_enable
++
++on property:sys.boot_completed=1
++    chown system system /sys/class/xm_power/typec/cc_toggle
++    chmod 0660 /sys/class/xm_power/typec/cc_toggle
++    chown system system /sys/devices/virtual/xm_power/typec/cc_toggle
++    chmod 0660 /sys/devices/virtual/xm_power/typec/cc_toggle
++    chown system system /sys/class/typec/port0/data_role
++    chmod 0660 /sys/class/typec/port0/data_role
++    chown system system /sys/class/qcom-battery/reverse_chg_mode
++    chmod 0660 /sys/class/qcom-battery/reverse_chg_mode
++    chown system system /sys/class/xm_power/charger/wls_rev_charge/reverse_chg_mode
++    chmod 0660 /sys/class/xm_power/charger/wls_rev_charge/reverse_chg_mode
++    chown system system /sys/class/xm_power/charger/charge_interface/charge_enable
++    chmod 0660 /sys/class/xm_power/charger/charge_interface/charge_enable
++    write /sys/class/xm_power/charger/charge_interface/charge_enable "bypass buck 1"
++    write /sys/class/xm_power/charger/charge_interface/charge_enable "bypass quick 1"
++    write /sys/class/xm_power/charger/charge_interface/charge_enable "bypass wl_buck 1"
++    write /sys/class/xm_power/charger/charge_interface/charge_enable "bypass wl_quick 1"
++    write /sys/class/xm_power/charger/charge_interface/charge_enable "chg_limit buck 1"
++    write /sys/class/xm_power/charger/charge_interface/charge_enable "chg_limit quick 1"
++    write /sys/class/xm_power/charger/charge_interface/charge_enable "chg_limit wl_buck 1"
++    write /sys/class/xm_power/charger/charge_interface/charge_enable "chg_limit wl_quick 1"
++
+ service vendor.xmchgshim /vendor/bin/hw/xmchgshim
+     interface aidl vendor.oplus.hardware.charger.ICharger/default
+     class hal
+     user system
+-    group system
++    group system system

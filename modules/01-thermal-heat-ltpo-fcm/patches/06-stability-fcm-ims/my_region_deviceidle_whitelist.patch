@@ -1,0 +1,19 @@
+# Patch: Whitelist com.google.android.gms in ColorOS DeviceIdle whitelist (rootless Deep-Doze FCM)
+# Target: /my_region/etc/battery/sys_deviceidle_whitelist.xml
+--- a/my_region/etc/battery/sys_deviceidle_whitelist.xml
++++ b/my_region/etc/battery/sys_deviceidle_whitelist.xml
+@@ -31,6 +31,7 @@
+     <wl>com.coloros.familyguard</wl>
+     <wl>com.coloros.remoteguardservice</wl>
+     <wl>com.coloros.sharescreen</wl>
++    <wl>com.google.android.gms</wl>
+     <wl>com.google.android.gsf</wl>
+     <wl>com.heytap.accessory</wl>
+     <wl>com.heytap.browser</wl>
+@@ -49,4 +50,4 @@
+     <wl>com.oplus.sau</wl>
+     <wl>com.oplus.synergy</wl>
+ 	<wl>com.android.mms</wl>
+-</filter-conf>
+\ No newline at end of file
++</filter-conf>

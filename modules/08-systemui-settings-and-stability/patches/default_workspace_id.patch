@@ -1,0 +1,78 @@
+# Patch: Clean 4-icon default dock (Phone, Messages, Titanium Browser, MiuiCamera) in system/my_product/cust/ID/etc/launcher/default_workspace.xml
+--- a/my_product/cust/ID/etc/launcher/default_workspace.xml
++++ b/my_product/cust/ID/etc/launcher/default_workspace.xml
+@@ -432,31 +432,21 @@
+     </resolve>
+ 
+     <!-- Hotseat (We use the screen as the position of the item in the hotseat) -->
+-    <resolve
++    <favorite
++        launcher:className="com.android.contacts.DialtactsActivityAlias"
+         launcher:container="-101"
+-        launcher:screen="0"
+-        launcher:x="0"
+-        launcher:y="0">
+-        <favorite
+-            launcher:className="com.android.dialer.app.settings.DialerSettingsActivity"
+-            launcher:packageName="com.google.android.dialer" />
+-        <favorite
+-            launcher:className="com.android.contacts.DialtactsActivityAlias"
+-            launcher:packageName="com.android.contacts" />
+-    </resolve>
+-
+-    <resolve
++        launcher:packageName="com.android.contacts"
++        launcher:screen="0"
++        launcher:x="0"
++        launcher:y="0" />
++
++    <favorite
++        launcher:className="com.android.mms.ui.ConversationList"
+         launcher:container="-101"
++        launcher:packageName="com.android.mms"
+         launcher:screen="1"
+         launcher:x="1"
+-        launcher:y="0">
+-        <favorite
+-            launcher:className="com.google.android.apps.messaging.ui.ConversationListActivity"
+-            launcher:packageName="com.google.android.apps.messaging" />
+-        <favorite
+-            launcher:className="com.android.mms.ui.ConversationList"
+-            launcher:packageName="com.android.mms" />
+-    </resolve>
++        launcher:y="0" />
+ 
+     <resolve
+         launcher:container="-101"
+@@ -465,7 +455,7 @@
+         launcher:y="0">
+         <favorite
+             launcher:className="com.google.android.apps.chrome.Main"
+-            launcher:packageName="com.android.chrome" />
++            launcher:packageName="io.github.jqssun.helium" />
+         <favorite
+             launcher:className="com.android.browser.BrowserActivity"
+             launcher:packageName="com.heytap.browser" />
+@@ -480,14 +470,19 @@
+         launcher:x="3"
+         launcher:y="0">
+         <favorite
++            launcher:className="com.android.camera.Camera"
++            launcher:packageName="com.android.camera" />
++        <favorite
+             launcher:className="com.oplus.camera.Camera"
+             launcher:packageName="com.oplus.camera" />
+         <favorite
+             launcher:className="com.oppo.camera.Camera"
+             launcher:packageName="com.oppo.camera" />
+         <favorite
++            launcher:className="com.oneplus.camera.CameraActivity"
++            launcher:packageName="com.oneplus.camera" />
++        <favorite
+             launcher:className="com.oneplus.camera.OPCameraActivity"
+             launcher:packageName="com.oneplus.camera" />
+     </resolve>
+-
+-</favorites>
+\ No newline at end of file
++</favorites>

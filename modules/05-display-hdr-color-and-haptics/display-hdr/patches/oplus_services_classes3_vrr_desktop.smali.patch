@@ -1,0 +1,797 @@
+# Patch: oplus-services.jar (classes3.dex) LTPO refresh rate policy & Desktop Mode multi-window limits
+--- a/com/android/server/wm/FlexibleTaskController.smali	2026-11-26 10:22:23.626836882 +0700
++++ b/com/android/server/wm/FlexibleTaskController.smali	2026-11-26 10:22:26.058426089 +0700
+@@ -137514,7 +137514,13 @@
+     .param p4, "reason"    # Ljava/lang/String;
+ 
+     .line 4081
+-    const/4 v5, 0x4
++    const-string/jumbo v0, "persist.dpf.desktop_max_windows"
++
++    const/16 v1, 0xa
++
++    invoke-static {v0, v1}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
++
++    move-result v5
+ 
+     move-object v0, p0
+ 
+
+--- a/com/android/server/wm/FlexibleWindowUtils.smali	2026-11-26 10:22:23.007764992 +0700
++++ b/com/android/server/wm/FlexibleWindowUtils.smali	2026-11-26 10:22:25.337700755 +0700
+@@ -3056,7 +3056,34 @@
+ .method public static getFlexibleTaskScaleMaxHeightForMaxing()I
+     .registers 5
+ 
++    invoke-static {}, Lcom/android/server/wm/OplusZoomDisplay;->getInstance()Lcom/android/server/wm/OplusZoomDisplay;
++
++    move-result-object v0
++
++    invoke-virtual {v0}, Lcom/android/server/wm/OplusZoomDisplay;->isDesktopDisplay()Z
++
++    move-result v1
++
++    if-eqz v1, :cond_16
++
++    invoke-virtual {v0}, Lcom/android/server/wm/OplusZoomDisplay;->getScreenHeight()I
++
++    move-result v1
++
++    int-to-float v1, v1
++
++    invoke-virtual {v0}, Lcom/android/server/wm/OplusZoomDisplay;->getFlexibleTaskScaleMaxHeightProForMaxing()F
++
++    move-result v2
++
++    mul-float/2addr v1, v2
++
++    float-to-int v1, v1
++
++    return v1
++
+     .line 2488
++    :cond_16
+     invoke-static {}, Lcom/android/server/wm/OplusZoomDisplay;->getInstance()Lcom/android/server/wm/OplusZoomDisplay;
+ 
+     move-result-object v0
+@@ -3065,18 +3092,18 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_e
++    if-eqz v0, :cond_24
+ 
+     .line 2489
+     const-string/jumbo v0, "systemServerForPortScale"
+ 
+-    goto :goto_11
++    goto :goto_27
+ 
+     .line 2490
+-    :cond_e
++    :cond_24
+     const-string/jumbo v0, "systemServerForLandScale"
+ 
+-    :goto_11
++    :goto_27
+     nop
+ 
+     .line 2491
+@@ -3112,7 +3139,7 @@
+ 
+     cmpl-float v3, v2, v3
+ 
+-    if-ltz v3, :cond_38
++    if-ltz v3, :cond_4e
+ 
+     .line 2495
+     invoke-static {}, Lcom/android/server/wm/OplusZoomDisplay;->getInstance()Lcom/android/server/wm/OplusZoomDisplay;
+@@ -3132,7 +3159,7 @@
+     return v3
+ 
+     .line 2497
+-    :cond_38
++    :cond_4e
+     invoke-static {}, Lcom/android/server/wm/OplusZoomDisplay;->getInstance()Lcom/android/server/wm/OplusZoomDisplay;
+ 
+     move-result-object v3
+@@ -3161,7 +3188,34 @@
+ .method public static getFlexibleTaskScaleMaxWidthForMaxing()I
+     .registers 5
+ 
++    invoke-static {}, Lcom/android/server/wm/OplusZoomDisplay;->getInstance()Lcom/android/server/wm/OplusZoomDisplay;
++
++    move-result-object v0
++
++    invoke-virtual {v0}, Lcom/android/server/wm/OplusZoomDisplay;->isDesktopDisplay()Z
++
++    move-result v1
++
++    if-eqz v1, :cond_16
++
++    invoke-virtual {v0}, Lcom/android/server/wm/OplusZoomDisplay;->getScreenWidth()I
++
++    move-result v1
++
++    int-to-float v1, v1
++
++    invoke-virtual {v0}, Lcom/android/server/wm/OplusZoomDisplay;->getFlexibleTaskScaleMaxWidthProForMaxing()F
++
++    move-result v2
++
++    mul-float/2addr v1, v2
++
++    float-to-int v1, v1
++
++    return v1
++
+     .line 2475
++    :cond_16
+     invoke-static {}, Lcom/android/server/wm/OplusZoomDisplay;->getInstance()Lcom/android/server/wm/OplusZoomDisplay;
+ 
+     move-result-object v0
+@@ -3170,18 +3224,18 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_e
++    if-eqz v0, :cond_24
+ 
+     .line 2476
+     const-string/jumbo v0, "systemServerForPortScale"
+ 
+-    goto :goto_11
++    goto :goto_27
+ 
+     .line 2477
+-    :cond_e
++    :cond_24
+     const-string/jumbo v0, "systemServerForLandScale"
+ 
+-    :goto_11
++    :goto_27
+     nop
+ 
+     .line 2478
+@@ -3217,7 +3271,7 @@
+ 
+     cmpl-float v3, v2, v3
+ 
+-    if-ltz v3, :cond_38
++    if-ltz v3, :cond_4e
+ 
+     .line 2482
+     invoke-static {}, Lcom/android/server/wm/OplusZoomDisplay;->getInstance()Lcom/android/server/wm/OplusZoomDisplay;
+@@ -3237,7 +3291,7 @@
+     return v3
+ 
+     .line 2484
+-    :cond_38
++    :cond_4e
+     invoke-static {}, Lcom/android/server/wm/OplusZoomDisplay;->getInstance()Lcom/android/server/wm/OplusZoomDisplay;
+ 
+     move-result-object v3
+@@ -3937,49 +3991,72 @@
+ .method public static getMaxFlexibleTaskNum()I
+     .registers 3
+ 
++    invoke-static {}, Lcom/android/server/wm/OplusConnectedDisplayManager;->getInstance()Lcom/android/server/wm/OplusConnectedDisplayManager;
++
++    move-result-object v0
++
++    if-eqz v0, :cond_16
++
++    invoke-virtual {v0}, Lcom/android/server/wm/OplusConnectedDisplayManager;->hasDesktopDisplayConnected()Z
++
++    move-result v0
++
++    if-eqz v0, :cond_16
++
++    const-string/jumbo v0, "persist.dpf.desktop_max_windows"
++
++    const/16 v1, 0xa
++
++    invoke-static {v0, v1}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
++
++    move-result v0
++
++    return v0
++
+     .line 2310
++    :cond_16
+     invoke-static {}, Lcom/android/server/wm/OplusPanoramaWorkBranchUtil;->isFoldPanoramaWorkEnable()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_e
++    if-eqz v0, :cond_24
+ 
+     invoke-static {}, Lcom/android/server/wm/FlexibleWindowUtils;->isTabletDevice()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_e
++    if-eqz v0, :cond_24
+ 
+     const/4 v0, 0x1
+ 
+-    goto :goto_f
++    goto :goto_25
+ 
+-    :cond_e
++    :cond_24
+     const/4 v0, 0x0
+ 
+     .line 2311
+     .local v0, "isPanoramaWorkBranchForLowRamTablet":Z
+-    :goto_f
++    :goto_25
+     const/4 v1, 0x2
+ 
+-    if-eqz v0, :cond_13
++    if-eqz v0, :cond_29
+ 
+     .line 2312
+     return v1
+ 
+     .line 2313
+-    :cond_13
++    :cond_29
+     invoke-static {}, Lcom/android/server/wm/FlexibleWindowUtils;->isSmallDeviceMultiFlexibleEnabled()Z
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_1a
++    if-eqz v2, :cond_30
+ 
+     .line 2314
+     return v1
+ 
+     .line 2316
+-    :cond_1a
++    :cond_30
+     invoke-static {}, Lcom/android/server/wm/FlexibleWindowUtils;->getMaxWinNum()I
+ 
+     move-result v1
+@@ -3990,26 +4067,49 @@
+ .method public static getMaxWinNum()I
+     .registers 2
+ 
++    invoke-static {}, Lcom/android/server/wm/OplusConnectedDisplayManager;->getInstance()Lcom/android/server/wm/OplusConnectedDisplayManager;
++
++    move-result-object v0
++
++    if-eqz v0, :cond_16
++
++    invoke-virtual {v0}, Lcom/android/server/wm/OplusConnectedDisplayManager;->hasDesktopDisplayConnected()Z
++
++    move-result v0
++
++    if-eqz v0, :cond_16
++
++    const-string/jumbo v0, "persist.dpf.desktop_max_windows"
++
++    const/16 v1, 0xa
++
++    invoke-static {v0, v1}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
++
++    move-result v0
++
++    return v0
++
+     .line 2303
++    :cond_16
+     invoke-static {}, Lcom/android/server/wm/FlexibleWindowUtils;->isFoldDeviceAndFolded()Z
+ 
+     move-result v0
+ 
+     const/4 v1, 0x1
+ 
+-    if-eqz v0, :cond_e
++    if-eqz v0, :cond_24
+ 
+     invoke-static {}, Lcom/android/server/wm/FlexibleWindowUtils;->isSmallDeviceMultiFlexibleEnabled()Z
+ 
+     move-result v0
+ 
+-    if-nez v0, :cond_e
++    if-nez v0, :cond_24
+ 
+     .line 2304
+     return v1
+ 
+     .line 2306
+-    :cond_e
++    :cond_24
+     const/4 v0, 0x0
+ 
+     invoke-static {v0}, Lcom/android/server/wm/FlexibleWindowManagerService;->getInstance(Ljava/lang/Object;)Lcom/android/server/wm/FlexibleWindowManagerService;
+
+--- a/com/android/server/wm/OplusConnectedDisplayManager.smali	2026-11-26 10:22:23.488742982 +0700
++++ b/com/android/server/wm/OplusConnectedDisplayManager.smali	2026-11-26 10:22:25.784688750 +0700
+@@ -3297,13 +3297,19 @@
+ 
+     .line 813
+     .local v2, "isDefaultPhoneDisplay":Z
+-    if-eqz v1, :cond_16
++    if-eqz v1, :cond_1e
+ 
+-    if-eqz v2, :cond_16
++    if-eqz v2, :cond_1e
+ 
+-    const/4 v0, 0x4
++    const-string/jumbo v0, "persist.dpf.desktop_max_windows"
+ 
+-    :cond_16
++    const/16 v1, 0xa
++
++    invoke-static {v0, v1}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
++
++    move-result v0
++
++    :cond_1e
+     return v0
+ .end method
+ 
+
+--- a/com/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData.smali	2026-11-26 10:22:23.727049472 +0700
++++ b/com/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData.smali	2026-11-26 10:22:26.142054029 +0700
+@@ -871,13 +871,9 @@
+ 
+     .line 4251
+     .local v1, "result":I
+-    iget-object v2, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->this$0:Lcom/android/server/wm/OplusRefreshRatePolicyImpl;
+-
+-    invoke-static {v2}, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->-$$Nest$fgetmImeShown(Lcom/android/server/wm/OplusRefreshRatePolicyImpl;)Z
+-
+-    move-result v2
++    const/4 v2, 0x0
+ 
+-    if-eqz v2, :cond_3d
++    if-eqz v2, :cond_38
+ 
+     iget-object v2, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->this$0:Lcom/android/server/wm/OplusRefreshRatePolicyImpl;
+ 
+@@ -889,13 +885,13 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_3d
++    if-eqz v2, :cond_38
+ 
+     invoke-direct {p0}, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->isDisableInputLowRateWindow()Z
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_3d
++    if-nez v2, :cond_38
+ 
+     .line 4252
+     const/4 v1, 0x2
+@@ -927,10 +923,10 @@
+ 
+     invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+-    goto :goto_b1
++    goto :goto_ac
+ 
+     .line 4254
+-    :cond_3d
++    :cond_38
+     iget-object v2, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->this$0:Lcom/android/server/wm/OplusRefreshRatePolicyImpl;
+ 
+     invoke-static {v2, v0}, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->-$$Nest$misAudioLowRefreshRatePackage(Lcom/android/server/wm/OplusRefreshRatePolicyImpl;Ljava/lang/String;)Z
+@@ -941,7 +937,7 @@
+     iget-object v3, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->this$0:Lcom/android/server/wm/OplusRefreshRatePolicyImpl;
+ 
+     .line 4254
+-    if-eqz v2, :cond_8c
++    if-eqz v2, :cond_87
+ 
+     .line 4255
+     const/4 v1, 0x2
+@@ -982,7 +978,7 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_b1
++    if-eqz v2, :cond_ac
+ 
+     iget-object v2, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->this$0:Lcom/android/server/wm/OplusRefreshRatePolicyImpl;
+ 
+@@ -990,11 +986,11 @@
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_b1
++    if-nez v2, :cond_ac
+ 
+     const/16 v2, 0x96
+ 
+-    if-eq p3, v2, :cond_b1
++    if-eq p3, v2, :cond_ac
+ 
+     .line 4259
+     invoke-static {}, Lcom/android/server/wm/OplusLowRefreshRate;->getInstance()Lcom/android/server/wm/OplusLowRefreshRate;
+@@ -1013,15 +1009,15 @@
+ 
+     invoke-virtual {v2, v0, v3}, Lcom/android/server/wm/OplusLowRefreshRate;->updateStatus(Ljava/lang/String;I)V
+ 
+-    goto :goto_b1
++    goto :goto_ac
+ 
+     .line 4261
+-    :cond_8c
++    :cond_87
+     invoke-virtual {v3, v0}, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->isNonHighRefreshRatePackage(Ljava/lang/String;)Z
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_b1
++    if-eqz v2, :cond_ac
+ 
+     .line 4262
+     const/4 v1, 0x2
+@@ -1057,8 +1053,8 @@
+     iput-object p1, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->mLastPickedWin:Lcom/android/server/wm/WindowState;
+ 
+     .line 4267
+-    :cond_b1
+-    :goto_b1
++    :cond_ac
++    :goto_ac
+     return v1
+ .end method
+ 
+@@ -4295,7 +4291,24 @@
+     :goto_27
+     iput-boolean v2, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->mHasFloatOrZoomWindow:Z
+ 
++    iget-object v0, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->this$0:Lcom/android/server/wm/OplusRefreshRatePolicyImpl;
++
++    invoke-static {v0}, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->-$$Nest$fgetmImeShown(Lcom/android/server/wm/OplusRefreshRatePolicyImpl;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_37
++
++    const/4 v0, 0x2
++
++    if-ne v1, v0, :cond_37
++
++    const/4 v1, 0x3
++
++    iput v1, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;->mLastPickPreferredId:I
++
+     .line 4107
++    :cond_37
+     return v1
+ .end method
+ 
+
+--- a/com/android/server/wm/OplusRefreshRatePolicyImpl.smali	2026-11-26 10:22:23.737384451 +0700
++++ b/com/android/server/wm/OplusRefreshRatePolicyImpl.smali	2026-11-26 10:22:26.161522971 +0700
+@@ -6958,6 +6958,8 @@
+     .param p1, "mode"    # Landroid/view/Display$Mode;
+     .param p2, "appSwitchDebugInfo"    # Ljava/lang/StringBuilder;
+ 
++    return-void
++
+     .line 2779
+     iget-object v0, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mDisplayContent:Lcom/android/server/wm/DisplayContent;
+ 
+@@ -6967,7 +6969,7 @@
+ 
+     const-string v1, "RefreshRate"
+ 
+-    if-eqz v0, :cond_1b
++    if-eqz v0, :cond_1c
+ 
+     iget-object v0, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mCore:Lcom/android/server/wm/OplusRefreshRateCore;
+ 
+@@ -6978,7 +6980,7 @@
+ 
+     const/16 v2, 0x82
+ 
+-    if-eq v0, v2, :cond_1b
++    if-eq v0, v2, :cond_1c
+ 
+     .line 2782
+     const-string/jumbo v0, "setDisplayConfigSpecs display is sleeping,do nothing "
+@@ -6989,13 +6991,13 @@
+     return-void
+ 
+     .line 2786
+-    :cond_1b
++    :cond_1c
+     invoke-direct {p0}, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->initPhysicalDisplayToken()V
+ 
+     .line 2787
+     iget-object v0, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mActiveDisplayToken:Landroid/os/IBinder;
+ 
+-    if-eqz v0, :cond_e9
++    if-eqz v0, :cond_ea
+ 
+     .line 2788
+     invoke-direct {p0, p1}, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->iPEPencilConnectOrPWMMode(Landroid/view/Display$Mode;)Landroid/view/Display$Mode;
+@@ -7004,7 +7006,7 @@
+ 
+     .line 2789
+     .local v7, "targetMode":Landroid/view/Display$Mode;
+-    if-nez v7, :cond_40
++    if-nez v7, :cond_41
+ 
+     .line 2790
+     new-instance v0, Ljava/lang/StringBuilder;
+@@ -7031,7 +7033,7 @@
+     return-void
+ 
+     .line 2793
+-    :cond_40
++    :cond_41
+     invoke-virtual {v7}, Landroid/view/Display$Mode;->getRefreshRate()F
+ 
+     move-result v6
+@@ -7046,7 +7048,7 @@
+     .local v4, "sfModId":I
+     const/4 v0, -0x1
+ 
+-    if-ne v4, v0, :cond_63
++    if-ne v4, v0, :cond_64
+ 
+     .line 2796
+     new-instance v0, Ljava/lang/StringBuilder;
+@@ -7073,7 +7075,7 @@
+     return-void
+ 
+     .line 2799
+-    :cond_63
++    :cond_64
+     new-instance v0, Landroid/view/SurfaceControl$RefreshRateRange;
+ 
+     invoke-direct {v0, v6, v6}, Landroid/view/SurfaceControl$RefreshRateRange;-><init>(FF)V
+@@ -7157,34 +7159,34 @@
+     invoke-static {v1, v2}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+ 
+     .line 2823
+-    if-eqz p2, :cond_b7
++    if-eqz p2, :cond_b8
+ 
+     move-object v0, p2
+ 
+-    goto :goto_bc
++    goto :goto_bd
+ 
+-    :cond_b7
+-    :try_start_b7
++    :cond_b8
++    :try_start_b8
+     new-instance v0, Ljava/lang/StringBuilder;
+ 
+     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+ 
+     .line 2824
+     .local v0, "debugInfo":Ljava/lang/StringBuilder;
+-    :goto_bc
++    :goto_bd
+     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ 
+     .line 2825
+     invoke-direct {p0, v6, v0}, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->updateDebugInfo(FLjava/lang/StringBuilder;)V
+-    :try_end_c2
+-    .catch Ljava/lang/Exception; {:try_start_b7 .. :try_end_c2} :catch_c3
++    :try_end_c3
++    .catch Ljava/lang/Exception; {:try_start_b8 .. :try_end_c3} :catch_c4
+ 
+     .line 2828
+     .end local v0    # "debugInfo":Ljava/lang/StringBuilder;
+-    goto :goto_df
++    goto :goto_e0
+ 
+     .line 2826
+-    :catch_c3
++    :catch_c4
+     move-exception v0
+ 
+     .line 2827
+@@ -7215,7 +7217,7 @@
+ 
+     .line 2830
+     .end local v0    # "e":Ljava/lang/Exception;
+-    :goto_df
++    :goto_e0
+     iget-object v0, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mPickRefreshRateData:Lcom/android/server/wm/OplusRefreshRatePolicyImpl$PickRefreshRateData;
+ 
+     invoke-static {v6}, Lcom/android/server/wm/OplusRefreshRateUtils;->getRefreshRateIdByRate(F)I
+@@ -7231,16 +7233,16 @@
+     .end local v6    # "refreshRate":F
+     .end local v7    # "targetMode":Landroid/view/Display$Mode;
+     .end local v8    # "range":Landroid/view/SurfaceControl$RefreshRateRange;
+-    goto :goto_ef
++    goto :goto_f0
+ 
+     .line 2832
+-    :cond_e9
++    :cond_ea
+     const-string/jumbo v0, "setDisplayConfigSpecs: mActiveDisplayToken null !! "
+ 
+     invoke-static {v1, v0}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+ 
+     .line 2834
+-    :goto_ef
++    :goto_f0
+     return-void
+ .end method
+ 
+@@ -9351,106 +9353,36 @@
+ .end method
+ 
+ .method private updateImeStatus()Z
+-    .registers 7
+-
+-    .line 3315
+-    sget-boolean v0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->ALLOW_IME_LOWER_FPS:Z
+-
+-    const/4 v1, 0x0
+-
+-    if-eqz v0, :cond_44
+-
+-    iget-object v0, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mConfigs:Lcom/android/server/wm/OplusRefreshRateConfigs;
+-
+-    invoke-virtual {v0}, Lcom/android/server/wm/OplusRefreshRateConfigs;->allowInputMethodLowRate()Z
+-
+-    move-result v0
+-
+-    if-nez v0, :cond_e
+-
+-    goto :goto_44
+-
+-    .line 3318
+-    :cond_e
+-    iget-object v0, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mCore:Lcom/android/server/wm/OplusRefreshRateCore;
+-
+-    invoke-virtual {v0}, Lcom/android/server/wm/OplusRefreshRateCore;->getCurMaxVotePriority()I
+-
+-    move-result v0
+-
+-    iget v2, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mAppSwitchBoostPriority:I
+-
+-    const/4 v3, 0x1
+-
+-    if-eq v0, v2, :cond_21
++    .registers 4
+ 
+     invoke-direct {p0}, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->isImeShown()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_21
+-
+-    move v0, v3
+-
+-    goto :goto_22
+-
+-    :cond_21
+-    move v0, v1
+-
+-    .line 3319
+-    .local v0, "shown":Z
+-    :goto_22
+-    if-eqz v0, :cond_3a
+-
+-    .line 3320
+     iget-boolean v1, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mImeShown:Z
+ 
+-    if-nez v1, :cond_41
+-
+-    iget-object v1, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mHandler:Landroid/os/Handler;
+-
+-    invoke-virtual {v1, v3}, Landroid/os/Handler;->hasMessages(I)Z
++    if-eq v0, v1, :cond_17
+ 
+-    move-result v1
++    iput-boolean v0, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mImeShown:Z
+ 
+-    if-nez v1, :cond_41
++    const-string/jumbo v1, "sys.oplus.ltpo.ime_shown"
+ 
+-    .line 3321
+-    const/16 v1, 0x3e8
++    if-eqz v0, :cond_12
+ 
+-    .line 3322
+-    .local v1, "delay":I
+-    iget-object v2, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mHandler:Landroid/os/Handler;
++    const-string v2, "1"
+ 
+-    const-wide/16 v4, 0x3e8
++    goto :goto_14
+ 
+-    invoke-virtual {v2, v3, v4, v5}, Landroid/os/Handler;->sendEmptyMessageDelayed(IJ)Z
+-
+-    .line 3323
+-    .end local v1    # "delay":I
+-    goto :goto_41
+-
+-    .line 3325
+-    :cond_3a
+-    iget-object v2, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mHandler:Landroid/os/Handler;
+-
+-    invoke-virtual {v2, v3}, Landroid/os/Handler;->removeMessages(I)V
++    :cond_12
++    const-string v2, "0"
+ 
+-    .line 3326
+-    iput-boolean v1, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mImeShown:Z
++    :goto_14
++    invoke-static {v1, v2}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    .line 3328
+-    :cond_41
+-    :goto_41
+-    iget-boolean v1, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mImeShown:Z
++    :cond_17
++    iget-boolean v0, p0, Lcom/android/server/wm/OplusRefreshRatePolicyImpl;->mImeShown:Z
+ 
+-    return v1
+-
+-    .line 3316
+-    .end local v0    # "shown":Z
+-    :cond_44
+-    :goto_44
+-    return v1
++    return v0
+ .end method
+ 
+ .method private updateLowRefreshRateWindow(Lcom/android/server/wm/WindowState;)V
+
+--- a/com/android/server/wm/OplusZoomLargeScreenParameterOnDesktopDisplay.smali	2026-11-26 10:22:23.803274725 +0700
++++ b/com/android/server/wm/OplusZoomLargeScreenParameterOnDesktopDisplay.smali	2026-11-26 10:22:26.220385689 +0700
+@@ -2889,19 +2889,41 @@
+ .end method
+ 
+ .method public getFlexibleTaskScaleMaxHeightProForMaxing()F
+-    .registers 2
++    .registers 3
+ 
+-    .line 649
+-    const/high16 v0, 0x3f000000    # 0.5f
++    const-string/jumbo v0, "persist.dpf.desktop_maximize_pct"
++
++    const/16 v1, 0x64
++
++    invoke-static {v0, v1}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
++
++    move-result v0
++
++    int-to-float v0, v0
++
++    const/high16 v1, 0x42c80000    # 100.0f
++
++    div-float/2addr v0, v1
+ 
+     return v0
+ .end method
+ 
+ .method public getFlexibleTaskScaleMaxWidthProForMaxing()F
+-    .registers 2
++    .registers 3
++
++    const-string/jumbo v0, "persist.dpf.desktop_maximize_pct"
++
++    const/16 v1, 0x64
++
++    invoke-static {v0, v1}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
++
++    move-result v0
++
++    int-to-float v0, v0
++
++    const/high16 v1, 0x42c80000    # 100.0f
+ 
+-    .line 644
+-    const/high16 v0, 0x3f000000    # 0.5f
++    div-float/2addr v0, v1
+ 
+     return v0
+ .end method

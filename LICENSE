@@ -1,0 +1,33 @@
+MIT License
+
+Copyright (c) 2026 ampereforest (tarosaiya)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Third-Party & Upstream Notices:
+- Original base ColorOS 17 V6 port ROM: TUSB_5834@Coolapk
+- OpenEUICC & LPAC: PeterCxy/OpenEUICC (GPLv2/upstream licenses)
+- Capsule & AndroidLiquidGlass: Kyant0 (Apache-2.0)
+- COUI RK4 Overscroll physics: suqi8/coui (Apache-2.0)
+- OpenAlive Wallpaper: Maga-King/OpenAlive
+- Titanium Browser (fetched externally, pre-signed): ampereforest/android-titanium-browser (GPLv3/Chromium)
+- Adreno GPU Driver v842.52 package: @adrenolaboratory
+- Non-V6 OEM firmware/app compatibility assets are included solely for Xiaomi 15 (dada) port interoperability and remain subject to their respective owners' terms.

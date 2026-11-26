@@ -1,0 +1,6 @@
+# Patch: Label vendor.oplus.hardware.urcc-service
+--- a/odm/etc/selinux/odm_file_contexts
++++ b/odm/etc/selinux/odm_file_contexts
+@@ -1 +1,2 @@
+ /odm/lib64/aiframe(/.*)? u:object_r:same_process_hal_file:s0
++/odm/bin/hw/vendor\.oplus\.hardware\.urcc-service u:object_r:hal_allocator_default_exec:s0

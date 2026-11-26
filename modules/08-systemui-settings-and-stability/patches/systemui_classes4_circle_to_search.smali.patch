@@ -1,0 +1,664 @@
+# Patch: SystemUI (classes4.dex) Native Circle to Search gesture-bar long-press alongside Breeno Touch
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/oplus/systemui/navigationbar/gesture/otherbusiness/DadaCircleToSearchHelper.smali	2026-11-26 10:22:38.636917380 +0700
+@@ -0,0 +1,279 @@
++.class public final Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/DadaCircleToSearchHelper;
++.super Ljava/lang/Object;
++.source "DadaCircleToSearchHelper.java"
++
++
++# static fields
++.field private static final ENTRYPOINT_LONG_PRESS_NAV_HANDLE:I = 0x1
++
++.field private static final SETTING_KEY:Ljava/lang/String; = "circle_to_search_enable_navi"
++
++.field private static final TAG:Ljava/lang/String; = "DadaCtS"
++
++
++# direct methods
++.method public constructor <init>()V
++    .registers 1
++
++    .line 9
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++.method public static isEnabled(Landroid/content/Context;)Z
++    .registers 3
++
++    .line 15
++    const/4 v0, 0x0
++
++    if-nez p0, :cond_4
++
++    return v0
++
++    .line 17
++    :cond_4
++    :try_start_4
++    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++
++    move-result-object p0
++
++    const-string v1, "circle_to_search_enable_navi"
++
++    invoke-static {p0, v1, v0}, Landroid/provider/Settings$Secure;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
++
++    move-result p0
++    :try_end_e
++    .catchall {:try_start_4 .. :try_end_e} :catchall_13
++
++    const/4 v1, 0x1
++
++    if-ne p0, v1, :cond_12
++
++    move v0, v1
++
++    :cond_12
++    return v0
++
++    .line 18
++    :catchall_13
++    move-exception p0
++
++    .line 19
++    return v0
++.end method
++
++.method public static trigger(Landroid/content/Context;)Z
++    .registers 10
++
++    .line 24
++    const-string/jumbo v0, "startContextualSearch"
++
++    const-string v1, "DadaCtS"
++
++    invoke-static {p0}, Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/DadaCircleToSearchHelper;->isEnabled(Landroid/content/Context;)Z
++
++    move-result p0
++
++    const/4 v2, 0x0
++
++    if-nez p0, :cond_d
++
++    return v2
++
++    .line 26
++    :cond_d
++    const/4 p0, 0x1
++
++    :try_start_e
++    const-string v3, "android.os.ServiceManager"
++
++    invoke-static {v3}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
++
++    move-result-object v3
++
++    .line 27
++    const-string v4, "getService"
++
++    new-array v5, p0, [Ljava/lang/Class;
++
++    const-class v6, Ljava/lang/String;
++
++    aput-object v6, v5, v2
++
++    invoke-virtual {v3, v4, v5}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
++
++    move-result-object v3
++
++    .line 28
++    const-string v4, "contextual_search"
++
++    filled-new-array {v4}, [Ljava/lang/Object;
++
++    move-result-object v4
++
++    const/4 v5, 0x0
++
++    invoke-virtual {v3, v5, v4}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
++
++    move-result-object v3
++
++    check-cast v3, Landroid/os/IBinder;
++
++    .line 29
++    if-nez v3, :cond_35
++
++    .line 30
++    const-string v0, "contextual_search service not available"
++
++    invoke-static {v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
++
++    .line 31
++    return p0
++
++    .line 33
++    :cond_35
++    const-string v4, "android.app.contextualsearch.IContextualSearchManager$Stub"
++
++    invoke-static {v4}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
++
++    move-result-object v4
++
++    .line 34
++    const-string v6, "asInterface"
++
++    new-array v7, p0, [Ljava/lang/Class;
++
++    const-class v8, Landroid/os/IBinder;
++
++    aput-object v8, v7, v2
++
++    invoke-virtual {v4, v6, v7}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
++
++    move-result-object v4
++
++    .line 35
++    filled-new-array {v3}, [Ljava/lang/Object;
++
++    move-result-object v3
++
++    invoke-virtual {v4, v5, v3}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
++
++    move-result-object v3
++
++    .line 36
++    if-nez v3, :cond_57
++
++    .line 37
++    const-string v0, "IContextualSearchManager.asInterface returned null"
++
++    invoke-static {v1, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
++    :try_end_56
++    .catchall {:try_start_e .. :try_end_56} :catchall_9f
++
++    .line 38
++    return p0
++
++    .line 42
++    :cond_57
++    :try_start_57
++    const-string v4, "android.app.contextualsearch.ContextualSearchConfig"
++
++    invoke-static {v4}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
++
++    move-result-object v4
++
++    .line 43
++    invoke-virtual {v3}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
++
++    move-result-object v6
++
++    const/4 v7, 0x2
++
++    new-array v7, v7, [Ljava/lang/Class;
++
++    sget-object v8, Ljava/lang/Integer;->TYPE:Ljava/lang/Class;
++
++    aput-object v8, v7, v2
++
++    aput-object v4, v7, p0
++
++    invoke-virtual {v6, v0, v7}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
++
++    move-result-object v4
++
++    .line 44
++    invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++
++    move-result-object v6
++
++    filled-new-array {v6, v5}, [Ljava/lang/Object;
++
++    move-result-object v5
++
++    invoke-virtual {v4, v3, v5}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
++
++    .line 45
++    const-string v4, "Triggered Circle to Search (2-arg API)"
++
++    invoke-static {v1, v4}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
++    :try_end_7e
++    .catch Ljava/lang/NoSuchMethodException; {:try_start_57 .. :try_end_7e} :catch_7f
++    .catchall {:try_start_57 .. :try_end_7e} :catchall_9f
++
++    .line 46
++    return p0
++
++    .line 47
++    :catch_7f
++    move-exception v4
++
++    .line 48
++    :try_start_80
++    invoke-virtual {v3}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
++
++    move-result-object v4
++
++    new-array v5, p0, [Ljava/lang/Class;
++
++    sget-object v6, Ljava/lang/Integer;->TYPE:Ljava/lang/Class;
++
++    aput-object v6, v5, v2
++
++    invoke-virtual {v4, v0, v5}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
++
++    move-result-object v0
++
++    .line 49
++    invoke-static {p0}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++
++    move-result-object v2
++
++    filled-new-array {v2}, [Ljava/lang/Object;
++
++    move-result-object v2
++
++    invoke-virtual {v0, v3, v2}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
++
++    .line 50
++    const-string v0, "Triggered Circle to Search (1-arg API)"
++
++    invoke-static {v1, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
++    :try_end_9e
++    .catchall {:try_start_80 .. :try_end_9e} :catchall_9f
++
++    .line 51
++    return p0
++
++    .line 53
++    :catchall_9f
++    move-exception v0
++
++    .line 54
++    const-string v2, "Failed to trigger Circle to Search"
++
++    invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 55
++    return p0
++.end method
+
+--- a/com/oplus/systemui/navigationbar/gesture/otherbusiness/SpeedChassistMainBusiness.smali	2026-11-26 10:22:36.826854561 +0700
++++ b/com/oplus/systemui/navigationbar/gesture/otherbusiness/SpeedChassistMainBusiness.smali	2026-11-26 10:22:38.638707677 +0700
+@@ -97,11 +97,22 @@
+ .method public final onLongPressed()V
+     .registers 3
+ 
++    iget-object v0, p0, Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/SpeedChassistMainBusiness;->mContext:Landroid/content/Context;
++
++    invoke-static {v0}, Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/DadaCircleToSearchHelper;->trigger(Landroid/content/Context;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_9
++
++    return-void
++
++    :cond_9
+     invoke-static {}, Lcom/oplusos/systemui/common/util/LogUtil;->getNormalDebug()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_15
++    if-eqz v0, :cond_1e
+ 
+     const-string v0, "NavBar"
+ 
+@@ -109,7 +120,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_15
++    if-eqz v0, :cond_1e
+ 
+     const-string v0, "SystemUi--NavBar"
+ 
+@@ -117,7 +128,7 @@
+ 
+     invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+ 
+-    :cond_15
++    :cond_1e
+     sget-object v0, Lcom/oplus/systemui/biometrics/finger/udfps/fpquicklaunch/quicklaunch/helper/ActivityStartedHelper;->INSTANCE:Lcom/oplus/systemui/biometrics/finger/udfps/fpquicklaunch/quicklaunch/helper/ActivityStartedHelper;
+ 
+     iget-object p0, p0, Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/SpeedChassistMainBusiness;->mContext:Landroid/content/Context;
+
+--- a/com/oplus/systemui/navigationbar/gesture/sidegesture/OplusNavigationHandle.smali	2026-11-26 10:22:36.837926237 +0700
++++ b/com/oplus/systemui/navigationbar/gesture/sidegesture/OplusNavigationHandle.smali	2026-11-26 10:22:38.679386579 +0700
+@@ -2055,13 +2055,32 @@
+ 
+     move-result v0
+ 
+-    if-nez v0, :cond_54
++    if-nez v0, :cond_64
+ 
+     :cond_f
+     iget-boolean v0, p0, Lcom/oplus/systemui/navigationbar/gesture/sidegesture/OplusNavigationHandle;->inGestureXRange:Z
+ 
+-    if-eqz v0, :cond_54
++    if-eqz v0, :cond_64
+ 
++    iget-boolean v0, p0, Lcom/oplus/systemui/navigationbar/gesture/sidegesture/OplusNavigationHandle;->isKeyguardShowing:Z
++
++    if-nez v0, :cond_23
++
++    invoke-virtual {p0}, Landroid/view/View;->getContext()Landroid/content/Context;
++
++    move-result-object v0
++
++    invoke-static {v0}, Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/DadaCircleToSearchHelper;->isEnabled(Landroid/content/Context;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_23
++
++    const/4 p0, 0x1
++
++    return p0
++
++    :cond_23
+     sget-object v0, Lcom/oplusos/systemui/common/feature/FeatureOption;->INSTANCE:Lcom/oplusos/systemui/common/feature/FeatureOption;
+ 
+     invoke-virtual {v0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+@@ -2070,7 +2089,7 @@
+ 
+     move-result v0
+ 
+-    if-nez v0, :cond_52
++    if-nez v0, :cond_62
+ 
+     sget-object v0, Lcom/oplusos/systemui/common/feature/NavBarFeatureOption;->INSTANCE:Lcom/oplusos/systemui/common/feature/NavBarFeatureOption;
+ 
+@@ -2078,7 +2097,7 @@
+ 
+     sget-boolean v0, Lcom/oplusos/systemui/common/feature/NavBarFeatureOption;->sIsSupportTaskbar:Z
+ 
+-    if-eqz v0, :cond_2f
++    if-eqz v0, :cond_3f
+ 
+     sget-object v0, Lcom/oplus/systemui/navigationbar/observer/SwipeSideGestureHandleCuiObserver;->INSTANCE:Lcom/oplus/systemui/navigationbar/observer/SwipeSideGestureHandleCuiObserver;
+ 
+@@ -2086,27 +2105,27 @@
+ 
+     move-result v0
+ 
+-    if-nez v0, :cond_52
++    if-nez v0, :cond_62
+ 
+-    :cond_2f
++    :cond_3f
+     sget-boolean v0, Lcom/oplusos/systemui/common/feature/NavBarFeatureOption;->sIsSupportTaskbar:Z
+ 
+-    if-nez v0, :cond_3d
++    if-nez v0, :cond_4d
+ 
+     invoke-static {}, Lcom/oplus/systemui/navigationbar/utils/OplusNavBarUtils;->isEnableOcrScreen()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_3d
++    if-eqz v0, :cond_4d
+ 
+     iget-boolean p0, p0, Lcom/oplus/systemui/navigationbar/gesture/sidegesture/OplusNavigationHandle;->isKeyguardShowing:Z
+ 
+-    if-eqz p0, :cond_52
++    if-eqz p0, :cond_62
+ 
+-    :cond_3d
++    :cond_4d
+     sget-boolean p0, Lcom/oplusos/systemui/common/feature/NavBarFeatureOption;->sIsSupportTaskbar:Z
+ 
+-    if-nez p0, :cond_54
++    if-nez p0, :cond_64
+ 
+     sget-object p0, Lcom/oplus/systemui/navigationbar/utils/OcrScreenCompatVersion;->INSTANCE:Lcom/oplus/systemui/navigationbar/utils/OcrScreenCompatVersion;
+ 
+@@ -2114,7 +2133,7 @@
+ 
+     sget-boolean p0, Lcom/oplus/systemui/navigationbar/utils/OcrScreenCompatVersion;->isMetaDataSupport:Z
+ 
+-    if-nez p0, :cond_54
++    if-nez p0, :cond_64
+ 
+     sget-object p0, Lcom/oplus/systemui/navigationbar/observer/SwipeSideGestureHandleCuiObserver;->INSTANCE:Lcom/oplus/systemui/navigationbar/observer/SwipeSideGestureHandleCuiObserver;
+ 
+@@ -2122,14 +2141,14 @@
+ 
+     move-result p0
+ 
+-    if-eqz p0, :cond_54
++    if-eqz p0, :cond_64
+ 
+-    :cond_52
++    :cond_62
+     const/4 p0, 0x1
+ 
+     return p0
+ 
+-    :cond_54
++    :cond_64
+     const/4 p0, 0x0
+ 
+     return p0
+
+--- a/com/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness.smali	2026-11-26 10:22:36.850768803 +0700
++++ b/com/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness.smali	2026-11-26 10:22:38.704132141 +0700
+@@ -149,26 +149,48 @@
+ .end method
+ 
+ .method public final onLongPressCancel()V
+-    .registers 1
++    .registers 2
+ 
++    iget-object v0, p0, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->context:Landroid/content/Context;
++
++    invoke-static {v0}, Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/DadaCircleToSearchHelper;->isEnabled(Landroid/content/Context;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_9
++
++    return-void
++
++    :cond_9
+     iget-object p0, p0, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->currentServiceHandler:Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenServiceHandler;
+ 
+-    if-eqz p0, :cond_7
++    if-eqz p0, :cond_10
+ 
+     invoke-virtual {p0}, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenServiceHandler;->onLongPressCancel()V
+ 
+-    :cond_7
++    :cond_10
+     return-void
+ .end method
+ 
+ .method public final onLongPressed()V
+     .registers 3
+ 
++    iget-object v0, p0, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->context:Landroid/content/Context;
++
++    invoke-static {v0}, Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/DadaCircleToSearchHelper;->trigger(Landroid/content/Context;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_9
++
++    return-void
++
++    :cond_9
+     invoke-static {}, Lcom/oplusos/systemui/common/util/LogUtil;->getNormalDebug()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_15
++    if-eqz v0, :cond_1e
+ 
+     const-string v0, "NavBar"
+ 
+@@ -176,7 +198,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_15
++    if-eqz v0, :cond_1e
+ 
+     const-string v0, "SystemUi--NavBar"
+ 
+@@ -184,25 +206,36 @@
+ 
+     invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+ 
+-    :cond_15
++    :cond_1e
+     iget-object p0, p0, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->currentServiceHandler:Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenServiceHandler;
+ 
+-    if-eqz p0, :cond_1c
++    if-eqz p0, :cond_25
+ 
+     invoke-virtual {p0}, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenServiceHandler;->onLongPressed()V
+ 
+-    :cond_1c
++    :cond_25
+     return-void
+ .end method
+ 
+ .method public final onPreLongPress()V
+     .registers 3
+ 
++    iget-object v0, p0, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->context:Landroid/content/Context;
++
++    invoke-static {v0}, Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/DadaCircleToSearchHelper;->isEnabled(Landroid/content/Context;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_9
++
++    return-void
++
++    :cond_9
+     invoke-static {}, Lcom/oplusos/systemui/common/util/LogUtil;->getNormalDebug()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_15
++    if-eqz v0, :cond_1e
+ 
+     const-string v0, "NavBar"
+ 
+@@ -210,7 +243,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_15
++    if-eqz v0, :cond_1e
+ 
+     const-string v0, "SystemUi--NavBar"
+ 
+@@ -218,25 +251,36 @@
+ 
+     invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+ 
+-    :cond_15
++    :cond_1e
+     iget-object p0, p0, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->currentServiceHandler:Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenServiceHandler;
+ 
+-    if-eqz p0, :cond_1c
++    if-eqz p0, :cond_25
+ 
+     invoke-virtual {p0}, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenServiceHandler;->onPreLongPress()V
+ 
+-    :cond_1c
++    :cond_25
+     return-void
+ .end method
+ 
+ .method public final onShowPress()V
+     .registers 5
+ 
++    iget-object v0, p0, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->context:Landroid/content/Context;
++
++    invoke-static {v0}, Lcom/oplus/systemui/navigationbar/gesture/otherbusiness/DadaCircleToSearchHelper;->isEnabled(Landroid/content/Context;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_9
++
++    return-void
++
++    :cond_9
+     invoke-static {}, Lcom/oplusos/systemui/common/util/LogUtil;->getNormalDebug()Z
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_20
++    if-eqz v0, :cond_29
+ 
+     const-string v0, "NavBar"
+ 
+@@ -244,7 +288,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_20
++    if-eqz v0, :cond_29
+ 
+     invoke-direct {p0}, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->getServiceHandlerList()Ljava/util/concurrent/CopyOnWriteArrayList;
+ 
+@@ -262,7 +306,7 @@
+ 
+     invoke-static {v0, v1, v2, v3}, Lcom/android/systemui/keyguard/OplusBlackScreenGestureCallback$$ExternalSyntheticOutline0;->m(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    :cond_20
++    :cond_29
+     invoke-direct {p0}, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->getServiceHandlerList()Ljava/util/concurrent/CopyOnWriteArrayList;
+ 
+     move-result-object v0
+@@ -273,7 +317,7 @@
+ 
+     const/4 v1, 0x2
+ 
+-    if-lt v0, v1, :cond_4a
++    if-lt v0, v1, :cond_53
+ 
+     invoke-direct {p0}, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->getServiceHandlerList()Ljava/util/concurrent/CopyOnWriteArrayList;
+ 
+@@ -283,12 +327,12 @@
+ 
+     move-result-object v0
+ 
+-    :goto_33
++    :goto_3c
+     invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_43
++    if-eqz v1, :cond_4c
+ 
+     invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+ 
+@@ -298,16 +342,16 @@
+ 
+     invoke-virtual {v1}, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenServiceHandler;->unbindService()V
+ 
+-    goto :goto_33
++    goto :goto_3c
+ 
+-    :cond_43
++    :cond_4c
+     invoke-direct {p0}, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->getServiceHandlerList()Ljava/util/concurrent/CopyOnWriteArrayList;
+ 
+     move-result-object v0
+ 
+     invoke-virtual {v0}, Ljava/util/concurrent/CopyOnWriteArrayList;->clear()V
+ 
+-    :cond_4a
++    :cond_53
+     const/4 v0, 0x0
+ 
+     iput-object v0, p0, Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenBusiness;->currentServiceHandler:Lcom/oplus/systemui/navigationbar/ocrscreen/OplusOcrScreenServiceHandler;

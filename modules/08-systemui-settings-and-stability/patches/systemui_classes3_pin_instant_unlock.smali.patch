@@ -1,0 +1,548 @@
+# Patch: SystemUI (classes3.dex) Instant PIN unlock (len >= 4) & hide circular Enter arrow (Password mode untouched)
+--- a/com/oplus/keyguard/security/OplusKeyguardSecurityModel.smali	2026-11-26 10:22:33.737874257 +0700
++++ b/com/oplus/keyguard/security/OplusKeyguardSecurityModel.smali	2026-11-26 10:22:35.504109152 +0700
+@@ -89,11 +89,11 @@
+     :cond_3c
+     sget-object v0, Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;->None:Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;
+ 
+-    if-eqz p2, :cond_79
++    if-eqz p2, :cond_66
+ 
+     const/high16 v1, 0x10000
+ 
+-    if-eq p2, v1, :cond_76
++    if-eq p2, v1, :cond_63
+ 
+     const/high16 v1, 0x20000
+ 
+@@ -127,40 +127,16 @@
+     return-object p0
+ 
+     :cond_60
+-    invoke-virtual {p1}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+-
+-    invoke-static {p1, p0}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils;->getNumericPwdLength(Landroid/content/Context;I)I
+-
+-    move-result p0
+-
+-    const/4 p1, 0x4
+-
+-    if-ne p0, p1, :cond_6d
+-
+-    sget-object p0, Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;->PINFour:Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;
+-
+-    return-object p0
+-
+-    :cond_6d
+-    const/4 p1, 0x6
+-
+-    if-ne p0, p1, :cond_73
+-
+-    sget-object p0, Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;->PINSix:Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;
+-
+-    return-object p0
+-
+-    :cond_73
+     sget-object p0, Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;->PIN:Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;
+ 
+     return-object p0
+ 
+-    :cond_76
++    :cond_63
+     sget-object p0, Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;->Pattern:Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;
+ 
+     return-object p0
+ 
+-    :cond_79
++    :cond_66
+     return-object v0
+ .end method
+ 
+
+--- a/com/oplus/keyguard/security/view/OplusKeyguardAbsKeyInputViewController.smali	2026-11-26 10:22:33.748492966 +0700
++++ b/com/oplus/keyguard/security/view/OplusKeyguardAbsKeyInputViewController.smali	2026-11-26 10:22:35.510729437 +0700
+@@ -492,6 +492,19 @@
+ .method public isAutoConfirmation()Z
+     .registers 5
+ 
++    invoke-virtual {p0}, Lcom/android/keyguard/KeyguardInputViewController;->getSecurityMode()Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;
++
++    move-result-object v0
++
++    sget-object v1, Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;->PIN:Lcom/android/keyguard/KeyguardSecurityModel$SecurityMode;
++
++    if-ne v0, v1, :cond_a
++
++    const/4 p0, 0x1
++
++    return p0
++
++    :cond_a
+     sget-object v0, Lcom/oplusos/systemui/common/multiuser/MultiUserContentHelper;->Companion:Lcom/oplusos/systemui/common/multiuser/MultiUserContentHelper$Companion;
+ 
+     invoke-virtual {p0}, Lcom/oplus/keyguard/security/view/OplusKeyguardAbsKeyInputViewController;->getContext()Landroid/content/Context;
+@@ -510,7 +523,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_25
++    if-eqz v0, :cond_2f
+ 
+     const-string v0, "Keyguard"
+ 
+@@ -518,7 +531,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_25
++    if-eqz v0, :cond_2f
+ 
+     const-string/jumbo v0, "onEntryChanged, autoConfirm="
+ 
+@@ -528,14 +541,14 @@
+ 
+     invoke-static {p0, v0, v1, v3}, Lcom/android/systemui/keyguard/OplusBlackScreenGestureCallback$$ExternalSyntheticOutline0;->m(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+ 
+-    :cond_25
+-    if-eqz p0, :cond_29
++    :cond_2f
++    if-eqz p0, :cond_33
+ 
+     const/4 p0, 0x1
+ 
+     return p0
+ 
+-    :cond_29
++    :cond_33
+     return v2
+ .end method
+ 
+
+--- a/com/oplus/keyguard/security/view/OplusKeyguardPinView.smali	2026-11-26 10:22:33.752068930 +0700
++++ b/com/oplus/keyguard/security/view/OplusKeyguardPinView.smali	2026-11-26 10:22:35.513062017 +0700
+@@ -131,7 +131,7 @@
+ .end method
+ 
+ .method public final onFinishInflate()V
+-    .registers 2
++    .registers 3
+ 
+     invoke-super {p0}, Lcom/oplus/keyguard/security/view/OplusKeyguardPinBaseInputView;->onFinishInflate()V
+ 
+@@ -150,6 +150,29 @@
+     invoke-virtual {v0}, Lcom/oplus/keyguard/security/widget/EditInputWidget;->showSecurityEditCheckBox()V
+ 
+     :cond_13
++    invoke-virtual {p0}, Landroid/widget/RelativeLayout;->getContext()Landroid/content/Context;
++
++    move-result-object v0
++
++    invoke-static {}, Lcom/android/keyguard/KeyguardUpdateMonitor;->getCurrentUser()I
++
++    move-result v1
++
++    invoke-static {v0, v1}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils;->getNumericPwdLength(Landroid/content/Context;I)I
++
++    move-result v0
++
++    const/4 v1, 0x4
++
++    if-lt v0, v1, :cond_29
++
++    iget-object p0, p0, Lcom/oplus/keyguard/security/view/OplusKeyguardPinView;->editInputWidget:Lcom/oplus/keyguard/security/widget/EditInputWidget;
++
++    if-eqz p0, :cond_29
++
++    invoke-virtual {p0}, Lcom/oplus/keyguard/security/widget/EditInputWidget;->hideSecurityOkButton()V
++
++    :cond_29
+     return-void
+ .end method
+ 
+
+--- a/com/oplus/keyguard/security/view/OplusKeyguardPinViewController.smali	2026-11-26 10:22:33.750220615 +0700
++++ b/com/oplus/keyguard/security/view/OplusKeyguardPinViewController.smali	2026-11-26 10:22:35.514265607 +0700
+@@ -141,7 +141,7 @@
+ .end method
+ 
+ .method public final onViewAttached()V
+-    .registers 3
++    .registers 5
+ 
+     invoke-super {p0}, Lcom/oplus/keyguard/security/view/OplusKeyguardPinBaseInputViewController;->onViewAttached()V
+ 
+@@ -158,7 +158,7 @@
+     :cond_e
+     iget-object v0, p0, Lcom/oplus/keyguard/security/view/OplusKeyguardPinViewController;->kgdSecurityOk:Landroid/widget/ImageView;
+ 
+-    if-eqz v0, :cond_1f
++    if-eqz v0, :cond_35
+ 
+     new-instance v1, Lcom/oplus/keyguard/security/view/OplusKeyguardPinViewController$onViewAttached$1;
+ 
+@@ -170,7 +170,33 @@
+ 
+     invoke-virtual {v0, v1}, Landroid/widget/ImageView;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+ 
+-    :cond_1f
++    invoke-virtual {p0}, Lcom/oplus/keyguard/security/view/OplusKeyguardAbsKeyInputViewController;->getContext()Landroid/content/Context;
++
++    move-result-object v1
++
++    invoke-static {}, Lcom/android/keyguard/KeyguardUpdateMonitor;->getCurrentUser()I
++
++    move-result v2
++
++    invoke-static {v1, v2}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils;->getNumericPwdLength(Landroid/content/Context;I)I
++
++    move-result v1
++
++    const/4 v2, 0x4
++
++    if-lt v1, v2, :cond_31
++
++    const/16 v1, 0x8
++
++    goto :goto_32
++
++    :cond_31
++    const/4 v1, 0x0
++
++    :goto_32
++    invoke-virtual {v0, v1}, Landroid/widget/ImageView;->setVisibility(I)V
++
++    :cond_35
+     return-void
+ .end method
+ 
+
+--- a/com/oplus/keyguard/utils/KeyguardPasswordUtils.smali	2026-11-26 10:22:33.758740802 +0700
++++ b/com/oplus/keyguard/utils/KeyguardPasswordUtils.smali	2026-11-26 10:22:35.522211469 +0700
+@@ -236,274 +236,103 @@
+     return p0
+ 
+     :cond_27
+-    sget-object v0, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils;->INSTANCE:Lcom/oplus/keyguard/utils/KeyguardPasswordUtils;
++    const/4 v0, 0x0
+ 
+-    invoke-virtual {v0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
++    if-eqz p0, :cond_6f
+ 
+-    const-string v0, "KeyguardPasswordUtils"
++    :try_start_2a
++    new-instance v1, Lcom/android/internal/widget/LockPatternUtils;
+ 
+-    const-string v1, "getLockPasswordMinLength: exception:"
++    invoke-direct {v1, p0}, Lcom/android/internal/widget/LockPatternUtils;-><init>(Landroid/content/Context;)V
+ 
+-    const/4 v2, 0x0
++    invoke-virtual {v1}, Lcom/android/internal/widget/LockPatternUtils;->getLockSettings()Lcom/android/internal/widget/ILockSettings;
+ 
+-    :try_start_31
+-    const-string/jumbo v4, "persist.sys.ls.ui_type"
+-
+-    invoke-static {v4, v2}, Landroid/os/SystemProperties;->getInt(Ljava/lang/String;I)I
+-
+-    move-result v4
+-    :try_end_38
+-    .catch Landroid/provider/Settings$SettingNotFoundException; {:try_start_31 .. :try_end_38} :catch_6c
+-
+-    const/4 v5, 0x1
+-
+-    if-ne v4, v5, :cond_d4
+-
+-    :try_start_3b
+-    const-string p0, "com.oplus.os.OplusLockPatternUtils"
+-
+-    invoke-static {p0}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
+-
+-    move-result-object p0
+-
+-    const-string v4, "getLockPasswordMinLength"
+-
+-    const/4 v6, 0x2
+-
+-    new-array v6, v6, [Ljava/lang/Class;
+-
+-    sget-object v7, Ljava/lang/Integer;->TYPE:Ljava/lang/Class;
+-
+-    aput-object v7, v6, v2
+-
+-    aput-object v7, v6, v5
+-
+-    invoke-virtual {p0, v4, v6}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+-
+-    move-result-object v4
+-
+-    invoke-virtual {p0}, Ljava/lang/Class;->newInstance()Ljava/lang/Object;
+-
+-    move-result-object p0
+-
+-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v6
+-
+-    invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+-
+-    move-result-object v7
+-
+-    filled-new-array {v6, v7}, [Ljava/lang/Object;
+-
+-    move-result-object v6
+-
+-    invoke-virtual {v4, p0, v6}, Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+-
+-    move-result-object p0
+-
+-    instance-of v4, p0, Ljava/lang/Integer;
+-
+-    if-eqz v4, :cond_73
+-
+-    move-object v3, p0
+-
+-    check-cast v3, Ljava/lang/Integer;
+-
+-    goto :goto_73
+-
+-    :catch_6c
+-    move-exception p0
+-
+-    goto/16 :goto_e5
+-
+-    :catch_6f
+-    move-exception p0
+-
+-    goto :goto_8c
+-
+-    :catch_71
+-    move-exception p0
+-
+-    goto :goto_a5
+-
+-    :cond_73
+-    :goto_73
+-    if-nez v3, :cond_81
+-
+-    const-string p0, "getLockPasswordMinLength: result is null"
+-
+-    invoke-static {v0, p0}, Lcom/oplusos/keyguard/utils/KgdLogUtil;->w(Ljava/lang/String;Ljava/lang/String;)V
+-
+-    new-instance p0, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;
+-
+-    invoke-direct {p0, v2, v2}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;-><init>(IZ)V
+-
+-    goto/16 :goto_ff
+-
+-    :cond_81
+-    new-instance p0, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;
+-
+-    invoke-virtual {v3}, Ljava/lang/Integer;->intValue()I
+-
+-    move-result v3
+-
+-    invoke-direct {p0, v3, v5}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;-><init>(IZ)V
+-    :try_end_8a
+-    .catch Ljava/lang/ClassNotFoundException; {:try_start_3b .. :try_end_8a} :catch_c9
+-    .catch Ljava/lang/NoSuchMethodException; {:try_start_3b .. :try_end_8a} :catch_be
+-    .catch Ljava/lang/ReflectiveOperationException; {:try_start_3b .. :try_end_8a} :catch_71
+-    .catch Ljava/lang/IllegalArgumentException; {:try_start_3b .. :try_end_8a} :catch_6f
+-    .catch Landroid/provider/Settings$SettingNotFoundException; {:try_start_3b .. :try_end_8a} :catch_6c
+-
+-    goto/16 :goto_ff
+-
+-    :goto_8c
+-    :try_start_8c
+-    invoke-virtual {p0}, Ljava/lang/IllegalArgumentException;->getMessage()Ljava/lang/String;
+-
+-    move-result-object p0
+-
+-    new-instance v3, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v3, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v3, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object p0
+-
+-    invoke-static {v0, p0}, Lcom/oplusos/keyguard/utils/KgdLogUtil;->e(Ljava/lang/String;Ljava/lang/String;)V
+-
+-    new-instance p0, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;
+-
+-    invoke-direct {p0, v2, v2}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;-><init>(IZ)V
+-
+-    goto :goto_ff
+-
+-    :goto_a5
+-    invoke-virtual {p0}, Ljava/lang/ReflectiveOperationException;->getMessage()Ljava/lang/String;
+-
+-    move-result-object p0
+-
+-    new-instance v3, Ljava/lang/StringBuilder;
+-
+-    invoke-direct {v3, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+-
+-    invoke-virtual {v3, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++    move-result-object v1
+ 
+-    move-result-object p0
++    if-eqz v1, :cond_48
+ 
+-    invoke-static {v0, p0}, Lcom/oplusos/keyguard/utils/KgdLogUtil;->e(Ljava/lang/String;Ljava/lang/String;)V
++    const-string v2, "lockscreen.qu.ui.type"
+ 
+-    new-instance p0, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;
++    const-wide/16 v4, -0x1
+ 
+-    invoke-direct {p0, v2, v2}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;-><init>(IZ)V
++    invoke-interface {v1, v2, v4, v5, p1}, Lcom/android/internal/widget/ILockSettings;->getLong(Ljava/lang/String;JI)J
+ 
+-    goto :goto_ff
++    move-result-wide v4
+ 
+-    :catch_be
+-    const-string p0, "getLockPasswordMinLength: method not found"
++    long-to-int v0, v4
+ 
+-    invoke-static {v0, p0}, Lcom/oplusos/keyguard/utils/KgdLogUtil;->w(Ljava/lang/String;Ljava/lang/String;)V
++    const/4 v2, 0x4
+ 
+-    new-instance p0, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;
++    if-ge v0, v2, :cond_48
+ 
+-    invoke-direct {p0, v2, v2}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;-><init>(IZ)V
++    invoke-interface {v1, p1}, Lcom/android/internal/widget/ILockSettings;->getPinLength(I)I
+ 
+-    goto :goto_ff
++    move-result v0
++    :try_end_45
++    .catch Ljava/lang/Exception; {:try_start_2a .. :try_end_45} :catch_46
+ 
+-    :catch_c9
+-    const-string p0, "getLockPasswordMinLength: Class(OplusLockPatternUtils) not found"
++    goto :goto_48
+ 
+-    invoke-static {v0, p0}, Lcom/oplusos/keyguard/utils/KgdLogUtil;->w(Ljava/lang/String;Ljava/lang/String;)V
++    :catch_46
++    move-exception v1
+ 
+-    new-instance p0, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;
++    const/4 v0, 0x0
+ 
+-    invoke-direct {p0, v2, v2}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;-><init>(IZ)V
++    :cond_48
++    :goto_48
++    const/4 v1, 0x4
+ 
+-    goto :goto_ff
++    if-ge v0, v1, :cond_59
+ 
+-    :cond_d4
++    :try_start_4b
+     invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+ 
+-    move-result-object p0
+-
+-    const-string v1, "PASSWORD_LENGTH"
+-
+-    invoke-static {p0, v1, p1}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)I
+-
+-    move-result p0
+-
+-    new-instance v1, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;
+-
+-    invoke-direct {v1, p0, v5}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;-><init>(IZ)V
+-    :try_end_e3
+-    .catch Landroid/provider/Settings$SettingNotFoundException; {:try_start_8c .. :try_end_e3} :catch_6c
+-
+-    move-object p0, v1
+-
+-    goto :goto_ff
+-
+-    :goto_e5
+-    invoke-virtual {p0}, Landroid/provider/Settings$SettingNotFoundException;->getMessage()Ljava/lang/String;
+-
+-    move-result-object v1
++    move-result-object v2
+ 
+-    new-instance v3, Ljava/lang/StringBuilder;
++    const-string v3, "PASSWORD_LENGTH"
+ 
+-    const-string v4, "getNumericPwdLength(), e="
++    const/4 v4, -0x1
+ 
+-    invoke-direct {v3, v4}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
++    invoke-static {v2, v3, v4, p1}, Landroid/provider/Settings$System;->getIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)I
+ 
+-    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+-
+-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+-
+-    move-result-object v1
+-
+-    invoke-static {v0, v1, p0}, Lcom/oplusos/keyguard/utils/KgdLogUtil;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+-
+-    new-instance p0, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;
++    move-result v0
++    :try_end_56
++    .catch Ljava/lang/Exception; {:try_start_4b .. :try_end_56} :catch_57
+ 
+-    invoke-direct {p0, v2, v2}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;-><init>(IZ)V
++    goto :goto_59
+ 
+-    :goto_ff
+-    invoke-virtual {p0}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;->getSuccess()Z
++    :catch_57
++    move-exception v2
+ 
+-    move-result v0
++    const/4 v0, 0x0
+ 
+-    if-eqz v0, :cond_11b
++    :cond_59
++    :goto_59
++    if-lt v0, v1, :cond_6e
+ 
+-    sget-object v0, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils;->pwdLengthCache:Ljava/util/concurrent/ConcurrentHashMap;
++    sget-object v1, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils;->pwdLengthCache:Ljava/util/concurrent/ConcurrentHashMap;
+ 
+     invoke-static {p1}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+-    move-result-object p1
+-
+-    new-instance v1, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthCacheEntry;
++    move-result-object v2
+ 
+-    invoke-virtual {p0}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;->getLength()I
+-
+-    move-result v2
++    new-instance v3, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthCacheEntry;
+ 
+     invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
+ 
+-    move-result-wide v3
++    move-result-wide v4
+ 
+-    invoke-direct {v1, v2, v3, v4}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthCacheEntry;-><init>(IJ)V
++    invoke-direct {v3, v0, v4, v5}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthCacheEntry;-><init>(IJ)V
+ 
+-    invoke-interface {v0, p1, v1}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
++    invoke-interface {v1, v2, v3}, Ljava/util/Map;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+ 
+-    :cond_11b
+-    invoke-virtual {p0}, Lcom/oplus/keyguard/utils/KeyguardPasswordUtils$PwdLengthLoadResult;->getLength()I
++    return v0
+ 
+-    move-result p0
++    :cond_6e
++    const/4 v0, 0x0
+ 
+-    return p0
++    :cond_6f
++    return v0
+ .end method
+ 
+ .method public static getPINPasswordLength(Lcom/android/internal/widget/LockPatternUtils;I)I

@@ -1,0 +1,29 @@
+diff --git a/odm/etc/camera/dualcam_predepth_params_pro.json b/odm/etc/camera/dualcam_predepth_params_pro.json
+index 7e9f93a..fe8a4b4 100644
+--- a/odm/etc/camera/dualcam_predepth_params_pro.json
++++ b/odm/etc/camera/dualcam_predepth_params_pro.json
+@@ -17,3 +17,3 @@
+       "paramSwitch": 1,
+-      "paramDeploySwitchA": 0,
++      "paramDeploySwitchA": 1,
+       "paramDeploySwitchB": 1,
+@@ -26,3 +26,3 @@
+         "paramDepthH": 768,
+-        "paramDepthQSL": 0.000072317373,
++        "paramDepthQSL": 7.2317373e-05,
+         "paramDepthQOL": -29158.0,
+@@ -37,3 +37,3 @@
+         "paramDepthH": 512,
+-        "paramDepthQSL": 0.000072317373,
++        "paramDepthQSL": 7.2317373e-05,
+         "paramDepthQOL": -29158.0,
+@@ -41,3 +41,3 @@
+         "paramDepthQOS": -3428.0,
+-        "paramDepthQSM": 0.000015169498,
++        "paramDepthQSM": 1.5169498e-05,
+         "paramDepthQOM": 0.0,
+@@ -56,3 +56,3 @@
+     },
+-    "paramIsTrustAfCode": 1
++    "paramIsTrustAfCode": 0
+   }

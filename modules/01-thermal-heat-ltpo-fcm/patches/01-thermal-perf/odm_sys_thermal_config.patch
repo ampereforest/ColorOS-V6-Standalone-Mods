@@ -1,0 +1,20 @@
+# Patch: Fix odm ThermalServiceConfig thermal_zone57 & disable DCS upload (v7.3.1)
+# Target: /odm/etc/ThermalServiceConfig/sys_thermal_config.xml
+--- a/odm/etc/ThermalServiceConfig/sys_thermal_config.xml
++++ b/odm/etc/ThermalServiceConfig/sys_thermal_config.xml
+@@ -10,13 +10,13 @@
+     <heat_hold_upload_time>40000</heat_hold_upload_time>
+     <heat_align>100</heat_align>
+     <is_feature_on>1</is_feature_on>
+-    <is_upload_dcs>1</is_upload_dcs>
++    <is_upload_dcs>0</is_upload_dcs>
+     <is_upload_log>0</is_upload_log>
+     <is_upload_errlog>0</is_upload_errlog>
+     <preheat_dex_oat_threshold>420</preheat_dex_oat_threshold>
+     <!-- 30min -->
+     <heathold_time_threshold>1800000</heathold_time_threshold>
+-    <thermal_heat_path>/sys/class/thermal/thermal_zone49/temp</thermal_heat_path>
++    <thermal_heat_path>/sys/class/thermal/thermal_zone57/temp</thermal_heat_path>
+     <thermal_battery_temp>1</thermal_battery_temp>
+     <!-- stable battery check threshold -->
+     <thermal_monitor_application>

@@ -1,0 +1,12 @@
+# Patch: Enable hdr_enhance_brightness_support, dolby_enhance_v1_support & enhance_brightness_with_uidimming
+--- a/my_product/etc/extension/com.oplus.oplus-feature.xml
++++ b/my_product/etc/extension/com.oplus.oplus-feature.xml
+@@ -251,5 +251,8 @@
+ 	<oplus-feature name="oplus.software.osense.nandswap.enable"/>
+ 	<oplus-feature name="oplus.software.radio.nwpower_amc_lowpower_game"/>
+ 	<oplus-feature name="oplus.software.gsa_refresh"/>
++	<oplus-feature name="oplus.software.display.hdr_enhance_brightness_support"/>
++	<oplus-feature name="oplus.software.display.dolby_enhance_v1_support"/>
++	<oplus-feature name="oplus.software.display.enhance_brightness_with_uidimming"/>
+ </oplus-config>
+ <!-- Timestamp 2026-09-07T22:08:04 #3e759547-c9a1-441e-8fbe-2f79c56beebf -->

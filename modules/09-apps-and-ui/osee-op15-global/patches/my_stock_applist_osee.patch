@@ -1,0 +1,11 @@
+# Patch: Register OseeTileLauncher.apk in my_stock/applist/applist.txt
+--- a/my_stock/applist/applist.txt
++++ b/my_stock/applist/applist.txt
+@@ -90,6 +90,7 @@
+ com.oplus.cosa:COSA.apk::false
+ com.oneplus.bbs:OPCommunity.apk::false
+ com.coloros.ocrscanner:OcrScanner.apk::false
++dev.osee.tilelauncher:OseeTileLauncher.apk::false
+ com.oppo.ctautoregist:CTAutoRegist.apk::false
+ com.coloros.mapcom.frame:MapComFrame.apk::false
+ com.coloros.karaoke:Karaoke.apk::false

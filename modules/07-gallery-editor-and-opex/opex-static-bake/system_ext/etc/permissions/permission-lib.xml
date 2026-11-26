@@ -1,0 +1,6 @@
+<permissions>
+
+    <library name="opex.odmf"
+        file="/system_ext/framework/oplusex/com.oplus.odmf/odmf.jar" />
+
+</permissions>

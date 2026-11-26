@@ -1,0 +1,32 @@
+# Patch: Align my_manifest identity PLK110 -> PLZ110 / OnePlus 15T
+--- a/my_manifest/build.prop
++++ b/my_manifest/build.prop
+@@ -10,7 +10,7 @@
+ ro.odm.build.fingerprint=OnePlus/PLZ110/OP64DDL1:17/CP2A.260605.016/B.2a5e7c5-41b0cd-45d7d3:user/release-keys
+ ro.build.fingerprint=OnePlus/PLZ110/OP64DDL1:17/CP2A.260605.016/B.2a5e7c5-41b0cd-45d7d3:user/release-keys
+ ro.build.id=CP2A.260605.016
+-ro.build.product=PLK110
++ro.build.product=PLZ110
+ ro.product.bootimage.brand=OnePlus
+ #ro.product.vendor.device=OP64DDL1
+ ro.product.odm.brand=OnePlus
+@@ -38,8 +38,8 @@
+ ro.odm.build.date=Mon Oct  5 19:14:24 CST 2026
+ #ro.product.vendor.manufacturer=OnePlus
+ #ro.product.odm.manufacturer=OnePlus
+-ro.product.name=PLK110
+-ro.product.model=PLK110
++ro.product.name=PLZ110
++ro.product.model=PLZ110
+ ro.vendor.build.date=Mon Oct  5 19:14:24 CST 2026
+ ro.bootimage.build.date=Mon Oct  5 19:14:24 CST 2026
+ ro.product.bootimage.manufacturer=OnePlus
+@@ -84,7 +84,7 @@
+ ro.product.ab_ota_partitions=abl,aop,aop_config,bluetooth,boot,cpucp,cpucp_dtb,dcp,devcfg,dsp,dtbo,engineering_cdt,featenabler,hyp,hyp_ac_config,imagefv,init_boot,keymaster,modem,multiimgoem,multiimgqti,my_bigball,my_carrier,my_company,my_engineering,my_heytap,my_manifest,my_preload,my_product,my_region,my_stock,odm,oplus_sec,pdp,pdp_cdb,product,pvmfw,qupfw,recovery,secretkeeper,shrm,soccp,soccp_dcd,soccp_debug,splash,spuservice,system,system_dlkm,system_ext,tme_config,tme_fw,tme_seq_patch,tz,tz_ac_config,tz_qti_config,uefi,uefisecapp,vbmeta,vbmeta_system,vbmeta_vendor,vendor,vendor_boot,vendor_dlkm,xbl,xbl_ac_config,xbl_config,xbl_ramdump
+ ro.oplus.image.my_stock.type=domestic_OnePlus
+ ro.build.version.ota=PLZ110_11.C.17_1170_202610051858
+-ro.vendor.oplus.market.enname=OnePlus 15
++ro.vendor.oplus.market.enname=OnePlus 15T
+ ro.build.display.ota=PLZ110_11_C.17
+ ro.sys.oplus_support_app32_version=2
+ ro.oplus.image.my_manifest.version=PLZ110_11.C.17_1170_202610051858.97.9bff30de

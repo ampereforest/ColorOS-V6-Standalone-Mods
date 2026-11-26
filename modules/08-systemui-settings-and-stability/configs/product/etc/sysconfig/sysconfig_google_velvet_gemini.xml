@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <allow-in-power-save package="com.google.android.googlequicksearchbox" />
+    <allow-in-power-save-except-idle package="com.google.android.apps.bard" />
+    <app-link package="com.google.android.googlequicksearchbox" />
+    <app-link package="com.google.android.apps.bard" />
+    <feature name="com.google.android.feature.GOOGLE_EXPERIENCE" />
+</config>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CP89: com.android.contacts (default dialer) is cold-started at boot by Telephony binding the
+  OMTP visual-voicemail service; its preInflate thread then races Application.attachBaseContext
+  (NightModeUtils recursion -> StackOverflowError). VVM is unused here (vvm_type empty on both SIMs).
+  Framework-native, rootless: disables the component at package scan, survives format data.
+-->
+<config>
+    <component-override package="com.android.contacts">
+        <component class="com.android.contacts.voicemail.impl.OmtpService" enabled="false" />
+    </component-override>
+</config>

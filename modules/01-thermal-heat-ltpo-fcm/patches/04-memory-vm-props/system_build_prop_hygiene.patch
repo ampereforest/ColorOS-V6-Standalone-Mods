@@ -1,0 +1,26 @@
+# Patch: Strip qemu.* props (Duck Virtualization Clear) & add COS17 v7.2+ rootless system hygiene defaults
+# Target: /system/build.prop
+--- a/system/build.prop
++++ b/system/build.prop
+@@ -186,8 +186,6 @@
+ #Bringup properties
+ persist.sys.force_sw_gles=1
+ persist.vendor.radio.atfwd.start=true
+-ro.kernel.qemu.gles=0
+-qemu.hw.mainkeys=0
+ #Expose aux camera for below packages
+ vendor.camera.aux.packagelist=android,com.oneplus.camera,com.oppo.camera,com.oplus.engineercamera,com.oplus.camera
+ #Whitelist below package in privapp
+@@ -313,3 +311,12 @@
+ import /my_product/build.prop
+ import /my_region/build.prop
+ import /my_stock/build.prop
++# --- BEGIN COS17 V7.2 ROOTLESS SYSTEM HYGIENE DEFAULTS ---
++persist.sys.midas_ostats.restriction=1
++persist.oplus.qspa.modem=disabled
++persist.sys.oplus.wifi.fulldump.enable=0
++sys.oplus.wifi.dump.enable=0
++sys.oplus.wifi.dump.needupload=0
++persist.sys.stability.iostat=false
++persist.sys.stability.fault_report=false
++# --- END COS17 V7.2 ROOTLESS SYSTEM HYGIENE DEFAULTS ---

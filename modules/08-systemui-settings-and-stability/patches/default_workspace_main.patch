@@ -1,0 +1,32 @@
+# Patch: Clean 4-icon default dock (Phone, Messages, Titanium Browser, MiuiCamera) in system/my_product/etc/launcher/default_workspace.xml
+--- a/my_product/etc/launcher/default_workspace.xml
++++ b/my_product/etc/launcher/default_workspace.xml
+@@ -937,15 +937,15 @@
+         launcher:screen="2"
+         launcher:x="2"
+         launcher:y="0">
+-
++        <favorite
++            launcher:className="com.google.android.apps.chrome.Main"
++            launcher:packageName="io.github.jqssun.helium" />
+         <favorite
+             launcher:className="com.android.browser.BrowserActivity"
+             launcher:packageName="com.heytap.browser" />
+-
+         <favorite
+             launcher:className="com.android.browser.BrowserActivity"
+             launcher:packageName="com.coloros.browser" />
+-
+     </resolve>
+ 
+     <resolve
+@@ -954,6 +954,9 @@
+         launcher:x="3"
+         launcher:y="0">
+         <favorite
++            launcher:className="com.android.camera.Camera"
++            launcher:packageName="com.android.camera" />
++        <favorite
+             launcher:className="com.oplus.camera.Camera"
+             launcher:packageName="com.oplus.camera" />
+         <favorite

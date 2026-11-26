@@ -1,0 +1,223 @@
+# Patch: VRR config tuning (limit_fps_when_app_exit=false, MiuiCamera VRR rules)
+--- a/my_product/etc/oplus_vrr_config.json
++++ b/my_product/etc/oplus_vrr_config.json
+@@ -9,43 +9,102 @@
+         "sub_version": "20260204"
+     },
+     {
+-        "feature_hybrid_acc" : true,
+-        "stablize_enable" : true
++        "feature_hybrid_acc": true,
++        "stablize_enable": true
+     },
+     {
+         "touch_idle": true,
+         "ignore_emitevent": true,
+         "hw_enable": true,
+         "sw_enable": true,
+-        "mvt_enable": true,
++        "mvt_enable": false,
+         "sw_whitelist_3rd": {
+-            "com.ss.android.ugc.aweme": [30],
+-            "com.ss.android.ugc.aweme.lite":[30],
+-            "com.ss.android.ugc.live":[30],
+-            "com.smile.gifmaker": [30],
+-            "com.kuaishou.nebula":[30],
+-            "com.tencent.wemeet.app":[30]
++            "com.ss.android.ugc.aweme": [
++                30
++            ],
++            "com.ss.android.ugc.aweme.lite": [
++                30
++            ],
++            "com.ss.android.ugc.live": [
++                30
++            ],
++            "com.smile.gifmaker": [
++                30
++            ],
++            "com.kuaishou.nebula": [
++                30
++            ],
++            "com.tencent.wemeet.app": [
++                30
++            ]
+         },
+         "adfr_enable": false,
+         "timeout": 2500,
+-        "content_threshold":10,
+-        "content_gap_ms":800,
+-        "content_gap_loop_percent":25,
++        "content_threshold": 10,
++        "content_gap_ms": 800,
++        "content_gap_loop_percent": 25,
+         "hw_nit_limit": 110,
+         "hw_nit_limit_pwm": 110,
+         "histogram_enable": true,
+         "hist_data_enable": false,
+         "hist_sampler_interval": 2000,
+-        "hw_nit_lower_limit_light": [30,50,90,110],
+-        "hist_low_gray_ratio_light": [0.50,0.70,0.70],
+-        "hist_max_gray_ratio_light": [0.30,0.70,0.70],
+-        "hist_calc_low_bit_light": [0,0,0],
+-        "hist_calc_high_bit_light": [6,4,4],
+-        "hw_nit_lower_limit_dark": [30,50,150,600,2000],
+-        "hist_low_gray_ratio_dark": [0.50,0.70,0.70,1],
+-        "hist_max_gray_ratio_dark": [0.30,0.70,0.50,1],
+-        "hist_calc_low_bit_dark": [0,0,0,0],
+-        "hist_calc_high_bit_dark": [6,4,2,0],
++        "hw_nit_lower_limit_light": [
++            30,
++            50,
++            90,
++            110
++        ],
++        "hist_low_gray_ratio_light": [
++            0.5,
++            0.7,
++            0.7
++        ],
++        "hist_max_gray_ratio_light": [
++            0.3,
++            0.7,
++            0.7
++        ],
++        "hist_calc_low_bit_light": [
++            0,
++            0,
++            0
++        ],
++        "hist_calc_high_bit_light": [
++            6,
++            4,
++            4
++        ],
++        "hw_nit_lower_limit_dark": [
++            30,
++            50,
++            150,
++            600,
++            2000
++        ],
++        "hist_low_gray_ratio_dark": [
++            0.5,
++            0.7,
++            0.7,
++            1
++        ],
++        "hist_max_gray_ratio_dark": [
++            0.3,
++            0.7,
++            0.5,
++            1
++        ],
++        "hist_calc_low_bit_dark": [
++            0,
++            0,
++            0,
++            0
++        ],
++        "hist_calc_high_bit_dark": [
++            6,
++            4,
++            2,
++            0
++        ],
+         "activity_blacklist": [
+             "com.tencent.mm.framework.app.UIPageFragmentActivity",
+             "com.alipay.mobile.onsitepay.merge.OnsitepayActivity"
+@@ -155,7 +214,8 @@
+             "com.bf.sgs.hdexp",
+             "nn4.nearme.gamecenter",
+             "com.papegames.nn4.cn",
+-            "com.tencent.cookie"
++            "com.tencent.cookie",
++            "com.android.camera"
+         ],
+         "sw_negligible_overlay": [
+             "StatusBar",
+@@ -186,15 +246,15 @@
+         "frtc": true
+     },
+     {
+-        "mvt": true,
++        "mvt": false,
+         "mvt_fps_strategy": [
+             {
+                 "mvt_mode": 120,
+-                "mvt_render": 60
++                "mvt_render": 120
+             },
+             {
+                 "mvt_mode": 90,
+-                "mvt_render": 45
++                "mvt_render": 90
+             },
+             {
+                 "mvt_mode": 165,
+@@ -212,14 +272,13 @@
+         "touch_frame_change": true,
+         "strategy": 1,
+         "frtc_capability": 120,
+-        "whitelist": [
+-        ],
++        "whitelist": [],
+         "blacklist": [
+             "com.android.systemui",
+-            "com.android.launcher"
+-        ],
+-        "min_framerate_map": {
+-        }
++            "com.android.launcher",
++            "com.android.camera"
++        ],
++        "min_framerate_map": {}
+     },
+     {
+         "record_reduce_rate_config": {
+@@ -229,7 +288,7 @@
+         }
+     },
+     {
+-        "oplus_test":true,
++        "oplus_test": true,
+         "blacklist": [
+             "com.android.cts.graphics.displaymode",
+             "android.display.cts",
+@@ -241,16 +300,17 @@
+         ]
+     },
+     {
+-        "limit_fps_when_app_exit": true,
++        "limit_fps_when_app_exit": false,
+         "blacklist": [
+             "com.heytap.speechassist",
+             "com.oplus.camera",
+-            "com.oplus.gesture"
+-        ]
+-    },
+-    {
+-        "game_dynamic_te_enable":true,
+-        "game_dynamic_te_complex_mode_config":true,
++            "com.oplus.gesture",
++            "com.android.camera"
++        ]
++    },
++    {
++        "game_dynamic_te_enable": true,
++        "game_dynamic_te_complex_mode_config": true,
+         "whitelist": [
+             "com.tencent.tmgp.sgame",
+             "com.miHoYo.yuanshencb",
+@@ -261,7 +321,10 @@
+             "com.miHoYo.enterprise.HK4E",
+             "com.kurogame.mingchao"
+         ],
+-        "game_dynamic_te_mode":[60,120]
++        "game_dynamic_te_mode": [
++            60,
++            120
++        ]
+     },
+     {
+         "big_data": true,

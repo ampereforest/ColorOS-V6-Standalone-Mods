@@ -1,0 +1,633 @@
+diff -ruN a/a6/e.smali b/a6/e.smali
+--- a/a6/e.smali
++++ b/a6/e.smali
+@@ -6,7 +6,7 @@
+ # static fields
+ .field public static volatile a:Ljava/lang/String; = "30819f300d06092a864886f70d010101050003818d0030818902818100e98125b956467aff1be1fb03177b3acea2435d8aea6ebee323e11549cb8e1bc960eea65e07dfbcfdd3b036e9155d17331ec8b510078aec0c869777108e0e5963596fbf2bdeae17932c0ed385501c3b56539c9488dc613bff603404ba5f09a17a0ebb2d587f76f9b1b4e94ee553725f7bb40b8b27c3e819ed8aecddc1d5e510a90203010001"
+ 
+-.field public static volatile b:Z = false
++.field public static volatile b:Z
+ 
+ 
+ # direct methods
+diff -ruN a/androidx/preference/e.smali b/androidx/preference/e.smali
+--- a/androidx/preference/e.smali
++++ b/androidx/preference/e.smali
+@@ -4,17 +4,17 @@
+ 
+ 
+ # static fields
+-.field public static a:Z = false
++.field public static a:Z
+ 
+-.field public static b:Z = false
++.field public static b:Z
+ 
+-.field public static c:Z = false
++.field public static c:Z
+ 
+-.field public static d:Landroid/content/Context; = null
++.field public static d:Landroid/content/Context;
+ 
+-.field public static e:Z = false
++.field public static e:Z
+ 
+-.field public static f:Z = false
++.field public static f:Z
+ 
+ .field public static g:Landroid/content/Context;
+ 
+diff -ruN a/b7/i.smali b/b7/i.smali
+--- a/b7/i.smali
++++ b/b7/i.smali
+@@ -4,7 +4,7 @@
+ 
+ 
+ # static fields
+-.field public static a:Z = false
++.field public static a:Z
+ 
+ .field public static b:Landroid/widget/Toast;
+ 
+diff -ruN a/com/google/protobuf/ExtensionRegistryLite.smali b/com/google/protobuf/ExtensionRegistryLite.smali
+--- a/com/google/protobuf/ExtensionRegistryLite.smali
++++ b/com/google/protobuf/ExtensionRegistryLite.smali
+@@ -19,7 +19,7 @@
+ 
+ .field private static doFullRuntimeInheritanceCheck:Z = true
+ 
+-.field private static volatile eagerlyParseMessageSets:Z = false
++.field private static volatile eagerlyParseMessageSets:Z
+ 
+ .field private static volatile emptyRegistry:Lcom/google/protobuf/ExtensionRegistryLite;
+ 
+diff -ruN a/com/heytap/msp/sdk/base/common/EnvConstants.smali b/com/heytap/msp/sdk/base/common/EnvConstants.smali
+--- a/com/heytap/msp/sdk/base/common/EnvConstants.smali
++++ b/com/heytap/msp/sdk/base/common/EnvConstants.smali
+@@ -4,9 +4,9 @@
+ 
+ 
+ # static fields
+-.field public static ENV:I = 0x0
++.field public static ENV:I
+ 
+-.field public static final IS_DEBUG:Z = false
++.field public static final IS_DEBUG:Z
+ 
+ 
+ # direct methods
+diff -ruN a/com/heytap/msp/sdk/base/common/log/MspLog.smali b/com/heytap/msp/sdk/base/common/log/MspLog.smali
+--- a/com/heytap/msp/sdk/base/common/log/MspLog.smali
++++ b/com/heytap/msp/sdk/base/common/log/MspLog.smali
+@@ -12,7 +12,7 @@
+ 
+ 
+ # static fields
+-.field public static a:Z = false
++.field public static a:Z
+ 
+ 
+ # direct methods
+diff -ruN a/com/heytap/usercenter/accountsdk/AccountAgentClient.smali b/com/heytap/usercenter/accountsdk/AccountAgentClient.smali
+--- a/com/heytap/usercenter/accountsdk/AccountAgentClient.smali
++++ b/com/heytap/usercenter/accountsdk/AccountAgentClient.smali
+@@ -6,9 +6,9 @@
+ # static fields
+ .field private static final TAG:Ljava/lang/String; = "AccountAgentClient"
+ 
+-.field private static volatile sAgentClient:Lcom/heytap/usercenter/accountsdk/AccountAgentClient; = null
++.field private static volatile sAgentClient:Lcom/heytap/usercenter/accountsdk/AccountAgentClient;
+ 
+-.field private static volatile sIsInit:Z = false
++.field private static volatile sIsInit:Z
+ 
+ 
+ # instance fields
+diff -ruN a/com/oplus/account/netrequest/intercepter/p.smali b/com/oplus/account/netrequest/intercepter/p.smali
+--- a/com/oplus/account/netrequest/intercepter/p.smali
++++ b/com/oplus/account/netrequest/intercepter/p.smali
+@@ -6,11 +6,11 @@
+ # static fields
+ .field public static volatile a:J = 0x7fffffffffffffffL
+ 
+-.field public static volatile b:J = 0x0L
++.field public static volatile b:J
+ 
+-.field public static volatile c:J = 0x0L
++.field public static volatile c:J
+ 
+-.field public static volatile d:Z = false
++.field public static volatile d:Z
+ 
+ 
+ # direct methods
+diff -ruN a/com/oplus/accountsdk/base/account/AcAccountManager.smali b/com/oplus/accountsdk/base/account/AcAccountManager.smali
+--- a/com/oplus/accountsdk/base/account/AcAccountManager.smali
++++ b/com/oplus/accountsdk/base/account/AcAccountManager.smali
+@@ -6,7 +6,7 @@
+ # static fields
+ .field private static final TAG:Ljava/lang/String; = "AcAccountManager"
+ 
+-.field private static accountManager:Lb6/c; = null
++.field private static accountManager:Lb6/c;
+ 
+ .field private static final clientMap:Ljava/util/concurrent/ConcurrentHashMap;
+     .annotation system Ldalvik/annotation/Signature;
+@@ -19,9 +19,9 @@
+     .end annotation
+ .end field
+ 
+-.field private static hostConfig:Lcom/oplus/accountsdk/base/account/config/AcAccountConfig; = null
++.field private static hostConfig:Lcom/oplus/accountsdk/base/account/config/AcAccountConfig;
+ 
+-.field private static isGuest:Z = false
++.field private static isGuest:Z
+ 
+ 
+ # direct methods
+diff -ruN a/com/oplus/accountsdk/base/common/util/AcLogUtil.smali b/com/oplus/accountsdk/base/common/util/AcLogUtil.smali
+--- a/com/oplus/accountsdk/base/common/util/AcLogUtil.smali
++++ b/com/oplus/accountsdk/base/common/util/AcLogUtil.smali
+@@ -23,7 +23,7 @@
+ 
+ .field private static final TAG:Ljava/lang/String; = "AcLogUtil"
+ 
+-.field private static debugSwitch:Z = false
++.field private static debugSwitch:Z
+ 
+ .field private static logImpl:Lcom/oplus/accountsdk/base/common/util/AcLogUtil$IAcLogImpl;
+ 
+diff -ruN a/com/oplus/camera/aps/service/ApsService.smali b/com/oplus/camera/aps/service/ApsService.smali
+--- a/com/oplus/camera/aps/service/ApsService.smali
++++ b/com/oplus/camera/aps/service/ApsService.smali
+@@ -37,7 +37,7 @@
+ 
+ .field private static sFirstStartId:I = -0x1
+ 
+-.field public static sbFirstShutterCheck:Z = false
++.field public static sbFirstShutterCheck:Z
+ 
+ 
+ # instance fields
+diff -ruN a/com/oplus/camera/bluetooth/BlueToothScanService.smali b/com/oplus/camera/bluetooth/BlueToothScanService.smali
+--- a/com/oplus/camera/bluetooth/BlueToothScanService.smali
++++ b/com/oplus/camera/bluetooth/BlueToothScanService.smali
+@@ -15,9 +15,9 @@
+ # static fields
+ .field public static final d:Ljava/lang/Object;
+ 
+-.field public static e:Z = false
++.field public static e:Z
+ 
+-.field public static f:Z = false
++.field public static f:Z
+ 
+ .field public static g:Landroid/os/HandlerThread;
+ 
+diff -ruN a/com/oplus/camera/common/config/CameraSettingsConfig.smali b/com/oplus/camera/common/config/CameraSettingsConfig.smali
+--- a/com/oplus/camera/common/config/CameraSettingsConfig.smali
++++ b/com/oplus/camera/common/config/CameraSettingsConfig.smali
+@@ -30,9 +30,9 @@
+     .end annotation
+ .end field
+ 
+-.field private static sCameraSettingConfig:Lcom/oplus/camera/common/config/CameraSettingsConfig; = null
++.field private static sCameraSettingConfig:Lcom/oplus/camera/common/config/CameraSettingsConfig;
+ 
+-.field private static sbInit:Z = false
++.field private static sbInit:Z
+ 
+ 
+ # instance fields
+diff -ruN a/com/oplus/camera/common/utils/TestUtil.smali b/com/oplus/camera/common/utils/TestUtil.smali
+--- a/com/oplus/camera/common/utils/TestUtil.smali
++++ b/com/oplus/camera/common/utils/TestUtil.smali
+@@ -12,25 +12,25 @@
+ 
+ 
+ # static fields
+-.field public static a:Z = false
++.field public static a:Z
+ 
+-.field public static b:Z = false
++.field public static b:Z
+ 
+-.field public static c:Z = false
++.field public static c:Z
+ 
+-.field public static d:Z = false
++.field public static d:Z
+ 
+-.field public static e:Z = false
++.field public static e:Z
+ 
+-.field public static f:Z = false
++.field public static f:Z
+ 
+-.field public static g:Z = false
++.field public static g:Z
+ 
+-.field public static h:Z = false
++.field public static h:Z
+ 
+-.field public static i:Z = false
++.field public static i:Z
+ 
+-.field public static j:Z = false
++.field public static j:Z
+ 
+ .field public static k:I
+ 
+diff -ruN a/com/oplus/camera/common/view/ThumbnailImageTransitionView.smali b/com/oplus/camera/common/view/ThumbnailImageTransitionView.smali
+--- a/com/oplus/camera/common/view/ThumbnailImageTransitionView.smali
++++ b/com/oplus/camera/common/view/ThumbnailImageTransitionView.smali
+@@ -13,7 +13,7 @@
+ 
+ 
+ # static fields
+-.field public static v:Z = false
++.field public static v:Z
+ 
+ .field public static w:Landroid/text/TextPaint;
+ 
+diff -ruN a/com/oplus/camera/configure/CameraConfig.smali b/com/oplus/camera/configure/CameraConfig.smali
+--- a/com/oplus/camera/configure/CameraConfig.smali
++++ b/com/oplus/camera/configure/CameraConfig.smali
+@@ -6337,7 +6337,135 @@
+ .method public static w(Ljava/lang/String;Z)Ljava/lang/String;
+     .registers 4
+ 
++    if-eqz p0, :cond_7e
++
++    const-string v0, "com.oplus.feature.video.4k.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.8k.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.720p.60fps.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.1080p.60fps.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.4k.60fps.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.4g.720p.60fps.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.4g.1080p.60fps.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.8k.hevc.support.only"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.4k30fps.tele.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.4k60fps.tele.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.1080p60fps.tele.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.720p60fps.tele.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.video.4k60fps.ultrawide.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.master.video.24fps.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_7a
++
++    const-string v0, "com.oplus.feature.master.video.8k.support"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-eqz v1, :cond_7e
++
++    :cond_7a
++    const-string/jumbo v0, "true"
++
++    return-object v0
++
+     .line 1
++    :cond_7e
+     sget-object v0, Lcom/oplus/camera/configure/CameraConfig;->f:Ljava/util/concurrent/ConcurrentHashMap;
+ 
+     .line 2
+@@ -6350,7 +6478,7 @@
+     move-result v1
+ 
+     .line 7
+-    if-eqz v1, :cond_f
++    if-eqz v1, :cond_8d
+ 
+     .line 8
+     .line 9
+@@ -6369,7 +6497,7 @@
+     return-object p0
+ 
+     .line 16
+-    :cond_f
++    :cond_8d
+     invoke-static {p0, p1}, Lcom/oplus/camera/configure/CameraConfig;->b(Ljava/lang/String;Z)Ljava/lang/String;
+ 
+     .line 17
+diff -ruN a/com/oplus/camera/o3.smali b/com/oplus/camera/o3.smali
+--- a/com/oplus/camera/o3.smali
++++ b/com/oplus/camera/o3.smali
+@@ -161,7 +161,7 @@
+     new-instance v0, Ljava/lang/StringBuilder;
+ 
+     .line 87
+-    const-string v2, "setPanelState, "
++    const-string/jumbo v2, "setPanelState, "
+ 
+     .line 89
+     invoke-direct {v0, v2}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+@@ -180,7 +180,7 @@
+     return-object p0
+ 
+     .line 101
+-    :pswitch_65
++    :pswitch_66
+     check-cast p0, Lcom/oplus/camera/feature/under_water/view/c;
+ 
+     .line 103
+@@ -218,7 +218,7 @@
+     return-object p0
+ 
+     .line 131
+-    :pswitch_83
++    :pswitch_84
+     check-cast p0, Landroid/graphics/Bitmap;
+ 
+     .line 133
+@@ -253,7 +253,7 @@
+     return-object p0
+ 
+     .line 158
+-    :pswitch_9e
++    :pswitch_9f
+     check-cast p0, Lcom/oplus/camera/feature/out/screen/capture/MultiDisplayManager;
+ 
+     .line 160
+@@ -329,7 +329,7 @@
+     return-object p0
+ 
+     .line 219
+-    :pswitch_db
++    :pswitch_dc
+     check-cast p0, Lyc/d;
+ 
+     .line 221
+@@ -400,7 +400,7 @@
+     return-object p0
+ 
+     .line 276
+-    :pswitch_114
++    :pswitch_115
+     check-cast p0, Lvb/j3$f;
+ 
+     .line 278
+@@ -438,7 +438,7 @@
+     return-object p0
+ 
+     .line 305
+-    :pswitch_131
++    :pswitch_132
+     check-cast p0, Lcom/oplus/camera/Camera;
+ 
+     .line 307
+@@ -490,16 +490,14 @@
+ 
+     return-object p0
+ 
+-    nop
+-
+     :pswitch_data_15c
+     .packed-switch 0x0
+-        :pswitch_131
+-        :pswitch_114
+-        :pswitch_db
+-        :pswitch_9e
+-        :pswitch_83
+-        :pswitch_65
++        :pswitch_132
++        :pswitch_115
++        :pswitch_dc
++        :pswitch_9f
++        :pswitch_84
++        :pswitch_66
+         :pswitch_51
+         :pswitch_2b
+     .end packed-switch
+diff -ruN a/ha/c0.smali b/ha/c0.smali
+--- a/ha/c0.smali
++++ b/ha/c0.smali
+@@ -17,7 +17,7 @@
+ # static fields
+ .field public static final c:Ljava/lang/Object;
+ 
+-.field public static d:Z = false
++.field public static d:Z
+ 
+ 
+ # instance fields
+diff -ruN a/j9/a.smali b/j9/a.smali
+--- a/j9/a.smali
++++ b/j9/a.smali
+@@ -13,7 +13,7 @@
+ 
+ 
+ # static fields
+-.field public static volatile a:Z = false
++.field public static volatile a:Z
+ 
+ .field public static volatile b:[Ljava/util/Map;
+     .annotation system Ldalvik/annotation/Signature;
+diff -ruN a/k1/q0.smali b/k1/q0.smali
+--- a/k1/q0.smali
++++ b/k1/q0.smali
+@@ -12,9 +12,9 @@
+ 
+ .field public static final b:Lk1/q0;
+ 
+-.field public static c:Ljava/lang/reflect/Method; = null
++.field public static c:Ljava/lang/reflect/Method;
+ 
+-.field public static d:Z = false
++.field public static d:Z
+ 
+ 
+ # direct methods
+diff -ruN a/ka/b.smali b/ka/b.smali
+--- a/ka/b.smali
++++ b/ka/b.smali
+@@ -4,9 +4,9 @@
+ 
+ 
+ # static fields
+-.field public static a:I = 0x0
++.field public static a:I
+ 
+-.field public static b:Z = false
++.field public static b:Z
+ 
+ .field public static final c:Ljava/util/concurrent/ConcurrentHashMap;
+     .annotation system Ldalvik/annotation/Signature;
+diff -ruN a/ka/g3.smali b/ka/g3.smali
+--- a/ka/g3.smali
++++ b/ka/g3.smali
+@@ -4,13 +4,13 @@
+ 
+ 
+ # static fields
+-.field public static a:Z = false
++.field public static a:Z
+ 
+-.field public static b:Z = false
++.field public static b:Z
+ 
+-.field public static c:Z = false
++.field public static c:Z
+ 
+-.field public static d:Z = false
++.field public static d:Z
+ 
+ .field public static e:J
+ 
+diff -ruN a/ka/p3.smali b/ka/p3.smali
+--- a/ka/p3.smali
++++ b/ka/p3.smali
+@@ -6,19 +6,19 @@
+ # static fields
+ .field public static final a:Z
+ 
+-.field public static b:Z = false
++.field public static b:Z
+ 
+-.field public static c:Z = false
++.field public static c:Z
+ 
+-.field public static d:Z = false
++.field public static d:Z
+ 
+-.field public static e:Z = false
++.field public static e:Z
+ 
+-.field public static f:I = 0x0
++.field public static f:I
+ 
+-.field public static g:Z = false
++.field public static g:Z
+ 
+-.field public static h:Z = false
++.field public static h:Z
+ 
+ 
+ # direct methods
+diff -ruN a/ka/x0.smali b/ka/x0.smali
+--- a/ka/x0.smali
++++ b/ka/x0.smali
+@@ -4,11 +4,11 @@
+ 
+ 
+ # static fields
+-.field public static a:Ljava/lang/reflect/Method; = null
++.field public static a:Ljava/lang/reflect/Method;
+ 
+-.field public static b:J = 0x0L
++.field public static b:J
+ 
+-.field public static c:Z = false
++.field public static c:Z
+ 
+ .field public static final d:Ljava/util/HashMap;
+     .annotation system Ldalvik/annotation/Signature;
+diff -ruN a/t9/f.smali b/t9/f.smali
+--- a/t9/f.smali
++++ b/t9/f.smali
+@@ -12,7 +12,7 @@
+ 
+ 
+ # static fields
+-.field public static volatile a:Z = false
++.field public static volatile a:Z
+ 
+ .field public static volatile b:Lt9/f$a;
+ 

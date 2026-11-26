@@ -1,0 +1,6208 @@
+# Patch: services.jar (classes2.dex) HDR Level & Inline SDR Saturation controller
+--- a/com/android/server/display/color/ColorDisplayService.smali	2026-11-26 10:22:28.242477249 +0700
++++ b/com/android/server/display/color/ColorDisplayService.smali	2026-11-26 10:22:30.764540233 +0700
+@@ -96,6 +96,8 @@
+ 
+ .field final mHandler:Landroid/os/Handler;
+ 
++.field private mInlineSdrSaturation:Lcom/android/server/display/color/InlineSdrSaturationController;
++
+ .field private mNightDisplayAutoMode:Lcom/android/server/display/color/ColorDisplayService$NightDisplayAutoMode;
+ 
+ .field private final mNightDisplayTintController:Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+@@ -4516,7 +4518,16 @@
+ 
+     invoke-interface {v2, v3}, Lcom/android/server/display/color/IColorDisplayServiceExt;->onSetUp(I)V
+ 
++    iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mInlineSdrSaturation:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    if-eqz v2, :cond_179
++
++    iget v3, p0, Lcom/android/server/display/color/ColorDisplayService;->mCurrentUser:I
++
++    invoke-virtual {v2, v3}, Lcom/android/server/display/color/InlineSdrSaturationController;->setUp(I)V
++
+     .line 675
++    :cond_179
+     return-void
+ .end method
+ 
+@@ -4735,7 +4746,14 @@
+ .method private tearDown()V
+     .registers 4
+ 
++    iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mInlineSdrSaturation:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    if-eqz v0, :cond_7
++
++    invoke-virtual {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->tearDown()V
++
+     .line 712
++    :cond_7
+     new-instance v0, Ljava/lang/StringBuilder;
+ 
+     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+@@ -4775,7 +4793,7 @@
+     .line 717
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mContentObserver:Landroid/database/ContentObserver;
+ 
+-    if-eqz v0, :cond_38
++    if-eqz v0, :cond_3f
+ 
+     .line 718
+     invoke-virtual {p0}, Lcom/android/server/display/color/ColorDisplayService;->getContext()Landroid/content/Context;
+@@ -4791,7 +4809,7 @@
+     invoke-virtual {v0, v1}, Landroid/content/ContentResolver;->unregisterContentObserver(Landroid/database/ContentObserver;)V
+ 
+     .line 721
+-    :cond_38
++    :cond_3f
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mNightDisplayTintController:Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+ 
+     invoke-virtual {p0}, Lcom/android/server/display/color/ColorDisplayService;->getContext()Landroid/content/Context;
+@@ -4804,12 +4822,12 @@
+ 
+     const/4 v1, 0x0
+ 
+-    if-eqz v0, :cond_55
++    if-eqz v0, :cond_5c
+ 
+     .line 722
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mNightDisplayAutoMode:Lcom/android/server/display/color/ColorDisplayService$NightDisplayAutoMode;
+ 
+-    if-eqz v0, :cond_50
++    if-eqz v0, :cond_57
+ 
+     .line 723
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mNightDisplayAutoMode:Lcom/android/server/display/color/ColorDisplayService$NightDisplayAutoMode;
+@@ -4820,13 +4838,13 @@
+     iput-object v1, p0, Lcom/android/server/display/color/ColorDisplayService;->mNightDisplayAutoMode:Lcom/android/server/display/color/ColorDisplayService$NightDisplayAutoMode;
+ 
+     .line 726
+-    :cond_50
++    :cond_57
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mNightDisplayTintController:Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;
+ 
+     invoke-virtual {v0}, Lcom/android/server/display/color/ColorDisplayService$NightDisplayTintController;->endAnimator()V
+ 
+     .line 729
+-    :cond_55
++    :cond_5c
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mDisplayWhiteBalanceTintController:Lcom/android/server/display/color/DisplayWhiteBalanceTintController;
+ 
+     invoke-virtual {p0}, Lcom/android/server/display/color/ColorDisplayService;->getContext()Landroid/content/Context;
+@@ -4837,7 +4855,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_66
++    if-eqz v0, :cond_6d
+ 
+     .line 730
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mDisplayWhiteBalanceTintController:Lcom/android/server/display/color/DisplayWhiteBalanceTintController;
+@@ -4845,7 +4863,7 @@
+     invoke-virtual {v0}, Lcom/android/server/display/color/DisplayWhiteBalanceTintController;->endAnimator()V
+ 
+     .line 733
+-    :cond_66
++    :cond_6d
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mGlobalSaturationTintController:Lcom/android/server/display/color/TintController;
+ 
+     invoke-virtual {p0}, Lcom/android/server/display/color/ColorDisplayService;->getContext()Landroid/content/Context;
+@@ -4856,7 +4874,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_77
++    if-eqz v0, :cond_7e
+ 
+     .line 734
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mGlobalSaturationTintController:Lcom/android/server/display/color/TintController;
+@@ -4864,7 +4882,7 @@
+     invoke-virtual {v0, v1}, Lcom/android/server/display/color/TintController;->setActivated(Ljava/lang/Boolean;)V
+ 
+     .line 737
+-    :cond_77
++    :cond_7e
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mReduceBrightColorsTintController:Lcom/android/server/display/color/ReduceBrightColorsTintController;
+ 
+     invoke-virtual {p0}, Lcom/android/server/display/color/ColorDisplayService;->getContext()Landroid/content/Context;
+@@ -4875,7 +4893,7 @@
+ 
+     move-result v0
+ 
+-    if-eqz v0, :cond_88
++    if-eqz v0, :cond_8f
+ 
+     .line 738
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mReduceBrightColorsTintController:Lcom/android/server/display/color/ReduceBrightColorsTintController;
+@@ -4883,7 +4901,7 @@
+     invoke-virtual {v0, v1}, Lcom/android/server/display/color/ReduceBrightColorsTintController;->setActivated(Ljava/lang/Boolean;)V
+ 
+     .line 743
+-    :cond_88
++    :cond_8f
+     iget-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mCdsExt:Lcom/android/server/display/color/IColorDisplayServiceExt;
+ 
+     invoke-interface {v0}, Lcom/android/server/display/color/IColorDisplayServiceExt;->onTearDown()V
+@@ -5131,7 +5149,7 @@
+ .end method
+ 
+ .method public onStart()V
+-    .registers 3
++    .registers 4
+ 
+     .line 278
+     new-instance v0, Lcom/android/server/display/color/ColorDisplayService$BinderService;
+@@ -5160,6 +5178,18 @@
+ 
+     invoke-virtual {p0, v0, v1}, Lcom/android/server/display/color/ColorDisplayService;->publishLocalService(Ljava/lang/Class;Ljava/lang/Object;)V
+ 
++    new-instance v0, Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    invoke-virtual {p0}, Lcom/android/server/display/color/ColorDisplayService;->getContext()Landroid/content/Context;
++
++    move-result-object v1
++
++    iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mHandler:Landroid/os/Handler;
++
++    invoke-direct {v0, v1, v2}, Lcom/android/server/display/color/InlineSdrSaturationController;-><init>(Landroid/content/Context;Landroid/os/Handler;)V
++
++    iput-object v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mInlineSdrSaturation:Lcom/android/server/display/color/InlineSdrSaturationController;
++
+     .line 281
+     return-void
+ .end method
+@@ -5221,6 +5251,13 @@
+ 
+     .line 357
+     :cond_31
++    iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mInlineSdrSaturation:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    if-eqz v2, :cond_38
++
++    invoke-virtual {v2}, Lcom/android/server/display/color/InlineSdrSaturationController;->tearDown()V
++
++    :cond_38
+     invoke-virtual {p0}, Lcom/android/server/display/color/ColorDisplayService;->getContext()Landroid/content/Context;
+ 
+     move-result-object v1
+@@ -5233,12 +5270,12 @@
+     .local v1, "cr":Landroid/content/ContentResolver;
+     iget v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mCurrentUser:I
+ 
+-    if-eq v2, v0, :cond_51
++    if-eq v2, v0, :cond_58
+ 
+     .line 360
+     iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mUserSetupObserver:Landroid/database/ContentObserver;
+ 
+-    if-eqz v2, :cond_4a
++    if-eqz v2, :cond_51
+ 
+     .line 361
+     iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mUserSetupObserver:Landroid/database/ContentObserver;
+@@ -5250,26 +5287,26 @@
+ 
+     iput-object v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mUserSetupObserver:Landroid/database/ContentObserver;
+ 
+-    goto :goto_51
++    goto :goto_58
+ 
+     .line 363
+-    :cond_4a
++    :cond_51
+     iget-boolean v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mBootCompleted:Z
+ 
+-    if-eqz v2, :cond_51
++    if-eqz v2, :cond_58
+ 
+     .line 364
+     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService;->tearDown()V
+ 
+     .line 368
+-    :cond_51
+-    :goto_51
++    :cond_58
++    :goto_58
+     iput p1, p0, Lcom/android/server/display/color/ColorDisplayService;->mCurrentUser:I
+ 
+     .line 370
+     iget v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mCurrentUser:I
+ 
+-    if-eq v2, v0, :cond_b1
++    if-eq v2, v0, :cond_b8
+ 
+     .line 373
+     const/4 v0, 0x0
+@@ -5286,14 +5323,14 @@
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_aa
++    if-nez v2, :cond_b1
+ 
+     .line 376
+     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService;->isColorInversionInSetupWizardEnabled()Z
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_73
++    if-eqz v2, :cond_7a
+ 
+     .line 377
+     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService;->createContentObserver()V
+@@ -5305,12 +5342,12 @@
+     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService;->onAccessibilityInversionChanged()V
+ 
+     .line 381
+-    :cond_73
++    :cond_7a
+     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService;->isColorDaltonizerInSetupWizardEnabled()Z
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_82
++    if-eqz v2, :cond_89
+ 
+     .line 382
+     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService;->createContentObserver()V
+@@ -5322,14 +5359,14 @@
+     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService;->onAccessibilityDaltonizerChanged()V
+ 
+     .line 388
+-    :cond_82
++    :cond_89
+     iget-object v2, p0, Lcom/android/server/display/color/ColorDisplayService;->mCdsExt:Lcom/android/server/display/color/IColorDisplayServiceExt;
+ 
+     invoke-interface {v2}, Lcom/android/server/display/color/IColorDisplayServiceExt;->isSupportSetUp()Z
+ 
+     move-result v2
+ 
+-    if-nez v2, :cond_a2
++    if-nez v2, :cond_a9
+ 
+     .line 390
+     new-instance v2, Lcom/android/server/display/color/ColorDisplayService$1;
+@@ -5353,31 +5390,31 @@
+ 
+     invoke-virtual {v1, v2, v0, v3, v4}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
+ 
+-    goto :goto_b1
++    goto :goto_b8
+ 
+     .line 415
+-    :cond_a2
++    :cond_a9
+     iget-boolean v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mBootCompleted:Z
+ 
+-    if-eqz v0, :cond_b1
++    if-eqz v0, :cond_b8
+ 
+     .line 416
+     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService;->setUp()V
+ 
+-    goto :goto_b1
++    goto :goto_b8
+ 
+     .line 419
+-    :cond_aa
++    :cond_b1
+     iget-boolean v0, p0, Lcom/android/server/display/color/ColorDisplayService;->mBootCompleted:Z
+ 
+-    if-eqz v0, :cond_b1
++    if-eqz v0, :cond_b8
+ 
+     .line 420
+     invoke-direct {p0}, Lcom/android/server/display/color/ColorDisplayService;->setUp()V
+ 
+     .line 423
+-    :cond_b1
+-    :goto_b1
++    :cond_b8
++    :goto_b8
+     return-void
+ .end method
+ 
+
+--- a/com/android/server/display/color/DisplayTransformManager.smali	2026-11-26 10:22:28.215385089 +0700
++++ b/com/android/server/display/color/DisplayTransformManager.smali	2026-11-26 10:22:30.734385447 +0700
+@@ -77,6 +77,8 @@
+ 
+ .field final mDaltonizerModeLock:Ljava/lang/Object;
+ 
++.field private mInlineSdrOwnedTransport:Lcom/android/server/display/color/InlineSdrOwnedTransport;
++
+ .field private final mTempColorMatrix:[[F
+ 
+ .field public mWrapper:Lcom/android/server/display/color/IDisplayTransformManagerWrapper;
+@@ -1068,6 +1070,63 @@
+ 
+ 
+ # virtual methods
++.method public applyInlineSdrMatrix([FLcom/android/server/display/color/InlineSdrIngress;)Z
++    .registers 9
++
++    iget-object v0, p0, Lcom/android/server/display/color/DisplayTransformManager;->mColorMatrix:Landroid/util/SparseArray;
++
++    monitor-enter v0
++
++    :try_start_3
++    iget-object v1, p0, Lcom/android/server/display/color/DisplayTransformManager;->mInlineSdrOwnedTransport:Lcom/android/server/display/color/InlineSdrOwnedTransport;
++
++    if-nez v1, :cond_e
++
++    new-instance v1, Lcom/android/server/display/color/InlineSdrOwnedTransport;
++
++    invoke-direct {v1}, Lcom/android/server/display/color/InlineSdrOwnedTransport;-><init>()V
++
++    iput-object v1, p0, Lcom/android/server/display/color/DisplayTransformManager;->mInlineSdrOwnedTransport:Lcom/android/server/display/color/InlineSdrOwnedTransport;
++
++    :cond_e
++    move-object v2, p0
++
++    move-object v3, v0
++
++    sget-object v4, Lcom/android/server/display/color/DisplayTransformManager;->mDtmExt:Lcom/android/server/display/IDisplayTransformManagerExt;
++
++    move-object v5, p1
++
++    move-object p0, p2
++
++    invoke-virtual/range {v1 .. v6}, Lcom/android/server/display/color/InlineSdrOwnedTransport;->apply(Lcom/android/server/display/color/DisplayTransformManager;Landroid/util/SparseArray;Lcom/android/server/display/IDisplayTransformManagerExt;[FLcom/android/server/display/color/InlineSdrIngress;)Z
++
++    move-result v1
++
++    monitor-exit v0
++    :try_end_19
++    .catchall {:try_start_3 .. :try_end_19} :catchall_1a
++
++    return v1
++
++    :catchall_1a
++    move-exception v1
++
++    monitor-exit v0
++
++    throw v1
++.end method
++
++.method composeInlineSdrMatrix()[F
++    .registers 2
++
++    invoke-direct {p0}, Lcom/android/server/display/color/DisplayTransformManager;->computeColorMatrixLocked()[F
++
++    move-result-object v0
++
++    return-object v0
++.end method
++
+ .method public getColorMatrix(I)[F
+     .registers 5
+     .param p1, "key"    # I
+@@ -1222,6 +1281,42 @@
+     throw v2
+ .end method
+ 
++.method public isInlineSdrNeutralPending()Z
++    .registers 3
++
++    iget-object v0, p0, Lcom/android/server/display/color/DisplayTransformManager;->mColorMatrix:Landroid/util/SparseArray;
++
++    monitor-enter v0
++
++    :try_start_3
++    iget-object v1, p0, Lcom/android/server/display/color/DisplayTransformManager;->mInlineSdrOwnedTransport:Lcom/android/server/display/color/InlineSdrOwnedTransport;
++
++    if-eqz v1, :cond_c
++
++    invoke-virtual {v1}, Lcom/android/server/display/color/InlineSdrOwnedTransport;->pending()Z
++
++    move-result v1
++
++    goto :goto_d
++
++    :cond_c
++    const/4 v1, 0x0
++
++    :goto_d
++    monitor-exit v0
++    :try_end_e
++    .catchall {:try_start_3 .. :try_end_e} :catchall_f
++
++    return v1
++
++    :catchall_f
++    move-exception v1
++
++    monitor-exit v0
++
++    throw v1
++.end method
++
+ .method public needsLinearColorMatrix()Z
+     .registers 3
+ 
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrIngress$1.smali	2026-11-26 10:22:30.726441978 +0700
+@@ -0,0 +1,14 @@
++.class synthetic Lcom/android/server/display/color/InlineSdrIngress$1;
++.super Ljava/lang/Object;
++.source "InlineSdrIngress.java"
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingClass;
++    value = Lcom/android/server/display/color/InlineSdrIngress;
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x1008
++    name = null
++.end annotation
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrIngress$State.smali	2026-11-26 10:22:30.726716882 +0700
+@@ -0,0 +1,47 @@
++.class final Lcom/android/server/display/color/InlineSdrIngress$State;
++.super Ljava/lang/Object;
++.source "InlineSdrIngress.java"
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingClass;
++    value = Lcom/android/server/display/color/InlineSdrIngress;
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x1a
++    name = "State"
++.end annotation
++
++
++# instance fields
++.field count:I
++
++.field latest:J
++
++.field queued:Z
++
++
++# direct methods
++.method private constructor <init>()V
++    .registers 2
++
++    .line 19
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    .line 21
++    const/4 v0, 0x0
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrIngress$State;->count:I
++
++    return-void
++.end method
++
++.method synthetic constructor <init>(Lcom/android/server/display/color/InlineSdrIngress$1;)V
++    .registers 2
++
++    .line 19
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrIngress$State;-><init>()V
++
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrIngress.smali	2026-11-26 10:22:30.729030537 +0700
+@@ -0,0 +1,578 @@
++.class public final Lcom/android/server/display/color/InlineSdrIngress;
++.super Ljava/lang/Object;
++.source "InlineSdrIngress.java"
++
++
++# annotations
++.annotation system Ldalvik/annotation/MemberClasses;
++    value = {
++        Lcom/android/server/display/color/InlineSdrIngress$State;
++    }
++.end annotation
++
++
++# instance fields
++.field private final admitting:Ljava/util/concurrent/atomic/AtomicInteger;
++
++.field private final arrivals:Ljava/util/concurrent/atomic/AtomicLong;
++
++.field private consumedSerial:J
++
++.field private volatile epoch:J
++
++.field private neutralAccepted:J
++
++.field private neutralRequired:J
++
++.field private final states:Ljava/util/HashMap;
++    .annotation system Ldalvik/annotation/Signature;
++        value = {
++            "Ljava/util/HashMap<",
++            "Ljava/lang/Object;",
++            "Lcom/android/server/display/color/InlineSdrIngress$State;",
++            ">;"
++        }
++    .end annotation
++.end field
++
++
++# direct methods
++.method public constructor <init>()V
++    .registers 2
++
++    .line 11
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    .line 12
++    new-instance v0, Ljava/util/concurrent/atomic/AtomicLong;
++
++    invoke-direct {v0}, Ljava/util/concurrent/atomic/AtomicLong;-><init>()V
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->arrivals:Ljava/util/concurrent/atomic/AtomicLong;
++
++    .line 13
++    new-instance v0, Ljava/util/concurrent/atomic/AtomicInteger;
++
++    invoke-direct {v0}, Ljava/util/concurrent/atomic/AtomicInteger;-><init>()V
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->admitting:Ljava/util/concurrent/atomic/AtomicInteger;
++
++    .line 14
++    new-instance v0, Ljava/util/HashMap;
++
++    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->states:Ljava/util/HashMap;
++
++    return-void
++.end method
++
++
++# virtual methods
++.method public declared-synchronized acknowledgeNeutral(J)V
++    .registers 5
++
++    monitor-enter p0
++
++    .line 69
++    :try_start_1
++    iget-wide v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->neutralAccepted:J
++
++    invoke-static {v0, v1, p1, p2}, Ljava/lang/Math;->max(JJ)J
++
++    move-result-wide p1
++
++    iput-wide p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->neutralAccepted:J
++    :try_end_9
++    .catchall {:try_start_1 .. :try_end_9} :catchall_b
++
++    .line 70
++    monitor-exit p0
++
++    return-void
++
++    .line 68
++    :catchall_b
++    move-exception p1
++
++    :try_start_c
++    monitor-exit p0
++    :try_end_d
++    .catchall {:try_start_c .. :try_end_d} :catchall_b
++
++    throw p1
++.end method
++
++.method public declared-synchronized allowsWrite()Z
++    .registers 7
++
++    monitor-enter p0
++
++    .line 62
++    :try_start_1
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->states:Ljava/util/HashMap;
++
++    invoke-virtual {v0}, Ljava/util/HashMap;->isEmpty()Z
++
++    move-result v0
++
++    const/4 v1, 0x0
++
++    if-nez v0, :cond_4a
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->admitting:Ljava/util/concurrent/atomic/AtomicInteger;
++
++    invoke-virtual {v0}, Ljava/util/concurrent/atomic/AtomicInteger;->get()I
++
++    move-result v0
++
++    if-nez v0, :cond_4a
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->arrivals:Ljava/util/concurrent/atomic/AtomicLong;
++
++    invoke-virtual {v0}, Ljava/util/concurrent/atomic/AtomicLong;->get()J
++
++    move-result-wide v2
++
++    iget-wide v4, p0, Lcom/android/server/display/color/InlineSdrIngress;->consumedSerial:J
++
++    cmp-long v0, v2, v4
++
++    if-nez v0, :cond_4a
++
++    iget-wide v2, p0, Lcom/android/server/display/color/InlineSdrIngress;->neutralAccepted:J
++
++    iget-wide v4, p0, Lcom/android/server/display/color/InlineSdrIngress;->neutralRequired:J
++
++    cmp-long v0, v2, v4
++
++    if-gez v0, :cond_27
++
++    goto :goto_4a
++
++    .line 64
++    :cond_27
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->states:Ljava/util/HashMap;
++
++    invoke-virtual {v0}, Ljava/util/HashMap;->values()Ljava/util/Collection;
++
++    move-result-object v0
++
++    invoke-interface {v0}, Ljava/util/Collection;->iterator()Ljava/util/Iterator;
++
++    move-result-object v0
++
++    :cond_31
++    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
++
++    move-result v2
++
++    if-eqz v2, :cond_47
++
++    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
++
++    move-result-object v2
++
++    check-cast v2, Lcom/android/server/display/color/InlineSdrIngress$State;
++
++    iget-boolean v3, v2, Lcom/android/server/display/color/InlineSdrIngress$State;->queued:Z
++
++    if-nez v3, :cond_45
++
++    iget v2, v2, Lcom/android/server/display/color/InlineSdrIngress$State;->count:I
++    :try_end_43
++    .catchall {:try_start_1 .. :try_end_43} :catchall_4c
++
++    if-eqz v2, :cond_31
++
++    :cond_45
++    monitor-exit p0
++
++    return v1
++
++    .line 65
++    :cond_47
++    monitor-exit p0
++
++    const/4 v0, 0x1
++
++    return v0
++
++    .line 63
++    :cond_4a
++    :goto_4a
++    monitor-exit p0
++
++    return v1
++
++    .line 61
++    :catchall_4c
++    move-exception v0
++
++    :try_start_4d
++    monitor-exit p0
++    :try_end_4e
++    .catchall {:try_start_4d .. :try_end_4e} :catchall_4c
++
++    throw v0
++.end method
++
++.method public declared-synchronized consume(JLjava/lang/Object;JI)Z
++    .registers 9
++
++    monitor-enter p0
++
++    .line 53
++    :try_start_1
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->states:Ljava/util/HashMap;
++
++    invoke-virtual {v0, p3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
++
++    move-result-object p3
++
++    check-cast p3, Lcom/android/server/display/color/InlineSdrIngress$State;
++
++    .line 54
++    iget-wide v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->epoch:J
++
++    cmp-long p1, p1, v0
++
++    const/4 p2, 0x0
++
++    if-nez p1, :cond_28
++
++    if-eqz p3, :cond_28
++
++    iget-wide v0, p3, Lcom/android/server/display/color/InlineSdrIngress$State;->latest:J
++
++    cmp-long p1, p4, v0
++
++    if-eqz p1, :cond_19
++
++    goto :goto_28
++
++    .line 55
++    :cond_19
++    iput p6, p3, Lcom/android/server/display/color/InlineSdrIngress$State;->count:I
++
++    .line 56
++    iput-boolean p2, p3, Lcom/android/server/display/color/InlineSdrIngress$State;->queued:Z
++
++    .line 57
++    iget-wide p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->consumedSerial:J
++
++    invoke-static {p1, p2, p4, p5}, Ljava/lang/Math;->max(JJ)J
++
++    move-result-wide p1
++
++    iput-wide p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->consumedSerial:J
++    :try_end_25
++    .catchall {:try_start_1 .. :try_end_25} :catchall_2a
++
++    .line 58
++    monitor-exit p0
++
++    const/4 p1, 0x1
++
++    return p1
++
++    .line 54
++    :cond_28
++    :goto_28
++    monitor-exit p0
++
++    return p2
++
++    .line 52
++    :catchall_2a
++    move-exception p1
++
++    :try_start_2b
++    monitor-exit p0
++    :try_end_2c
++    .catchall {:try_start_2b .. :try_end_2c} :catchall_2a
++
++    throw p1
++.end method
++
++.method public enter(JLjava/lang/Object;I)J
++    .registers 12
++
++    .line 34
++    iget-wide v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->epoch:J
++
++    cmp-long v0, p1, v0
++
++    const-wide/16 v1, -0x1
++
++    if-eqz v0, :cond_9
++
++    return-wide v1
++
++    .line 37
++    :cond_9
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->admitting:Ljava/util/concurrent/atomic/AtomicInteger;
++
++    invoke-virtual {v0}, Ljava/util/concurrent/atomic/AtomicInteger;->incrementAndGet()I
++
++    .line 38
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->arrivals:Ljava/util/concurrent/atomic/AtomicLong;
++
++    invoke-virtual {v0}, Ljava/util/concurrent/atomic/AtomicLong;->incrementAndGet()J
++
++    move-result-wide v3
++
++    .line 39
++    monitor-enter p0
++
++    .line 41
++    :try_start_15
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->states:Ljava/util/HashMap;
++
++    invoke-virtual {v0, p3}, Ljava/util/HashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
++
++    move-result-object p3
++
++    check-cast p3, Lcom/android/server/display/color/InlineSdrIngress$State;
++
++    .line 42
++    iget-wide v5, p0, Lcom/android/server/display/color/InlineSdrIngress;->epoch:J
++
++    cmp-long p1, p1, v5
++
++    if-nez p1, :cond_43
++
++    if-nez p3, :cond_26
++
++    goto :goto_43
++
++    .line 43
++    :cond_26
++    iget-wide p1, p3, Lcom/android/server/display/color/InlineSdrIngress$State;->latest:J
++
++    cmp-long p1, v3, p1
++
++    if-lez p1, :cond_31
++
++    .line 44
++    iput-wide v3, p3, Lcom/android/server/display/color/InlineSdrIngress$State;->latest:J
++
++    .line 45
++    const/4 p1, 0x1
++
++    iput-boolean p1, p3, Lcom/android/server/display/color/InlineSdrIngress$State;->queued:Z
++
++    .line 47
++    :cond_31
++    if-eqz p4, :cond_3b
++
++    iget-wide p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->neutralRequired:J
++
++    invoke-static {p1, p2, v3, v4}, Ljava/lang/Math;->max(JJ)J
++
++    move-result-wide p1
++
++    iput-wide p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->neutralRequired:J
++    :try_end_3b
++    .catchall {:try_start_15 .. :try_end_3b} :catchall_4a
++
++    .line 48
++    :cond_3b
++    nop
++
++    .line 49
++    :try_start_3c
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->admitting:Ljava/util/concurrent/atomic/AtomicInteger;
++
++    invoke-virtual {p1}, Ljava/util/concurrent/atomic/AtomicInteger;->decrementAndGet()I
++
++    monitor-exit p0
++
++    .line 48
++    return-wide v3
++
++    .line 49
++    :cond_43
++    :goto_43
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->admitting:Ljava/util/concurrent/atomic/AtomicInteger;
++
++    invoke-virtual {p1}, Ljava/util/concurrent/atomic/AtomicInteger;->decrementAndGet()I
++
++    monitor-exit p0
++
++    .line 42
++    return-wide v1
++
++    .line 49
++    :catchall_4a
++    move-exception p1
++
++    iget-object p2, p0, Lcom/android/server/display/color/InlineSdrIngress;->admitting:Ljava/util/concurrent/atomic/AtomicInteger;
++
++    invoke-virtual {p2}, Ljava/util/concurrent/atomic/AtomicInteger;->decrementAndGet()I
++
++    throw p1
++
++    .line 50
++    :catchall_51
++    move-exception p1
++
++    monitor-exit p0
++    :try_end_53
++    .catchall {:try_start_3c .. :try_end_53} :catchall_51
++
++    throw p1
++.end method
++
++.method public declared-synchronized needsNeutral()Z
++    .registers 5
++
++    monitor-enter p0
++
++    .line 71
++    :try_start_1
++    iget-wide v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->neutralAccepted:J
++
++    iget-wide v2, p0, Lcom/android/server/display/color/InlineSdrIngress;->neutralRequired:J
++    :try_end_5
++    .catchall {:try_start_1 .. :try_end_5} :catchall_e
++
++    cmp-long v0, v0, v2
++
++    if-gez v0, :cond_b
++
++    const/4 v0, 0x1
++
++    goto :goto_c
++
++    :cond_b
++    const/4 v0, 0x0
++
++    :goto_c
++    monitor-exit p0
++
++    return v0
++
++    .line 71
++    :catchall_e
++    move-exception v0
++
++    :try_start_f
++    monitor-exit p0
++    :try_end_10
++    .catchall {:try_start_f .. :try_end_10} :catchall_e
++
++    throw v0
++.end method
++
++.method public declared-synchronized neutralTicket()J
++    .registers 3
++
++    monitor-enter p0
++
++    .line 67
++    :try_start_1
++    iget-wide v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->neutralRequired:J
++    :try_end_3
++    .catchall {:try_start_1 .. :try_end_3} :catchall_5
++
++    monitor-exit p0
++
++    return-wide v0
++
++    .line 67
++    :catchall_5
++    move-exception v0
++
++    :try_start_6
++    monitor-exit p0
++    :try_end_7
++    .catchall {:try_start_6 .. :try_end_7} :catchall_5
++
++    throw v0
++.end method
++
++.method public declared-synchronized register(JLjava/lang/Object;)V
++    .registers 6
++
++    monitor-enter p0
++
++    .line 31
++    :try_start_1
++    iget-wide v0, p0, Lcom/android/server/display/color/InlineSdrIngress;->epoch:J
++
++    cmp-long p1, p1, v0
++
++    if-nez p1, :cond_12
++
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->states:Ljava/util/HashMap;
++
++    new-instance p2, Lcom/android/server/display/color/InlineSdrIngress$State;
++
++    const/4 v0, 0x0
++
++    invoke-direct {p2, v0}, Lcom/android/server/display/color/InlineSdrIngress$State;-><init>(Lcom/android/server/display/color/InlineSdrIngress$1;)V
++
++    invoke-virtual {p1, p3, p2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
++    :try_end_12
++    .catchall {:try_start_1 .. :try_end_12} :catchall_14
++
++    .line 32
++    :cond_12
++    monitor-exit p0
++
++    return-void
++
++    .line 30
++    :catchall_14
++    move-exception p1
++
++    :try_start_15
++    monitor-exit p0
++    :try_end_16
++    .catchall {:try_start_15 .. :try_end_16} :catchall_14
++
++    throw p1
++.end method
++
++.method public declared-synchronized reset(J)V
++    .registers 3
++
++    monitor-enter p0
++
++    .line 25
++    :try_start_1
++    iput-wide p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->epoch:J
++
++    .line 26
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->states:Ljava/util/HashMap;
++
++    invoke-virtual {p1}, Ljava/util/HashMap;->clear()V
++
++    .line 27
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->arrivals:Ljava/util/concurrent/atomic/AtomicLong;
++
++    invoke-virtual {p1}, Ljava/util/concurrent/atomic/AtomicLong;->get()J
++
++    move-result-wide p1
++
++    iput-wide p1, p0, Lcom/android/server/display/color/InlineSdrIngress;->consumedSerial:J
++    :try_end_10
++    .catchall {:try_start_1 .. :try_end_10} :catchall_12
++
++    .line 29
++    monitor-exit p0
++
++    return-void
++
++    .line 24
++    :catchall_12
++    move-exception p1
++
++    :try_start_13
++    monitor-exit p0
++    :try_end_14
++    .catchall {:try_start_13 .. :try_end_14} :catchall_12
++
++    throw p1
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrOwnedTransport.smali	2026-11-26 10:22:30.730385447 +0700
+@@ -0,0 +1,703 @@
++.class public final Lcom/android/server/display/color/InlineSdrOwnedTransport;
++.super Ljava/lang/Object;
++.source "InlineSdrOwnedTransport.java"
++
++
++# instance fields
++.field private acceptedTransport:Landroid/os/IBinder;
++
++.field private acceptedValue:[F
++
++.field private everAttempted:Z
++
++.field private mayHaveTint:Z
++
++.field private neutralPending:Z
++
++
++# direct methods
++.method public constructor <init>()V
++    .registers 1
++
++    .line 15
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++.method private send([FLcom/android/server/display/IDisplayTransformManagerExt;Landroid/os/IBinder;Lcom/android/server/display/color/InlineSdrIngress;)Z
++    .registers 12
++
++    .line 81
++    const-string v0, "SurfaceFlinger"
++
++    .line 83
++    const/4 v1, 0x0
++
++    if-eqz p3, :cond_8a
++
++    const/4 v2, 0x0
++
++    :try_start_6
++    invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
++
++    move-result-object v3
++
++    if-ne p3, v3, :cond_8a
++
++    .line 84
++    invoke-interface {p3}, Landroid/os/IBinder;->isBinderAlive()Z
++
++    move-result v3
++
++    if-nez v3, :cond_14
++
++    goto/16 :goto_8a
++
++    .line 85
++    :cond_14
++    const/16 v3, 0x10
++
++    if-nez p1, :cond_1e
++
++    new-array p1, v3, [F
++
++    fill-array-data p1, :array_8e
++
++    goto :goto_24
++
++    .line 87
++    :cond_1e
++    invoke-virtual {p1}, [F->clone()Ljava/lang/Object;
++
++    move-result-object p1
++
++    check-cast p1, [F
++
++    .line 90
++    :goto_24
++    if-eqz p2, :cond_29
++
++    invoke-interface {p2, p1}, Lcom/android/server/display/IDisplayTransformManagerExt;->changeMatrix([F)V
++
++    .line 91
++    :cond_29
++    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
++
++    move-result-object p2
++    :try_end_2d
++    .catch Ljava/lang/Exception; {:try_start_6 .. :try_end_2d} :catch_74
++    .catch Ljava/lang/LinkageError; {:try_start_6 .. :try_end_2d} :catch_74
++    .catchall {:try_start_6 .. :try_end_2d} :catchall_72
++
++    .line 92
++    :try_start_2d
++    const-string v4, "android.ui.ISurfaceComposer"
++
++    invoke-virtual {p2, v4}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
++
++    .line 93
++    const/4 v4, 0x1
++
++    invoke-virtual {p2, v4}, Landroid/os/Parcel;->writeInt(I)V
++
++    .line 94
++    move v5, v1
++
++    :goto_37
++    if-ge v5, v3, :cond_41
++
++    aget v6, p1, v5
++
++    invoke-virtual {p2, v6}, Landroid/os/Parcel;->writeFloat(F)V
++
++    add-int/lit8 v5, v5, 0x1
++
++    goto :goto_37
++
++    .line 98
++    :cond_41
++    if-eqz p4, :cond_4f
++
++    invoke-virtual {p4}, Lcom/android/server/display/color/InlineSdrIngress;->allowsWrite()Z
++
++    move-result p1
++    :try_end_47
++    .catch Ljava/lang/Exception; {:try_start_2d .. :try_end_47} :catch_6f
++    .catch Ljava/lang/LinkageError; {:try_start_2d .. :try_end_47} :catch_6f
++    .catchall {:try_start_2d .. :try_end_47} :catchall_6c
++
++    if-nez p1, :cond_4f
++
++    .line 106
++    if-eqz p2, :cond_4e
++
++    invoke-virtual {p2}, Landroid/os/Parcel;->recycle()V
++
++    .line 98
++    :cond_4e
++    return v1
++
++    .line 99
++    :cond_4f
++    const/16 p1, 0x3f7
++
++    :try_start_51
++    invoke-interface {p3, p1, p2, v2, v1}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
++
++    move-result p1
++
++    .line 100
++    if-eqz p1, :cond_65
++
++    invoke-static {v0}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
++
++    move-result-object p1
++
++    if-ne p3, p1, :cond_65
++
++    .line 101
++    invoke-interface {p3}, Landroid/os/IBinder;->isBinderAlive()Z
++
++    move-result p1
++    :try_end_61
++    .catch Ljava/lang/Exception; {:try_start_51 .. :try_end_61} :catch_6f
++    .catch Ljava/lang/LinkageError; {:try_start_51 .. :try_end_61} :catch_6f
++    .catchall {:try_start_51 .. :try_end_61} :catchall_6c
++
++    if-eqz p1, :cond_65
++
++    move v1, v4
++
++    goto :goto_66
++
++    :cond_65
++    nop
++
++    .line 106
++    :goto_66
++    if-eqz p2, :cond_6b
++
++    invoke-virtual {p2}, Landroid/os/Parcel;->recycle()V
++
++    .line 100
++    :cond_6b
++    return v1
++
++    .line 106
++    :catchall_6c
++    move-exception p1
++
++    move-object v2, p2
++
++    goto :goto_84
++
++    .line 102
++    :catch_6f
++    move-exception p1
++
++    move-object v2, p2
++
++    goto :goto_75
++
++    .line 106
++    :catchall_72
++    move-exception p1
++
++    goto :goto_84
++
++    .line 102
++    :catch_74
++    move-exception p1
++
++    .line 103
++    :goto_75
++    :try_start_75
++    const-string p2, "InlineSdrOwnedTransport"
++
++    const-string/jumbo p3, "transport/composition not accepted; debt retained"
++
++    invoke-static {p2, p3, p1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++    :try_end_7d
++    .catchall {:try_start_75 .. :try_end_7d} :catchall_72
++
++    .line 104
++    nop
++
++    .line 106
++    if-eqz v2, :cond_83
++
++    invoke-virtual {v2}, Landroid/os/Parcel;->recycle()V
++
++    .line 104
++    :cond_83
++    return v1
++
++    .line 106
++    :goto_84
++    if-eqz v2, :cond_89
++
++    invoke-virtual {v2}, Landroid/os/Parcel;->recycle()V
++
++    .line 107
++    :cond_89
++    throw p1
++
++    .line 84
++    :cond_8a
++    :goto_8a
++    nop
++
++    .line 106
++    nop
++
++    .line 84
++    return v1
++
++    nop
++
++    :array_8e
++    .array-data 4
++        0x3f800000    # 1.0f
++        0x0
++        0x0
++        0x0
++        0x0
++        0x3f800000    # 1.0f
++        0x0
++        0x0
++        0x0
++        0x0
++        0x3f800000    # 1.0f
++        0x0
++        0x0
++        0x0
++        0x0
++        0x3f800000    # 1.0f
++    .end array-data
++.end method
++
++
++# virtual methods
++.method public apply(Lcom/android/server/display/color/DisplayTransformManager;Landroid/util/SparseArray;Lcom/android/server/display/IDisplayTransformManagerExt;[FLcom/android/server/display/color/InlineSdrIngress;)Z
++    .registers 15
++    .annotation system Ldalvik/annotation/Signature;
++        value = {
++            "(",
++            "Lcom/android/server/display/color/DisplayTransformManager;",
++            "Landroid/util/SparseArray<",
++            "[F>;",
++            "Lcom/android/server/display/IDisplayTransformManagerExt;",
++            "[F",
++            "Lcom/android/server/display/color/InlineSdrIngress;",
++            ")Z"
++        }
++    .end annotation
++
++    .line 25
++    move-object v0, p4
++
++    if-eqz v0, :cond_11
++
++    array-length v1, v0
++
++    const/16 v2, 0x10
++
++    if-ne v1, v2, :cond_9
++
++    goto :goto_11
++
++    :cond_9
++    new-instance p1, Ljava/lang/IllegalArgumentException;
++
++    const-string p2, "16 floats required"
++
++    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
++
++    throw p1
++
++    .line 28
++    :cond_11
++    :goto_11
++    const/16 v1, 0x97
++
++    const/4 v2, 0x1
++
++    if-nez v0, :cond_22
++
++    iget-boolean v3, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->mayHaveTint:Z
++
++    if-nez v3, :cond_20
++
++    invoke-virtual {p2, v1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
++
++    move-result-object v3
++
++    if-eqz v3, :cond_22
++
++    :cond_20
++    iput-boolean v2, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    .line 29
++    :cond_22
++    if-eqz p5, :cond_2c
++
++    invoke-virtual {p5}, Lcom/android/server/display/color/InlineSdrIngress;->needsNeutral()Z
++
++    move-result v3
++
++    if-eqz v3, :cond_2c
++
++    iput-boolean v2, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    .line 30
++    :cond_2c
++    if-nez v0, :cond_3d
++
++    iget-boolean v3, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    if-nez v3, :cond_3d
++
++    iget-boolean v3, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->mayHaveTint:Z
++
++    if-nez v3, :cond_3d
++
++    invoke-virtual {p2, v1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
++
++    move-result-object v3
++
++    if-nez v3, :cond_3d
++
++    .line 31
++    return v2
++
++    .line 33
++    :cond_3d
++    const-string v3, "SurfaceFlinger"
++
++    invoke-static {v3}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
++
++    move-result-object v3
++
++    .line 34
++    iget-boolean v4, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->everAttempted:Z
++
++    if-eqz v4, :cond_4d
++
++    iget-object v4, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->acceptedTransport:Landroid/os/IBinder;
++
++    if-eq v3, v4, :cond_4d
++
++    iput-boolean v2, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    .line 35
++    :cond_4d
++    if-eqz p5, :cond_57
++
++    invoke-virtual {p5}, Lcom/android/server/display/color/InlineSdrIngress;->needsNeutral()Z
++
++    move-result v4
++
++    if-eqz v4, :cond_57
++
++    iput-boolean v2, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    .line 36
++    :cond_57
++    const/4 v4, 0x0
++
++    const/4 v5, 0x0
++
++    if-eqz v0, :cond_cc
++
++    iget-boolean v6, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    if-eqz v6, :cond_62
++
++    move-object v6, p5
++
++    goto/16 :goto_cd
++
++    .line 53
++    :cond_62
++    if-nez p5, :cond_65
++
++    return v5
++
++    .line 54
++    :cond_65
++    monitor-enter p5
++
++    .line 57
++    :try_start_66
++    invoke-virtual {p5}, Lcom/android/server/display/color/InlineSdrIngress;->allowsWrite()Z
++
++    move-result v6
++    :try_end_6a
++    .catchall {:try_start_66 .. :try_end_6a} :catchall_c5
++
++    if-nez v6, :cond_7c
++
++    .line 58
++    const/4 v4, 0x0
++
++    move-object v0, p0
++
++    move-object v1, p1
++
++    move-object v2, p2
++
++    move-object v3, p3
++
++    move-object v5, p5
++
++    :try_start_72
++    invoke-virtual/range {v0 .. v5}, Lcom/android/server/display/color/InlineSdrOwnedTransport;->apply(Lcom/android/server/display/color/DisplayTransformManager;Landroid/util/SparseArray;Lcom/android/server/display/IDisplayTransformManagerExt;[FLcom/android/server/display/color/InlineSdrIngress;)Z
++
++    move-result p1
++    :try_end_76
++    .catchall {:try_start_72 .. :try_end_76} :catchall_79
++
++    move-object v6, v5
++
++    :try_start_77
++    monitor-exit p5
++
++    return p1
++
++    .line 76
++    :catchall_79
++    move-exception v0
++
++    move-object v6, v5
++
++    goto :goto_c7
++
++    .line 60
++    :cond_7c
++    move-object v6, p5
++
++    iget-object v7, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->acceptedTransport:Landroid/os/IBinder;
++
++    if-ne v3, v7, :cond_97
++
++    iget-object v7, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->acceptedValue:[F
++
++    invoke-static {p4, v7}, Ljava/util/Arrays;->equals([F[F)Z
++
++    move-result v7
++
++    if-eqz v7, :cond_97
++
++    .line 61
++    invoke-virtual {p2, v1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
++
++    move-result-object v7
++
++    check-cast v7, [F
++
++    invoke-static {p4, v7}, Ljava/util/Arrays;->equals([F[F)Z
++
++    move-result v7
++
++    if-eqz v7, :cond_97
++
++    monitor-exit p5
++
++    return v2
++
++    .line 62
++    :cond_97
++    iput-boolean v2, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->everAttempted:Z
++
++    .line 63
++    iput-boolean v2, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->mayHaveTint:Z
++
++    .line 64
++    iput-boolean v2, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    .line 65
++    invoke-virtual {p4}, [F->clone()Ljava/lang/Object;
++
++    move-result-object v7
++
++    check-cast v7, [F
++
++    invoke-virtual {p2, v1, v7}, Landroid/util/SparseArray;->put(ILjava/lang/Object;)V
++
++    .line 66
++    invoke-virtual {p1}, Lcom/android/server/display/color/DisplayTransformManager;->composeInlineSdrMatrix()[F
++
++    move-result-object p1
++
++    invoke-direct {p0, p1, p3, v3, p5}, Lcom/android/server/display/color/InlineSdrOwnedTransport;->send([FLcom/android/server/display/IDisplayTransformManagerExt;Landroid/os/IBinder;Lcom/android/server/display/color/InlineSdrIngress;)Z
++
++    move-result p1
++
++    if-eqz p1, :cond_be
++
++    .line 67
++    iput-object v3, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->acceptedTransport:Landroid/os/IBinder;
++
++    .line 68
++    invoke-virtual {p4}, [F->clone()Ljava/lang/Object;
++
++    move-result-object p1
++
++    check-cast p1, [F
++
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->acceptedValue:[F
++
++    .line 69
++    iput-boolean v5, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    .line 70
++    monitor-exit p5
++
++    return v2
++
++    .line 73
++    :cond_be
++    invoke-virtual {p2, v1}, Landroid/util/SparseArray;->remove(I)V
++
++    .line 74
++    iput-object v4, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->acceptedValue:[F
++
++    .line 75
++    monitor-exit p5
++
++    return v5
++
++    .line 76
++    :catchall_c5
++    move-exception v0
++
++    move-object v6, p5
++
++    :goto_c7
++    move-object p1, v0
++
++    monitor-exit p5
++    :try_end_c9
++    .catchall {:try_start_77 .. :try_end_c9} :catchall_ca
++
++    throw p1
++
++    :catchall_ca
++    move-exception v0
++
++    goto :goto_c7
++
++    .line 36
++    :cond_cc
++    move-object v6, p5
++
++    .line 37
++    :goto_cd
++    iget-boolean v7, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    if-nez v7, :cond_de
++
++    iget-boolean v7, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->mayHaveTint:Z
++
++    if-nez v7, :cond_de
++
++    invoke-virtual {p2, v1}, Landroid/util/SparseArray;->get(I)Ljava/lang/Object;
++
++    move-result-object v7
++
++    if-eqz v7, :cond_dc
++
++    goto :goto_de
++
++    :cond_dc
++    move v7, v5
++
++    goto :goto_df
++
++    :cond_de
++    :goto_de
++    move v7, v2
++
++    .line 38
++    :goto_df
++    invoke-virtual {p2, v1}, Landroid/util/SparseArray;->remove(I)V
++
++    .line 39
++    if-nez v7, :cond_e5
++
++    return v2
++
++    .line 40
++    :cond_e5
++    iput-boolean v2, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    .line 41
++    iput-object v4, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->acceptedValue:[F
++
++    .line 42
++    if-nez v6, :cond_ee
++
++    const-wide/16 v7, 0x0
++
++    goto :goto_f2
++
++    :cond_ee
++    invoke-virtual {p5}, Lcom/android/server/display/color/InlineSdrIngress;->neutralTicket()J
++
++    move-result-wide v7
++
++    .line 43
++    :goto_f2
++    iput-boolean v2, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->everAttempted:Z
++
++    .line 44
++    invoke-virtual {p1}, Lcom/android/server/display/color/DisplayTransformManager;->composeInlineSdrMatrix()[F
++
++    move-result-object p1
++
++    invoke-direct {p0, p1, p3, v3, v4}, Lcom/android/server/display/color/InlineSdrOwnedTransport;->send([FLcom/android/server/display/IDisplayTransformManagerExt;Landroid/os/IBinder;Lcom/android/server/display/color/InlineSdrIngress;)Z
++
++    move-result p1
++
++    if-eqz p1, :cond_10e
++
++    .line 45
++    iput-boolean v5, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    .line 46
++    iput-boolean v5, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->mayHaveTint:Z
++
++    .line 47
++    iput-object v3, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->acceptedTransport:Landroid/os/IBinder;
++
++    .line 48
++    if-eqz v6, :cond_109
++
++    invoke-virtual {p5, v7, v8}, Lcom/android/server/display/color/InlineSdrIngress;->acknowledgeNeutral(J)V
++
++    .line 49
++    :cond_109
++    if-nez v0, :cond_10c
++
++    goto :goto_10d
++
++    :cond_10c
++    move v2, v5
++
++    :goto_10d
++    return v2
++
++    .line 51
++    :cond_10e
++    return v5
++.end method
++
++.method public pending()Z
++    .registers 2
++
++    .line 21
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrOwnedTransport;->neutralPending:Z
++
++    return v0
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$1.smali	2026-11-26 10:22:30.727385446 +0700
+@@ -0,0 +1,65 @@
++.class Lcom/android/server/display/color/InlineSdrSaturationController$1;
++.super Ljava/lang/Object;
++.source "InlineSdrSaturationController.java"
++
++# interfaces
++.implements Ljava/lang/Runnable;
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingClass;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController;
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x0
++    name = null
++.end annotation
++
++
++# instance fields
++.field final synthetic this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++
++# direct methods
++.method constructor <init>(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++    .registers 2
++    .annotation system Ldalvik/annotation/MethodParameters;
++        accessFlags = {
++            0x8010
++        }
++        names = {
++            null
++        }
++    .end annotation
++
++    .line 60
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$1;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++
++# virtual methods
++.method public run()V
++    .registers 3
++
++    .line 62
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$1;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    const/4 v1, 0x0
++
++    # setter for: Lcom/android/server/display/color/InlineSdrSaturationController;->retryScheduled:Z
++    invoke-static {v0, v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$002(Lcom/android/server/display/color/InlineSdrSaturationController;Z)Z
++
++    .line 63
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$1;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$100(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 64
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$2.smali	2026-11-26 10:22:30.730876387 +0700
+@@ -0,0 +1,221 @@
++.class Lcom/android/server/display/color/InlineSdrSaturationController$2;
++.super Landroid/database/ContentObserver;
++.source "InlineSdrSaturationController.java"
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingMethod;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController;->setUp(I)V
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x0
++    name = null
++.end annotation
++
++
++# instance fields
++.field final synthetic this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++.field final synthetic val$cpuBoostUri:Landroid/net/Uri;
++
++.field final synthetic val$memFloorUri:Landroid/net/Uri;
++
++.field final synthetic val$memKillerUri:Landroid/net/Uri;
++
++.field final synthetic val$thisSession:J
++
++
++# direct methods
++.method constructor <init>(Lcom/android/server/display/color/InlineSdrSaturationController;Landroid/os/Handler;JLandroid/net/Uri;Landroid/net/Uri;Landroid/net/Uri;)V
++    .registers 8
++    .annotation system Ldalvik/annotation/MethodParameters;
++        accessFlags = {
++            0x8010,
++            0x0,
++            0x1010,
++            0x1010,
++            0x1010,
++            0x1010
++        }
++        names = {
++            null,
++            null,
++            null,
++            null,
++            null,
++            null
++        }
++    .end annotation
++
++    .line 117
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    iput-wide p3, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->val$thisSession:J
++
++    iput-object p5, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->val$memKillerUri:Landroid/net/Uri;
++
++    iput-object p6, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->val$memFloorUri:Landroid/net/Uri;
++
++    iput-object p7, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->val$cpuBoostUri:Landroid/net/Uri;
++
++    invoke-direct {p0, p2}, Landroid/database/ContentObserver;-><init>(Landroid/os/Handler;)V
++
++    return-void
++.end method
++
++
++# virtual methods
++.method public onChange(ZLandroid/net/Uri;)V
++    .registers 7
++
++    .line 119
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$200(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result p1
++
++    if-eqz p1, :cond_74
++
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->session:J
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$300(Lcom/android/server/display/color/InlineSdrSaturationController;)J
++
++    move-result-wide v0
++
++    iget-wide v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->val$thisSession:J
++
++    cmp-long p1, v0, v2
++
++    if-eqz p1, :cond_15
++
++    goto :goto_74
++
++    .line 120
++    :cond_15
++    if-eqz p2, :cond_31
++
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->val$memKillerUri:Landroid/net/Uri;
++
++    invoke-virtual {p2, p1}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
++
++    move-result p1
++
++    if-nez p1, :cond_2f
++
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->val$memFloorUri:Landroid/net/Uri;
++
++    invoke-virtual {p2, p1}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
++
++    move-result p1
++
++    if-nez p1, :cond_2f
++
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->val$cpuBoostUri:Landroid/net/Uri;
++
++    invoke-virtual {p2, p1}, Landroid/net/Uri;->equals(Ljava/lang/Object;)Z
++
++    move-result p1
++
++    if-eqz p1, :cond_31
++
++    :cond_2f
++    const/4 p1, 0x1
++
++    goto :goto_32
++
++    :cond_31
++    const/4 p1, 0x0
++
++    .line 121
++    :goto_32
++    iget-object p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->syncHdrProperties()V
++    invoke-static {p2}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$400(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 122
++    if-eqz p1, :cond_3a
++
++    return-void
++
++    .line 123
++    :cond_3a
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->readLevel()V
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$500(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 124
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->wantsMatrix()Z
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$600(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result p1
++
++    if-eqz p1, :cond_69
++
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$700(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    move-result-object p1
++
++    if-eqz p1, :cond_64
++
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$800(Lcom/android/server/display/color/InlineSdrSaturationController;)Ljava/util/ArrayList;
++
++    move-result-object p1
++
++    invoke-virtual {p1}, Ljava/util/ArrayList;->size()I
++
++    move-result p1
++
++    iget-object p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++    invoke-static {p2}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$700(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    move-result-object p2
++
++    iget-object p2, p2, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->tokens:[Landroid/os/IBinder;
++
++    array-length p2, p2
++
++    if-eq p1, p2, :cond_69
++
++    :cond_64
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->rebuild()V
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$900(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 125
++    :cond_69
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->evaluate()V
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1000(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 126
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$2;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->scheduleHealth()V
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1100(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 127
++    return-void
++
++    .line 119
++    :cond_74
++    :goto_74
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$3.smali	2026-11-26 10:22:30.734385447 +0700
+@@ -0,0 +1,119 @@
++.class Lcom/android/server/display/color/InlineSdrSaturationController$3;
++.super Ljava/lang/Object;
++.source "InlineSdrSaturationController.java"
++
++# interfaces
++.implements Landroid/hardware/display/DisplayManager$DisplayListener;
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingMethod;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController;->setUp(I)V
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x0
++    name = null
++.end annotation
++
++
++# instance fields
++.field final synthetic this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++.field final synthetic val$thisSession:J
++
++
++# direct methods
++.method constructor <init>(Lcom/android/server/display/color/InlineSdrSaturationController;J)V
++    .registers 4
++    .annotation system Ldalvik/annotation/MethodParameters;
++        accessFlags = {
++            0x8010,
++            0x1010
++        }
++        names = {
++            null,
++            null
++        }
++    .end annotation
++
++    .annotation system Ldalvik/annotation/Signature;
++        value = {
++            "()V"
++        }
++    .end annotation
++
++    .line 136
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$3;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    iput-wide p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$3;->val$thisSession:J
++
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++.method private changed()V
++    .registers 5
++
++    .line 138
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$3;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$200(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_19
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$3;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->session:J
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$300(Lcom/android/server/display/color/InlineSdrSaturationController;)J
++
++    move-result-wide v0
++
++    iget-wide v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$3;->val$thisSession:J
++
++    cmp-long v0, v0, v2
++
++    if-nez v0, :cond_19
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$3;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->rebuild()V
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$900(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 139
++    :cond_19
++    return-void
++.end method
++
++
++# virtual methods
++.method public onDisplayAdded(I)V
++    .registers 2
++
++    .line 140
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController$3;->changed()V
++
++    return-void
++.end method
++
++.method public onDisplayChanged(I)V
++    .registers 2
++
++    .line 142
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController$3;->changed()V
++
++    return-void
++.end method
++
++.method public onDisplayRemoved(I)V
++    .registers 2
++
++    .line 141
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController$3;->changed()V
++
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$4.smali	2026-11-26 10:22:30.734385447 +0700
+@@ -0,0 +1,146 @@
++.class Lcom/android/server/display/color/InlineSdrSaturationController$4;
++.super Landroid/content/BroadcastReceiver;
++.source "InlineSdrSaturationController.java"
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingMethod;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController;->setUp(I)V
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x0
++    name = null
++.end annotation
++
++
++# instance fields
++.field final synthetic this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++.field final synthetic val$thisSession:J
++
++
++# direct methods
++.method constructor <init>(Lcom/android/server/display/color/InlineSdrSaturationController;J)V
++    .registers 4
++    .annotation system Ldalvik/annotation/MethodParameters;
++        accessFlags = {
++            0x8010,
++            0x1010
++        }
++        names = {
++            null,
++            null
++        }
++    .end annotation
++
++    .line 145
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$4;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    iput-wide p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$4;->val$thisSession:J
++
++    invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
++
++    return-void
++.end method
++
++
++# virtual methods
++.method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
++    .registers 7
++
++    .line 147
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$4;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$200(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result p1
++
++    if-eqz p1, :cond_44
++
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$4;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->session:J
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$300(Lcom/android/server/display/color/InlineSdrSaturationController;)J
++
++    move-result-wide v0
++
++    iget-wide v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$4;->val$thisSession:J
++
++    cmp-long p1, v0, v2
++
++    if-eqz p1, :cond_15
++
++    goto :goto_44
++
++    .line 150
++    :cond_15
++    const-string p1, "android.intent.action.SCREEN_OFF"
++
++    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
++
++    move-result-object v0
++
++    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result p1
++
++    const/4 v0, 0x1
++
++    if-eqz p1, :cond_28
++
++    .line 151
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$4;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # setter for: Lcom/android/server/display/color/InlineSdrSaturationController;->screenBlocked:Z
++    invoke-static {p1, v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1202(Lcom/android/server/display/color/InlineSdrSaturationController;Z)Z
++
++    goto :goto_3e
++
++    .line 152
++    :cond_28
++    const-string p1, "android.intent.action.SCREEN_ON"
++
++    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
++
++    move-result-object p2
++
++    invoke-virtual {p1, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result p1
++
++    .line 155
++    iget-object p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$4;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    .line 152
++    if-eqz p1, :cond_3b
++
++    .line 153
++    const/4 p1, 0x0
++
++    # setter for: Lcom/android/server/display/color/InlineSdrSaturationController;->screenBlocked:Z
++    invoke-static {p2, p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1202(Lcom/android/server/display/color/InlineSdrSaturationController;Z)Z
++
++    goto :goto_3e
++
++    .line 155
++    :cond_3b
++    # setter for: Lcom/android/server/display/color/InlineSdrSaturationController;->screenBlocked:Z
++    invoke-static {p2, v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1202(Lcom/android/server/display/color/InlineSdrSaturationController;Z)Z
++
++    .line 157
++    :goto_3e
++    iget-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$4;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->rebuild()V
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$900(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 158
++    return-void
++
++    .line 147
++    :cond_44
++    :goto_44
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$5.smali	2026-11-26 10:22:30.731200864 +0700
+@@ -0,0 +1,243 @@
++.class Lcom/android/server/display/color/InlineSdrSaturationController$5;
++.super Ljava/lang/Object;
++.source "InlineSdrSaturationController.java"
++
++# interfaces
++.implements Ljava/lang/Runnable;
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingMethod;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController;->setUp(I)V
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x0
++    name = null
++.end annotation
++
++
++# instance fields
++.field final synthetic this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++.field final synthetic val$thisSession:J
++
++
++# direct methods
++.method constructor <init>(Lcom/android/server/display/color/InlineSdrSaturationController;J)V
++    .registers 4
++    .annotation system Ldalvik/annotation/MethodParameters;
++        accessFlags = {
++            0x8010,
++            0x1010
++        }
++        names = {
++            null,
++            null
++        }
++    .end annotation
++
++    .annotation system Ldalvik/annotation/Signature;
++        value = {
++            "()V"
++        }
++    .end annotation
++
++    .line 173
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    iput-wide p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->val$thisSession:J
++
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++
++# virtual methods
++.method public run()V
++    .registers 5
++
++    .line 175
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$200(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_82
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->session:J
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$300(Lcom/android/server/display/color/InlineSdrSaturationController;)J
++
++    move-result-wide v0
++
++    iget-wide v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->val$thisSession:J
++
++    cmp-long v0, v0, v2
++
++    if-eqz v0, :cond_15
++
++    goto :goto_82
++
++    .line 177
++    :cond_15
++    :try_start_15
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->capture()Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1300(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    move-result-object v0
++
++    .line 178
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->ready:Z
++    invoke-static {v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1400(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result v1
++
++    if-eqz v1, :cond_5d
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->failed:Z
++    invoke-static {v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1500(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_5d
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++    invoke-static {v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$700(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    move-result-object v1
++
++    if-eqz v1, :cond_5d
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++    invoke-static {v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$700(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    move-result-object v1
++
++    invoke-virtual {v1, v0}, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->same(Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;)Z
++
++    move-result v1
++
++    if-eqz v1, :cond_5d
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    .line 179
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->wantsMatrix()Z
++    invoke-static {v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$600(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result v1
++
++    if-eqz v1, :cond_57
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++    invoke-static {v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$800(Lcom/android/server/display/color/InlineSdrSaturationController;)Ljava/util/ArrayList;
++
++    move-result-object v1
++
++    invoke-virtual {v1}, Ljava/util/ArrayList;->size()I
++
++    move-result v1
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->tokens:[Landroid/os/IBinder;
++
++    array-length v0, v0
++
++    if-eq v1, v0, :cond_57
++
++    goto :goto_5d
++
++    .line 183
++    :cond_57
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->evaluate()V
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1000(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    goto :goto_6e
++
++    .line 180
++    :cond_5d
++    :goto_5d
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->ready:Z
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1400(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result v0
++    :try_end_63
++    .catch Ljava/lang/Exception; {:try_start_15 .. :try_end_63} :catch_6f
++    .catch Ljava/lang/LinkageError; {:try_start_15 .. :try_end_63} :catch_6f
++
++    .line 181
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    .line 180
++    if-eqz v0, :cond_6b
++
++    :try_start_67
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->rebuild()V
++    invoke-static {v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$900(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    goto :goto_6e
++
++    .line 181
++    :cond_6b
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++    invoke-static {v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$100(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++    :try_end_6e
++    .catch Ljava/lang/Exception; {:try_start_67 .. :try_end_6e} :catch_6f
++    .catch Ljava/lang/LinkageError; {:try_start_67 .. :try_end_6e} :catch_6f
++
++    .line 188
++    :goto_6e
++    goto :goto_7c
++
++    .line 185
++    :catch_6f
++    move-exception v0
++
++    .line 186
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->invalidateDisplays()V
++    invoke-static {v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1600(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 187
++    const-string v1, "InlineSdrSaturation"
++
++    const-string v2, "display state unknown; neutral"
++
++    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 189
++    :goto_7c
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$5;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->scheduleHealth()V
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1100(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 190
++    return-void
++
++    .line 175
++    :cond_82
++    :goto_82
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$6$1.smali	2026-11-26 10:22:30.730385447 +0700
+@@ -0,0 +1,88 @@
++.class Lcom/android/server/display/color/InlineSdrSaturationController$6$1;
++.super Ljava/lang/Object;
++.source "InlineSdrSaturationController.java"
++
++# interfaces
++.implements Ljava/lang/Runnable;
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingMethod;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController$6;->binderDied()V
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x0
++    name = null
++.end annotation
++
++
++# instance fields
++.field final synthetic this$1:Lcom/android/server/display/color/InlineSdrSaturationController$6;
++
++
++# direct methods
++.method constructor <init>(Lcom/android/server/display/color/InlineSdrSaturationController$6;)V
++    .registers 2
++    .annotation system Ldalvik/annotation/MethodParameters;
++        accessFlags = {
++            0x8010
++        }
++        names = {
++            null
++        }
++    .end annotation
++
++    .line 355
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$6$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$6;
++
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++
++# virtual methods
++.method public run()V
++    .registers 5
++
++    .line 357
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$6$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$6;
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$6;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$200(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_21
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$6$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$6;
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$6;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->generation:J
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1700(Lcom/android/server/display/color/InlineSdrSaturationController;)J
++
++    move-result-wide v0
++
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$6$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$6;
++
++    iget-wide v2, v2, Lcom/android/server/display/color/InlineSdrSaturationController$6;->val$gen:J
++
++    cmp-long v0, v0, v2
++
++    if-nez v0, :cond_21
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$6$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$6;
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$6;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->invalidateDisplays()V
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1600(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 358
++    :cond_21
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$6.smali	2026-11-26 10:22:30.731200864 +0700
+@@ -0,0 +1,77 @@
++.class Lcom/android/server/display/color/InlineSdrSaturationController$6;
++.super Ljava/lang/Object;
++.source "InlineSdrSaturationController.java"
++
++# interfaces
++.implements Landroid/os/IBinder$DeathRecipient;
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingMethod;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController;->rebuild()V
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x0
++    name = null
++.end annotation
++
++
++# instance fields
++.field final synthetic this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++.field final synthetic val$gen:J
++
++
++# direct methods
++.method constructor <init>(Lcom/android/server/display/color/InlineSdrSaturationController;J)V
++    .registers 4
++    .annotation system Ldalvik/annotation/MethodParameters;
++        accessFlags = {
++            0x8010,
++            0x1010
++        }
++        names = {
++            null,
++            null
++        }
++    .end annotation
++
++    .annotation system Ldalvik/annotation/Signature;
++        value = {
++            "()V"
++        }
++    .end annotation
++
++    .line 353
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$6;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    iput-wide p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$6;->val$gen:J
++
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++
++# virtual methods
++.method public binderDied()V
++    .registers 3
++
++    .line 355
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$6;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1800(Lcom/android/server/display/color/InlineSdrSaturationController;)Landroid/os/Handler;
++
++    move-result-object v0
++
++    new-instance v1, Lcom/android/server/display/color/InlineSdrSaturationController$6$1;
++
++    invoke-direct {v1, p0}, Lcom/android/server/display/color/InlineSdrSaturationController$6$1;-><init>(Lcom/android/server/display/color/InlineSdrSaturationController$6;)V
++
++    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
++
++    .line 360
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$HdrListener$1.smali	2026-11-26 10:22:30.732609527 +0700
+@@ -0,0 +1,272 @@
++.class Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;
++.super Ljava/lang/Object;
++.source "InlineSdrSaturationController.java"
++
++# interfaces
++.implements Ljava/lang/Runnable;
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingMethod;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->onHdrInfoChanged(Landroid/os/IBinder;IIIIF)V
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x0
++    name = null
++.end annotation
++
++
++# instance fields
++.field final synthetic this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++.field final synthetic val$admittedCount:I
++
++.field final synthetic val$callbackToken:Landroid/os/IBinder;
++
++.field final synthetic val$count:I
++
++.field final synthetic val$serial:J
++
++.field final synthetic val$tokenMatches:Z
++
++
++# direct methods
++.method constructor <init>(Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;JIZILandroid/os/IBinder;)V
++    .registers 8
++    .annotation system Ldalvik/annotation/MethodParameters;
++        accessFlags = {
++            0x8010,
++            0x1010,
++            0x1010,
++            0x1010,
++            0x1010,
++            0x1010
++        }
++        names = {
++            null,
++            null,
++            null,
++            null,
++            null,
++            null
++        }
++    .end annotation
++
++    .annotation system Ldalvik/annotation/Signature;
++        value = {
++            "()V"
++        }
++    .end annotation
++
++    .line 394
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iput-wide p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$serial:J
++
++    iput p4, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$admittedCount:I
++
++    iput-boolean p5, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$tokenMatches:Z
++
++    iput p6, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$count:I
++
++    iput-object p7, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$callbackToken:Landroid/os/IBinder;
++
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++
++# virtual methods
++.method public run()V
++    .registers 9
++
++    .line 396
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$200(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_9f
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-wide v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->gen:J
++
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-object v2, v2, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->generation:J
++    invoke-static {v2}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1700(Lcom/android/server/display/color/InlineSdrSaturationController;)J
++
++    move-result-wide v2
++
++    cmp-long v0, v0, v2
++
++    if-nez v0, :cond_9f
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$800(Lcom/android/server/display/color/InlineSdrSaturationController;)Ljava/util/ArrayList;
++
++    move-result-object v0
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    invoke-virtual {v0, v1}, Ljava/util/ArrayList;->contains(Ljava/lang/Object;)Z
++
++    move-result v0
++
++    if-nez v0, :cond_2b
++
++    goto :goto_9f
++
++    .line 397
++    :cond_2b
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->ingress:Lcom/android/server/display/color/InlineSdrIngress;
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1900(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrIngress;
++
++    move-result-object v1
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-wide v2, v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->gen:J
++
++    iget-object v4, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-wide v5, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$serial:J
++
++    iget v7, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$admittedCount:I
++
++    invoke-virtual/range {v1 .. v7}, Lcom/android/server/display/color/InlineSdrIngress;->consume(JLjava/lang/Object;JI)Z
++
++    move-result v0
++
++    if-nez v0, :cond_4b
++
++    .line 398
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->evaluate()V
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1000(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 399
++    return-void
++
++    .line 401
++    :cond_4b
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$tokenMatches:Z
++
++    if-eqz v0, :cond_62
++
++    iget v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$count:I
++
++    if-gez v0, :cond_54
++
++    goto :goto_62
++
++    .line 406
++    :cond_54
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$count:I
++
++    iput v1, v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->count:I
++
++    .line 407
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->evaluate()V
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1000(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 408
++    return-void
++
++    .line 402
++    :cond_62
++    :goto_62
++    new-instance v0, Ljava/lang/StringBuilder;
++
++    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
++
++    const-string v1, "HDR invalid callback token="
++
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v0
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$callbackToken:Landroid/os/IBinder;
++
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
++
++    move-result-object v0
++
++    const-string v1, " expected="
++
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v0
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-object v1, v1, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->token:Landroid/os/IBinder;
++
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
++
++    move-result-object v0
++
++    const-string v1, " count="
++
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v0
++
++    iget v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->val$count:I
++
++    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++
++    move-result-object v0
++
++    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object v0
++
++    const/4 v1, 0x0
++
++    const-string v2, "InlineSdrSaturation"
++
++    invoke-static {v2, v0, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 403
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;->this$1:Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # invokes: Lcom/android/server/display/color/InlineSdrSaturationController;->invalidateDisplays()V
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1600(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    .line 404
++    return-void
++
++    .line 396
++    :cond_9f
++    :goto_9f
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$HdrListener.smali	2026-11-26 10:22:30.732439269 +0700
+@@ -0,0 +1,155 @@
++.class final Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++.super Landroid/view/SurfaceControlHdrLayerInfoListener;
++.source "InlineSdrSaturationController.java"
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingClass;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController;
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x12
++    name = "HdrListener"
++.end annotation
++
++
++# instance fields
++.field count:I
++
++.field final gen:J
++
++.field final synthetic this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++.field final token:Landroid/os/IBinder;
++
++
++# direct methods
++.method constructor <init>(Lcom/android/server/display/color/InlineSdrSaturationController;JLandroid/os/IBinder;)V
++    .registers 6
++    .annotation system Ldalvik/annotation/MethodParameters;
++        accessFlags = {
++            0x1010,
++            0x0,
++            0x0
++        }
++        names = {
++            null,
++            null,
++            null
++        }
++    .end annotation
++
++    .line 384
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    invoke-direct {p0}, Landroid/view/SurfaceControlHdrLayerInfoListener;-><init>()V
++
++    .line 383
++    const/4 v0, 0x0
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->count:I
++
++    .line 385
++    iput-wide p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->gen:J
++
++    iput-object p4, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->token:Landroid/os/IBinder;
++
++    .line 386
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->ingress:Lcom/android/server/display/color/InlineSdrIngress;
++    invoke-static {p1}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1900(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrIngress;
++
++    move-result-object p1
++
++    invoke-virtual {p1, p2, p3, p0}, Lcom/android/server/display/color/InlineSdrIngress;->register(JLjava/lang/Object;)V
++
++    .line 387
++    return-void
++.end method
++
++
++# virtual methods
++.method public onHdrInfoChanged(Landroid/os/IBinder;IIIIF)V
++    .registers 15
++
++    .line 390
++    if-eqz p1, :cond_c
++
++    iget-object p3, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->token:Landroid/os/IBinder;
++
++    invoke-virtual {p1, p3}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
++
++    move-result p3
++
++    if-eqz p3, :cond_c
++
++    const/4 p3, 0x1
++
++    goto :goto_d
++
++    :cond_c
++    const/4 p3, 0x0
++
++    :goto_d
++    move v5, p3
++
++    .line 391
++    if-eqz v5, :cond_12
++
++    move v4, p2
++
++    goto :goto_14
++
++    :cond_12
++    const/4 p3, -0x1
++
++    move v4, p3
++
++    .line 392
++    :goto_14
++    iget-object p3, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->ingress:Lcom/android/server/display/color/InlineSdrIngress;
++    invoke-static {p3}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1900(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrIngress;
++
++    move-result-object p3
++
++    iget-wide p4, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->gen:J
++
++    invoke-virtual {p3, p4, p5, p0, v4}, Lcom/android/server/display/color/InlineSdrIngress;->enter(JLjava/lang/Object;I)J
++
++    move-result-wide v2
++
++    .line 393
++    const-wide/16 p3, 0x0
++
++    cmp-long p3, v2, p3
++
++    if-gez p3, :cond_27
++
++    return-void
++
++    .line 394
++    :cond_27
++    iget-object p3, p0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->this$0:Lcom/android/server/display/color/InlineSdrSaturationController;
++
++    # getter for: Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++    invoke-static {p3}, Lcom/android/server/display/color/InlineSdrSaturationController;->access$1800(Lcom/android/server/display/color/InlineSdrSaturationController;)Landroid/os/Handler;
++
++    move-result-object p3
++
++    new-instance v0, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;
++
++    move-object v1, p0
++
++    move-object v7, p1
++
++    move v6, p2
++
++    invoke-direct/range {v0 .. v7}, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener$1;-><init>(Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;JIZILandroid/os/IBinder;)V
++
++    invoke-virtual {p3, v0}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
++
++    .line 410
++    return-void
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController$Snapshot.smali	2026-11-26 10:22:30.732609527 +0700
+@@ -0,0 +1,133 @@
++.class final Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++.super Ljava/lang/Object;
++.source "InlineSdrSaturationController.java"
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingClass;
++    value = Lcom/android/server/display/color/InlineSdrSaturationController;
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x1a
++    name = "Snapshot"
++.end annotation
++
++
++# instance fields
++.field final eligible:Z
++
++.field final ids:[J
++
++.field final logicalIdentity:[Ljava/lang/String;
++
++.field final sf:Landroid/os/IBinder;
++
++.field final tokens:[Landroid/os/IBinder;
++
++
++# direct methods
++.method constructor <init>(Landroid/os/IBinder;[J[Landroid/os/IBinder;[Ljava/lang/String;Z)V
++    .registers 6
++
++    .line 515
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    .line 516
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->sf:Landroid/os/IBinder;
++
++    iput-object p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->ids:[J
++
++    iput-object p3, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->tokens:[Landroid/os/IBinder;
++
++    .line 517
++    iput-object p4, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->logicalIdentity:[Ljava/lang/String;
++
++    iput-boolean p5, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->eligible:Z
++
++    .line 518
++    return-void
++.end method
++
++
++# virtual methods
++.method same(Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;)Z
++    .registers 6
++
++    .line 520
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->sf:Landroid/os/IBinder;
++
++    iget-object v1, p1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->sf:Landroid/os/IBinder;
++
++    const/4 v2, 0x0
++
++    if-ne v0, v1, :cond_38
++
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->eligible:Z
++
++    iget-boolean v1, p1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->eligible:Z
++
++    if-ne v0, v1, :cond_38
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->ids:[J
++
++    iget-object v1, p1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->ids:[J
++
++    invoke-static {v0, v1}, Ljava/util/Arrays;->equals([J[J)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_38
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->logicalIdentity:[Ljava/lang/String;
++
++    iget-object v1, p1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->logicalIdentity:[Ljava/lang/String;
++
++    .line 521
++    invoke-static {v0, v1}, Ljava/util/Arrays;->equals([Ljava/lang/Object;[Ljava/lang/Object;)Z
++
++    move-result v0
++
++    if-nez v0, :cond_22
++
++    goto :goto_38
++
++    .line 522
++    :cond_22
++    move v0, v2
++
++    :goto_23
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->tokens:[Landroid/os/IBinder;
++
++    array-length v1, v1
++
++    if-ge v0, v1, :cond_36
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->tokens:[Landroid/os/IBinder;
++
++    aget-object v1, v1, v0
++
++    iget-object v3, p1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->tokens:[Landroid/os/IBinder;
++
++    aget-object v3, v3, v0
++
++    if-eq v1, v3, :cond_33
++
++    return v2
++
++    :cond_33
++    add-int/lit8 v0, v0, 0x1
++
++    goto :goto_23
++
++    .line 523
++    :cond_36
++    const/4 p1, 0x1
++
++    return p1
++
++    .line 521
++    :cond_38
++    :goto_38
++    return v2
++.end method
+
+--- /dev/null	2026-11-26 05:21:00.877980279 +0700
++++ b/com/android/server/display/color/InlineSdrSaturationController.smali	2026-11-26 10:22:30.755385450 +0700
+@@ -0,0 +1,2842 @@
++.class public final Lcom/android/server/display/color/InlineSdrSaturationController;
++.super Ljava/lang/Object;
++.source "InlineSdrSaturationController.java"
++
++
++# annotations
++.annotation system Ldalvik/annotation/MemberClasses;
++    value = {
++        Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;,
++        Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++    }
++.end annotation
++
++
++# static fields
++.field private static final HEALTH_MS:J = 0x3e8L
++
++.field static final KEY:Ljava/lang/String; = "inline_sdr_saturation"
++
++.field static final KEY_CPU_BOOST:Ljava/lang/String; = "cos17_cpu_boost_enable"
++
++.field static final KEY_DISABLE_MEM_KILLER:Ljava/lang/String; = "oplus_disable_memory_killer"
++
++.field static final KEY_HDR_PEAK:Ljava/lang/String; = "oplus_customize_hdr_peak_level"
++
++.field static final KEY_MEM_KILLER_FLOOR_MB:Ljava/lang/String; = "oplus_memory_killer_min_free_mb"
++
++.field static final KEY_SDR2HDR_EN:Ljava/lang/String; = "oplus_customize_sdr2hdr_boost_enable"
++
++.field static final KEY_SDR2HDR_LVL:Ljava/lang/String; = "oplus_customize_sdr2hdr_boost_level"
++
++.field static final LEVEL:I = 0x97
++
++.field static final PROP_CPU_BOOST:Ljava/lang/String; = "persist.sys.oplus.cpu_boost"
++
++.field static final PROP_DISABLE_MEM_KILLER:Ljava/lang/String; = "persist.sys.oplus.disable_mem_killer"
++
++.field static final PROP_HDR_PEAK:Ljava/lang/String; = "persist.sys.oplus.hdr_peak_level"
++
++.field static final PROP_MEM_KILLER_FLOOR_MB:Ljava/lang/String; = "persist.sys.oplus.mem_killer_floor_mb"
++
++.field static final PROP_SDR2HDR_EN:Ljava/lang/String; = "persist.sys.oplus.sdr2hdr_enable"
++
++.field static final PROP_SDR2HDR_LVL:Ljava/lang/String; = "persist.sys.oplus.sdr2hdr_level"
++
++.field private static final TAG:Ljava/lang/String; = "InlineSdrSaturation"
++
++
++# instance fields
++.field private active:Z
++
++.field private final context:Landroid/content/Context;
++
++.field private deathRecipient:Landroid/os/IBinder$DeathRecipient;
++
++.field private displayListener:Landroid/hardware/display/DisplayManager$DisplayListener;
++
++.field private displays:Landroid/hardware/display/DisplayManager;
++
++.field private dtm:Lcom/android/server/display/color/DisplayTransformManager;
++
++.field private failed:Z
++
++.field private flinger:Landroid/os/IBinder;
++
++.field private generation:J
++
++.field private final handler:Landroid/os/Handler;
++
++.field private hdrPeakLevel:I
++
++.field private health:Ljava/lang/Runnable;
++
++.field private final ingress:Lcom/android/server/display/color/InlineSdrIngress;
++
++.field private level:I
++
++.field private final listeners:Ljava/util/ArrayList;
++    .annotation system Ldalvik/annotation/Signature;
++        value = {
++            "Ljava/util/ArrayList<",
++            "Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;",
++            ">;"
++        }
++    .end annotation
++.end field
++
++.field private final neutralRetry:Ljava/lang/Runnable;
++
++.field private observer:Landroid/database/ContentObserver;
++
++.field private power:Landroid/os/PowerManager;
++
++.field private ready:Z
++
++.field private receiver:Landroid/content/BroadcastReceiver;
++
++.field private final resolver:Landroid/content/ContentResolver;
++
++.field private retryScheduled:Z
++
++.field private screenBlocked:Z
++
++.field private sdr2HdrEnable:I
++
++.field private sdr2HdrLevel:I
++
++.field private session:J
++
++.field private snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++.field private user:I
++
++
++# direct methods
++.method public constructor <init>(Landroid/content/Context;Landroid/os/Handler;)V
++    .registers 4
++
++    .line 81
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    .line 50
++    new-instance v0, Ljava/util/ArrayList;
++
++    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++
++    .line 58
++    new-instance v0, Lcom/android/server/display/color/InlineSdrIngress;
++
++    invoke-direct {v0}, Lcom/android/server/display/color/InlineSdrIngress;-><init>()V
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ingress:Lcom/android/server/display/color/InlineSdrIngress;
++
++    .line 60
++    new-instance v0, Lcom/android/server/display/color/InlineSdrSaturationController$1;
++
++    invoke-direct {v0, p0}, Lcom/android/server/display/color/InlineSdrSaturationController$1;-><init>(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->neutralRetry:Ljava/lang/Runnable;
++
++    .line 69
++    const/16 v0, -0x2710
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    .line 70
++    const/16 v0, 0x64
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->level:I
++
++    .line 71
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->hdrPeakLevel:I
++
++    .line 72
++    const/4 v0, 0x0
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrEnable:I
++
++    .line 73
++    const/16 v0, 0x32
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrLevel:I
++
++    .line 82
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->context:Landroid/content/Context;
++
++    .line 83
++    invoke-virtual {p1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++
++    move-result-object p1
++
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    .line 84
++    iput-object p2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    .line 85
++    return-void
++.end method
++
++.method static synthetic access$002(Lcom/android/server/display/color/InlineSdrSaturationController;Z)Z
++    .registers 2
++
++    .line 30
++    iput-boolean p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->retryScheduled:Z
++
++    return p1
++.end method
++
++.method static synthetic access$100(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++    .registers 1
++
++    .line 30
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++
++    return-void
++.end method
++
++.method static synthetic access$1000(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++    .registers 1
++
++    .line 30
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->evaluate()V
++
++    return-void
++.end method
++
++.method static synthetic access$1100(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++    .registers 1
++
++    .line 30
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->scheduleHealth()V
++
++    return-void
++.end method
++
++.method static synthetic access$1202(Lcom/android/server/display/color/InlineSdrSaturationController;Z)Z
++    .registers 2
++
++    .line 30
++    iput-boolean p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->screenBlocked:Z
++
++    return p1
++.end method
++
++.method static synthetic access$1300(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++    .registers 1
++
++    .line 30
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->capture()Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    move-result-object p0
++
++    return-object p0
++.end method
++
++.method static synthetic access$1400(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++    .registers 1
++
++    .line 30
++    iget-boolean p0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ready:Z
++
++    return p0
++.end method
++
++.method static synthetic access$1500(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++    .registers 1
++
++    .line 30
++    iget-boolean p0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->failed:Z
++
++    return p0
++.end method
++
++.method static synthetic access$1600(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++    .registers 1
++
++    .line 30
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->invalidateDisplays()V
++
++    return-void
++.end method
++
++.method static synthetic access$1700(Lcom/android/server/display/color/InlineSdrSaturationController;)J
++    .registers 3
++
++    .line 30
++    iget-wide v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->generation:J
++
++    return-wide v0
++.end method
++
++.method static synthetic access$1800(Lcom/android/server/display/color/InlineSdrSaturationController;)Landroid/os/Handler;
++    .registers 1
++
++    .line 30
++    iget-object p0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    return-object p0
++.end method
++
++.method static synthetic access$1900(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrIngress;
++    .registers 1
++
++    .line 30
++    iget-object p0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ingress:Lcom/android/server/display/color/InlineSdrIngress;
++
++    return-object p0
++.end method
++
++.method static synthetic access$200(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++    .registers 1
++
++    .line 30
++    iget-boolean p0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++
++    return p0
++.end method
++
++.method static synthetic access$300(Lcom/android/server/display/color/InlineSdrSaturationController;)J
++    .registers 3
++
++    .line 30
++    iget-wide v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->session:J
++
++    return-wide v0
++.end method
++
++.method static synthetic access$400(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++    .registers 1
++
++    .line 30
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->syncHdrProperties()V
++
++    return-void
++.end method
++
++.method static synthetic access$500(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++    .registers 1
++
++    .line 30
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->readLevel()V
++
++    return-void
++.end method
++
++.method static synthetic access$600(Lcom/android/server/display/color/InlineSdrSaturationController;)Z
++    .registers 1
++
++    .line 30
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->wantsMatrix()Z
++
++    move-result p0
++
++    return p0
++.end method
++
++.method static synthetic access$700(Lcom/android/server/display/color/InlineSdrSaturationController;)Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++    .registers 1
++
++    .line 30
++    iget-object p0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    return-object p0
++.end method
++
++.method static synthetic access$800(Lcom/android/server/display/color/InlineSdrSaturationController;)Ljava/util/ArrayList;
++    .registers 1
++
++    .line 30
++    iget-object p0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++
++    return-object p0
++.end method
++
++.method static synthetic access$900(Lcom/android/server/display/color/InlineSdrSaturationController;)V
++    .registers 1
++
++    .line 30
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->rebuild()V
++
++    return-void
++.end method
++
++.method private assertHandler()V
++    .registers 3
++
++    .line 88
++    invoke-static {}, Landroid/os/Looper;->myLooper()Landroid/os/Looper;
++
++    move-result-object v0
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    invoke-virtual {v1}, Landroid/os/Handler;->getLooper()Landroid/os/Looper;
++
++    move-result-object v1
++
++    if-ne v0, v1, :cond_d
++
++    .line 91
++    return-void
++
++    .line 89
++    :cond_d
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    const-string v1, "CDS handler required"
++
++    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++.end method
++
++.method private capture()Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++    .registers 22
++
++    .line 455
++    move-object/from16 v0, p0
++
++    const-string v1, "SurfaceFlinger"
++
++    invoke-static {v1}, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
++
++    move-result-object v3
++
++    .line 456
++    if-eqz v3, :cond_1e3
++
++    invoke-interface {v3}, Landroid/os/IBinder;->isBinderAlive()Z
++
++    move-result v1
++
++    if-eqz v1, :cond_1e3
++
++    invoke-interface {v3}, Landroid/os/IBinder;->pingBinder()Z
++
++    move-result v1
++
++    if-eqz v1, :cond_1e3
++
++    .line 459
++    invoke-static {}, Lcom/android/server/display/DisplayControl;->getPhysicalDisplayIds()[J
++
++    move-result-object v1
++
++    .line 460
++    if-eqz v1, :cond_1da
++
++    array-length v2, v1
++
++    if-eqz v2, :cond_1da
++
++    .line 461
++    invoke-virtual {v1}, [J->clone()Ljava/lang/Object;
++
++    move-result-object v1
++
++    move-object v4, v1
++
++    check-cast v4, [J
++
++    .line 462
++    invoke-static {v4}, Ljava/util/Arrays;->sort([J)V
++
++    .line 463
++    array-length v1, v4
++
++    new-array v5, v1, [Landroid/os/IBinder;
++
++    .line 464
++    iget-object v1, v0, Lcom/android/server/display/color/InlineSdrSaturationController;->displays:Landroid/hardware/display/DisplayManager;
++
++    invoke-virtual {v1}, Landroid/hardware/display/DisplayManager;->getDisplays()[Landroid/view/Display;
++
++    move-result-object v1
++
++    .line 465
++    if-eqz v1, :cond_1d1
++
++    .line 466
++    iget-boolean v2, v0, Lcom/android/server/display/color/InlineSdrSaturationController;->screenBlocked:Z
++
++    if-nez v2, :cond_42
++
++    iget-object v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController;->power:Landroid/os/PowerManager;
++
++    invoke-virtual {v0}, Landroid/os/PowerManager;->isInteractive()Z
++
++    move-result v0
++
++    if-eqz v0, :cond_42
++
++    const/4 v0, 0x1
++
++    goto :goto_43
++
++    :cond_42
++    const/4 v0, 0x0
++
++    .line 467
++    :goto_43
++    array-length v2, v1
++
++    new-array v2, v2, [Ljava/lang/String;
++
++    .line 468
++    new-instance v8, Ljava/util/HashSet;
++
++    invoke-direct {v8}, Ljava/util/HashSet;-><init>()V
++
++    .line 469
++    new-instance v9, Ljava/util/HashSet;
++
++    invoke-direct {v9}, Ljava/util/HashSet;-><init>()V
++
++    .line 470
++    new-instance v10, Ljava/util/HashSet;
++
++    invoke-direct {v10}, Ljava/util/HashSet;-><init>()V
++
++    .line 471
++    const/4 v11, 0x0
++
++    :goto_56
++    array-length v12, v1
++
++    const-string/jumbo v13, "null logical display"
++
++    if-ge v11, v12, :cond_14b
++
++    .line 472
++    aget-object v12, v1, v11
++
++    .line 473
++    if-eqz v12, :cond_145
++
++    .line 474
++    invoke-virtual {v12}, Landroid/view/Display;->getAddress()Landroid/view/DisplayAddress;
++
++    move-result-object v13
++
++    .line 475
++    invoke-virtual {v12}, Landroid/view/Display;->getType()I
++
++    move-result v15
++
++    invoke-virtual {v12}, Landroid/view/Display;->getState()I
++
++    move-result v7
++
++    invoke-virtual {v12}, Landroid/view/Display;->getDisplayId()I
++
++    move-result v14
++
++    .line 476
++    invoke-virtual {v12}, Landroid/view/Display;->getUniqueId()Ljava/lang/String;
++
++    move-result-object v12
++
++    .line 477
++    new-instance v6, Ljava/lang/StringBuilder;
++
++    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
++
++    invoke-virtual {v6, v14}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++
++    move-result-object v6
++
++    move/from16 v16, v0
++
++    const-string/jumbo v0, "|"
++
++    invoke-virtual {v6, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v6
++
++    const-string/jumbo v17, "null"
++
++    move-object/from16 v18, v2
++
++    const-string v2, ":"
++
++    move-object/from16 v19, v3
++
++    if-nez v12, :cond_96
++
++    move-object/from16 v20, v5
++
++    move-object/from16 v3, v17
++
++    goto :goto_b1
++
++    :cond_96
++    new-instance v3, Ljava/lang/StringBuilder;
++
++    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
++
++    move-object/from16 v20, v5
++
++    invoke-virtual {v12}, Ljava/lang/String;->length()I
++
++    move-result v5
++
++    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object v3
++
++    :goto_b1
++    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3, v15}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3, v7}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v0
++
++    .line 478
++    if-nez v13, :cond_cc
++
++    goto :goto_ed
++
++    :cond_cc
++    new-instance v3, Ljava/lang/StringBuilder;
++
++    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
++
++    invoke-virtual {v13}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
++
++    move-result-object v5
++
++    invoke-virtual {v5}, Ljava/lang/Class;->getName()Ljava/lang/String;
++
++    move-result-object v5
++
++    invoke-virtual {v3, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v2
++
++    invoke-virtual {v13}, Ljava/lang/Object;->toString()Ljava/lang/String;
++
++    move-result-object v3
++
++    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v2
++
++    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object v17
++
++    :goto_ed
++    move-object/from16 v2, v17
++
++    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v0
++
++    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object v0
++
++    aput-object v0, v18, v11
++
++    .line 479
++    invoke-static {v14}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++
++    move-result-object v0
++
++    invoke-virtual {v8, v0}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_115
++
++    if-eqz v12, :cond_115
++
++    invoke-virtual {v12}, Ljava/lang/String;->length()I
++
++    move-result v0
++
++    if-eqz v0, :cond_115
++
++    invoke-virtual {v9, v12}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
++
++    move-result v0
++
++    if-nez v0, :cond_112
++
++    goto :goto_115
++
++    :cond_112
++    move/from16 v0, v16
++
++    goto :goto_116
++
++    :cond_115
++    :goto_115
++    const/4 v0, 0x0
++
++    .line 480
++    :goto_116
++    invoke-static {v13}, Lcom/android/server/display/color/InlineSdrSaturationController;->physicalDisplayId(Landroid/view/DisplayAddress;)Ljava/lang/Long;
++
++    move-result-object v2
++
++    .line 481
++    if-eqz v2, :cond_139
++
++    const/4 v3, 0x1
++
++    if-eq v15, v3, :cond_123
++
++    const/4 v3, 0x2
++
++    if-ne v15, v3, :cond_139
++
++    goto :goto_124
++
++    :cond_123
++    const/4 v3, 0x2
++
++    :goto_124
++    if-eq v7, v3, :cond_127
++
++    goto :goto_139
++
++    .line 487
++    :cond_127
++    invoke-virtual {v10, v2}, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z
++
++    move-result v3
++
++    if-eqz v3, :cond_137
++
++    invoke-virtual {v2}, Ljava/lang/Long;->longValue()J
++
++    move-result-wide v2
++
++    invoke-static {v4, v2, v3}, Ljava/util/Arrays;->binarySearch([JJ)I
++
++    move-result v2
++
++    if-gez v2, :cond_13b
++
++    :cond_137
++    const/4 v0, 0x0
++
++    goto :goto_13b
++
++    .line 484
++    :cond_139
++    :goto_139
++    nop
++
++    .line 485
++    const/4 v0, 0x0
++
++    .line 471
++    :cond_13b
++    :goto_13b
++    add-int/lit8 v11, v11, 0x1
++
++    move-object/from16 v2, v18
++
++    move-object/from16 v3, v19
++
++    move-object/from16 v5, v20
++
++    goto/16 :goto_56
++
++    .line 473
++    :cond_145
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    invoke-direct {v0, v13}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++
++    .line 489
++    :cond_14b
++    move/from16 v16, v0
++
++    move-object/from16 v18, v2
++
++    move-object/from16 v19, v3
++
++    move-object/from16 v20, v5
++
++    invoke-static/range {v18 .. v18}, Ljava/util/Arrays;->sort([Ljava/lang/Object;)V
++
++    .line 490
++    move/from16 v7, v16
++
++    const/4 v0, 0x0
++
++    :goto_159
++    array-length v2, v4
++
++    if-ge v0, v2, :cond_1c5
++
++    .line 491
++    if-lez v0, :cond_171
++
++    aget-wide v2, v4, v0
++
++    add-int/lit8 v5, v0, -0x1
++
++    aget-wide v5, v4, v5
++
++    cmp-long v2, v2, v5
++
++    if-eqz v2, :cond_169
++
++    goto :goto_171
++
++    :cond_169
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    const-string v1, "duplicate display"
++
++    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++
++    .line 492
++    :cond_171
++    :goto_171
++    aget-wide v2, v4, v0
++
++    invoke-static {v2, v3}, Lcom/android/server/display/DisplayControl;->getPhysicalDisplayToken(J)Landroid/os/IBinder;
++
++    move-result-object v2
++
++    aput-object v2, v20, v0
++
++    .line 493
++    aget-object v2, v20, v0
++
++    if-eqz v2, :cond_1bc
++
++    .line 494
++    nop
++
++    .line 495
++    array-length v2, v1
++
++    const/4 v3, 0x0
++
++    const/4 v5, 0x0
++
++    :goto_181
++    if-ge v3, v2, :cond_1b4
++
++    aget-object v6, v1, v3
++
++    .line 496
++    if-eqz v6, :cond_1ae
++
++    .line 497
++    invoke-virtual {v6}, Landroid/view/Display;->getAddress()Landroid/view/DisplayAddress;
++
++    move-result-object v8
++
++    invoke-static {v8}, Lcom/android/server/display/color/InlineSdrSaturationController;->physicalDisplayId(Landroid/view/DisplayAddress;)Ljava/lang/Long;
++
++    move-result-object v8
++
++    .line 498
++    if-eqz v8, :cond_1aa
++
++    invoke-virtual {v8}, Ljava/lang/Long;->longValue()J
++
++    move-result-wide v8
++
++    aget-wide v10, v4, v0
++
++    cmp-long v8, v8, v10
++
++    if-nez v8, :cond_1aa
++
++    .line 499
++    add-int/lit8 v5, v5, 0x1
++
++    .line 500
++    invoke-virtual {v6}, Landroid/view/Display;->getState()I
++
++    move-result v6
++
++    const/4 v8, 0x2
++
++    if-ne v6, v8, :cond_1a6
++
++    const/4 v6, 0x1
++
++    goto :goto_1a7
++
++    :cond_1a6
++    const/4 v6, 0x0
++
++    :goto_1a7
++    and-int/2addr v6, v7
++
++    move v7, v6
++
++    goto :goto_1ab
++
++    .line 498
++    :cond_1aa
++    const/4 v8, 0x2
++
++    .line 495
++    :goto_1ab
++    add-int/lit8 v3, v3, 0x1
++
++    goto :goto_181
++
++    .line 496
++    :cond_1ae
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    invoke-direct {v0, v13}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++
++    .line 504
++    :cond_1b4
++    const/4 v8, 0x2
++
++    const/4 v3, 0x1
++
++    if-eq v5, v3, :cond_1b9
++
++    const/4 v7, 0x0
++
++    .line 490
++    :cond_1b9
++    add-int/lit8 v0, v0, 0x1
++
++    goto :goto_159
++
++    .line 493
++    :cond_1bc
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    const-string/jumbo v1, "missing display token"
++
++    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++
++    .line 506
++    :cond_1c5
++    new-instance v2, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    move-object/from16 v6, v18
++
++    move-object/from16 v3, v19
++
++    move-object/from16 v5, v20
++
++    invoke-direct/range {v2 .. v7}, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;-><init>(Landroid/os/IBinder;[J[Landroid/os/IBinder;[Ljava/lang/String;Z)V
++
++    return-object v2
++
++    .line 465
++    :cond_1d1
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    const-string/jumbo v1, "logical displays unknown"
++
++    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++
++    .line 460
++    :cond_1da
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    const-string/jumbo v1, "no physical display"
++
++    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++
++    .line 457
++    :cond_1e3
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    const-string v1, "SurfaceFlinger unavailable"
++
++    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++.end method
++
++.method private clearSlot()V
++    .registers 5
++
++    .line 305
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->dtm:Lcom/android/server/display/color/DisplayTransformManager;
++
++    if-nez v0, :cond_5
++
++    return-void
++
++    .line 307
++    :cond_5
++    :try_start_5
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->dtm:Lcom/android/server/display/color/DisplayTransformManager;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ingress:Lcom/android/server/display/color/InlineSdrIngress;
++
++    const/4 v2, 0x0
++
++    invoke-virtual {v0, v2, v1}, Lcom/android/server/display/color/DisplayTransformManager;->applyInlineSdrMatrix([FLcom/android/server/display/color/InlineSdrIngress;)Z
++    :try_end_d
++    .catch Ljava/lang/RuntimeException; {:try_start_5 .. :try_end_d} :catch_e
++    .catch Ljava/lang/LinkageError; {:try_start_5 .. :try_end_d} :catch_e
++
++    .line 311
++    goto :goto_17
++
++    .line 309
++    :catch_e
++    move-exception v0
++
++    .line 310
++    const-string v1, "InlineSdrSaturation"
++
++    const-string/jumbo v2, "owned neutral transport not acknowledged"
++
++    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 312
++    :goto_17
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->dtm:Lcom/android/server/display/color/DisplayTransformManager;
++
++    invoke-virtual {v0}, Lcom/android/server/display/color/DisplayTransformManager;->isInlineSdrNeutralPending()Z
++
++    move-result v0
++
++    if-eqz v0, :cond_2f
++
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->retryScheduled:Z
++
++    if-nez v0, :cond_2f
++
++    .line 313
++    const/4 v0, 0x1
++
++    iput-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->retryScheduled:Z
++
++    .line 314
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->neutralRetry:Ljava/lang/Runnable;
++
++    const-wide/16 v2, 0x3e8
++
++    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
++
++    .line 316
++    :cond_2f
++    return-void
++.end method
++
++.method static composedMatrix(IIIIZ)[F
++    .registers 13
++
++    .line 275
++    const/16 v0, 0xc8
++
++    invoke-static {v0, p0}, Ljava/lang/Math;->min(II)I
++
++    move-result p0
++
++    const/4 v0, 0x0
++
++    invoke-static {v0, p0}, Ljava/lang/Math;->max(II)I
++
++    move-result p0
++
++    .line 276
++    const/16 v1, 0x7d
++
++    invoke-static {v1, p1}, Ljava/lang/Math;->min(II)I
++
++    move-result p1
++
++    const/16 v1, 0x32
++
++    invoke-static {v1, p1}, Ljava/lang/Math;->max(II)I
++
++    move-result p1
++
++    .line 277
++    const/16 v1, 0x64
++
++    const/4 v2, 0x1
++
++    if-ne p2, v2, :cond_25
++
++    invoke-static {v1, p3}, Ljava/lang/Math;->min(II)I
++
++    move-result p2
++
++    invoke-static {v0, p2}, Ljava/lang/Math;->max(II)I
++
++    move-result p2
++
++    goto :goto_26
++
++    :cond_25
++    move p2, v0
++
++    .line 279
++    :goto_26
++    const/high16 p3, 0x42c80000    # 100.0f
++
++    const/high16 v3, 0x3f800000    # 1.0f
++
++    if-eqz p4, :cond_2e
++
++    move p0, v3
++
++    goto :goto_30
++
++    :cond_2e
++    int-to-float p0, p0
++
++    div-float/2addr p0, p3
++
++    .line 280
++    :goto_30
++    const/4 v4, 0x0
++
++    if-nez p4, :cond_38
++
++    if-lez p2, :cond_38
++
++    int-to-float p2, p2
++
++    div-float/2addr p2, p3
++
++    goto :goto_39
++
++    :cond_38
++    move p2, v4
++
++    .line 281
++    :goto_39
++    if-le p1, v1, :cond_41
++
++    sub-int/2addr p1, v1
++
++    int-to-float p1, p1
++
++    const/high16 p3, 0x41c80000    # 25.0f
++
++    div-float/2addr p1, p3
++
++    goto :goto_42
++
++    :cond_41
++    move p1, v4
++
++    .line 283
++    :goto_42
++    const p3, 0x3e6147ae    # 0.22f
++
++    mul-float p4, p1, p3
++
++    add-float/2addr p4, v3
++
++    const v1, 0x3eb851ec    # 0.36f
++
++    mul-float/2addr v1, p2
++
++    add-float/2addr p4, v1
++
++    .line 284
++    cmpl-float v1, p0, v4
++
++    if-nez v1, :cond_53
++
++    move p0, v4
++
++    goto :goto_5b
++
++    :cond_53
++    const v1, 0x40166666    # 2.35f
++
++    mul-float/2addr p0, p4
++
++    invoke-static {v1, p0}, Ljava/lang/Math;->min(FF)F
++
++    move-result p0
++
++    .line 285
++    :goto_5b
++    const p4, 0x3e0f5c29    # 0.14f
++
++    mul-float/2addr p1, p4
++
++    add-float/2addr p1, v3
++
++    mul-float/2addr p2, p3
++
++    add-float/2addr p1, p2
++
++    .line 286
++    sub-float p2, v3, p1
++
++    const p3, 0x3e4ccccd    # 0.2f
++
++    mul-float/2addr p2, p3
++
++    .line 288
++    sub-float p3, p0, v3
++
++    invoke-static {p3}, Ljava/lang/Math;->abs(F)F
++
++    move-result p3
++
++    const p4, 0x3727c5ac    # 1.0E-5f
++
++    cmpg-float p3, p3, p4
++
++    if-gez p3, :cond_89
++
++    sub-float p3, p1, v3
++
++    .line 289
++    invoke-static {p3}, Ljava/lang/Math;->abs(F)F
++
++    move-result p3
++
++    cmpg-float p3, p3, p4
++
++    if-gez p3, :cond_89
++
++    .line 290
++    invoke-static {p2}, Ljava/lang/Math;->abs(F)F
++
++    move-result p3
++
++    cmpg-float p3, p3, p4
++
++    if-gez p3, :cond_89
++
++    .line 291
++    const/4 p0, 0x0
++
++    return-object p0
++
++    .line 293
++    :cond_89
++    sub-float p3, v3, p0
++
++    .line 294
++    const p4, 0x3e59b3d0    # 0.2126f
++
++    mul-float/2addr p4, p3
++
++    const v1, 0x3f371759    # 0.7152f
++
++    mul-float/2addr v1, p3
++
++    const v5, 0x3d93dd98    # 0.0722f
++
++    mul-float/2addr p3, v5
++
++    .line 296
++    add-float v5, p4, p0
++
++    mul-float/2addr v5, p1
++
++    mul-float/2addr p4, p1
++
++    mul-float v6, p1, v1
++
++    add-float/2addr v1, p0
++
++    mul-float/2addr v1, p1
++
++    mul-float v7, p1, p3
++
++    add-float/2addr p3, p0
++
++    mul-float/2addr p1, p3
++
++    const/16 p0, 0x10
++
++    new-array p0, p0, [F
++
++    aput v5, p0, v0
++
++    aput p4, p0, v2
++
++    const/4 p3, 0x2
++
++    aput p4, p0, p3
++
++    const/4 p3, 0x3
++
++    aput v4, p0, p3
++
++    const/4 p3, 0x4
++
++    aput v6, p0, p3
++
++    const/4 p3, 0x5
++
++    aput v1, p0, p3
++
++    const/4 p3, 0x6
++
++    aput v6, p0, p3
++
++    const/4 p3, 0x7
++
++    aput v4, p0, p3
++
++    const/16 p3, 0x8
++
++    aput v7, p0, p3
++
++    const/16 p3, 0x9
++
++    aput v7, p0, p3
++
++    const/16 p3, 0xa
++
++    aput p1, p0, p3
++
++    const/16 p1, 0xb
++
++    aput v4, p0, p1
++
++    const/16 p1, 0xc
++
++    aput p2, p0, p1
++
++    const/16 p1, 0xd
++
++    aput p2, p0, p1
++
++    const/16 p1, 0xe
++
++    aput p2, p0, p1
++
++    const/16 p1, 0xf
++
++    aput v3, p0, p1
++
++    return-object p0
++.end method
++
++.method private evaluate()V
++    .registers 7
++
++    .line 414
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->assertHandler()V
++
++    .line 415
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++
++    if-eqz v0, :cond_99
++
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ready:Z
++
++    if-eqz v0, :cond_99
++
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->failed:Z
++
++    if-nez v0, :cond_99
++
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->wantsMatrix()Z
++
++    move-result v0
++
++    if-eqz v0, :cond_99
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    if-eqz v0, :cond_99
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    iget-boolean v0, v0, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->eligible:Z
++
++    if-eqz v0, :cond_99
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++
++    .line 416
++    invoke-virtual {v0}, Ljava/util/ArrayList;->size()I
++
++    move-result v0
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    iget-object v1, v1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->tokens:[Landroid/os/IBinder;
++
++    array-length v1, v1
++
++    if-eq v0, v1, :cond_2d
++
++    goto :goto_99
++
++    .line 420
++    :cond_2d
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++
++    invoke-virtual {v0}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
++
++    move-result-object v0
++
++    :goto_33
++    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
++
++    move-result v1
++
++    if-eqz v1, :cond_51
++
++    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
++
++    move-result-object v1
++
++    check-cast v1, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    .line 421
++    iget-wide v2, v1, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->gen:J
++
++    iget-wide v4, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->generation:J
++
++    cmp-long v2, v2, v4
++
++    if-nez v2, :cond_4d
++
++    iget v1, v1, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->count:I
++
++    if-eqz v1, :cond_4c
++
++    goto :goto_4d
++
++    .line 425
++    :cond_4c
++    goto :goto_33
++
++    .line 422
++    :cond_4d
++    :goto_4d
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++
++    .line 423
++    return-void
++
++    .line 426
++    :cond_51
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ingress:Lcom/android/server/display/color/InlineSdrIngress;
++
++    invoke-virtual {v0}, Lcom/android/server/display/color/InlineSdrIngress;->allowsWrite()Z
++
++    move-result v0
++
++    if-nez v0, :cond_5d
++
++    .line 427
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++
++    .line 428
++    return-void
++
++    .line 431
++    :cond_5d
++    :try_start_5d
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->capture()Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    move-result-object v1
++
++    invoke-virtual {v0, v1}, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->same(Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;)Z
++
++    move-result v0
++
++    if-nez v0, :cond_6d
++
++    .line 432
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->rebuild()V
++
++    .line 433
++    return-void
++
++    .line 435
++    :cond_6d
++    iget v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->level:I
++
++    iget v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->hdrPeakLevel:I
++
++    iget v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrEnable:I
++
++    iget v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrLevel:I
++
++    const/4 v4, 0x0
++
++    invoke-static {v0, v1, v2, v3, v4}, Lcom/android/server/display/color/InlineSdrSaturationController;->composedMatrix(IIIIZ)[F
++
++    move-result-object v0
++
++    .line 436
++    if-eqz v0, :cond_86
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->dtm:Lcom/android/server/display/color/DisplayTransformManager;
++
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ingress:Lcom/android/server/display/color/InlineSdrIngress;
++
++    invoke-virtual {v1, v0, v2}, Lcom/android/server/display/color/DisplayTransformManager;->applyInlineSdrMatrix([FLcom/android/server/display/color/InlineSdrIngress;)Z
++
++    move-result v0
++
++    if-nez v0, :cond_89
++
++    :cond_86
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++    :try_end_89
++    .catch Ljava/lang/Exception; {:try_start_5d .. :try_end_89} :catch_8a
++    .catch Ljava/lang/LinkageError; {:try_start_5d .. :try_end_89} :catch_8a
++
++    .line 441
++    :cond_89
++    goto :goto_98
++
++    .line 437
++    :catch_8a
++    move-exception v0
++
++    .line 438
++    const/4 v1, 0x1
++
++    iput-boolean v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->failed:Z
++
++    .line 439
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->invalidateDisplays()V
++
++    .line 440
++    const-string v1, "InlineSdrSaturation"
++
++    const-string v2, "apply/state check failed; neutral"
++
++    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 442
++    :goto_98
++    return-void
++
++    .line 417
++    :cond_99
++    :goto_99
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++
++    .line 418
++    return-void
++.end method
++
++.method private invalidateDisplays()V
++    .registers 6
++
++    .line 326
++    iget-wide v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->generation:J
++
++    const-wide/16 v2, 0x1
++
++    add-long/2addr v0, v2
++
++    iput-wide v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->generation:J
++
++    .line 327
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ingress:Lcom/android/server/display/color/InlineSdrIngress;
++
++    iget-wide v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->generation:J
++
++    invoke-virtual {v0, v1, v2}, Lcom/android/server/display/color/InlineSdrIngress;->reset(J)V
++
++    .line 328
++    const/4 v0, 0x0
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    .line 329
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++
++    .line 330
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++
++    invoke-virtual {v1}, Ljava/util/ArrayList;->iterator()Ljava/util/Iterator;
++
++    move-result-object v1
++
++    :goto_1a
++    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
++
++    move-result v2
++
++    const-string v3, "InlineSdrSaturation"
++
++    if-eqz v2, :cond_33
++
++    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
++
++    move-result-object v2
++
++    check-cast v2, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    .line 331
++    :try_start_28
++    invoke-virtual {v2}, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->unregisterAll()V
++    :try_end_2b
++    .catch Ljava/lang/RuntimeException; {:try_start_28 .. :try_end_2b} :catch_2c
++    .catch Ljava/lang/LinkageError; {:try_start_28 .. :try_end_2b} :catch_2c
++
++    .line 332
++    goto :goto_32
++
++    :catch_2c
++    move-exception v2
++
++    const-string v4, "HDR cleanup"
++
++    invoke-static {v3, v4, v2}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 333
++    :goto_32
++    goto :goto_1a
++
++    .line 334
++    :cond_33
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++
++    invoke-virtual {v1}, Ljava/util/ArrayList;->clear()V
++
++    .line 336
++    :try_start_38
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->flinger:Landroid/os/IBinder;
++
++    if-eqz v1, :cond_48
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->deathRecipient:Landroid/os/IBinder$DeathRecipient;
++
++    if-eqz v1, :cond_48
++
++    .line 337
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->flinger:Landroid/os/IBinder;
++
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->deathRecipient:Landroid/os/IBinder$DeathRecipient;
++
++    const/4 v4, 0x0
++
++    invoke-interface {v1, v2, v4}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
++    :try_end_48
++    .catch Ljava/lang/RuntimeException; {:try_start_38 .. :try_end_48} :catch_49
++
++    .line 339
++    :cond_48
++    goto :goto_4f
++
++    :catch_49
++    move-exception v1
++
++    const-string v2, "SF cleanup"
++
++    invoke-static {v3, v2, v1}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 340
++    :goto_4f
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->flinger:Landroid/os/IBinder;
++
++    .line 341
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->deathRecipient:Landroid/os/IBinder$DeathRecipient;
++
++    .line 342
++    return-void
++.end method
++
++.method static matrix(I)[F
++    .registers 3
++
++    .line 271
++    const/16 v0, 0x64
++
++    const/4 v1, 0x0
++
++    invoke-static {p0, v0, v1, v1, v1}, Lcom/android/server/display/color/InlineSdrSaturationController;->composedMatrix(IIIIZ)[F
++
++    move-result-object p0
++
++    return-object p0
++.end method
++
++.method static parseLevel(Ljava/lang/String;)I
++    .registers 3
++
++    .line 265
++    const/16 v0, 0x64
++
++    if-nez p0, :cond_5
++
++    return v0
++
++    .line 266
++    :cond_5
++    :try_start_5
++    invoke-virtual {p0}, Ljava/lang/String;->trim()Ljava/lang/String;
++
++    move-result-object p0
++
++    invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
++
++    move-result p0
++
++    const/16 v1, 0xc8
++
++    invoke-static {v1, p0}, Ljava/lang/Math;->min(II)I
++
++    move-result p0
++
++    const/4 v1, 0x0
++
++    invoke-static {v1, p0}, Ljava/lang/Math;->max(II)I
++
++    move-result p0
++    :try_end_18
++    .catch Ljava/lang/NumberFormatException; {:try_start_5 .. :try_end_18} :catch_19
++
++    return p0
++
++    .line 267
++    :catch_19
++    move-exception p0
++
++    return v0
++.end method
++
++.method static parseRange(Ljava/lang/String;III)I
++    .registers 4
++
++    .line 233
++    if-nez p0, :cond_3
++
++    return p3
++
++    .line 234
++    :cond_3
++    :try_start_3
++    invoke-virtual {p0}, Ljava/lang/String;->trim()Ljava/lang/String;
++
++    move-result-object p0
++
++    invoke-static {p0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
++
++    move-result p0
++
++    invoke-static {p2, p0}, Ljava/lang/Math;->min(II)I
++
++    move-result p0
++
++    invoke-static {p1, p0}, Ljava/lang/Math;->max(II)I
++
++    move-result p0
++    :try_end_13
++    .catch Ljava/lang/NumberFormatException; {:try_start_3 .. :try_end_13} :catch_14
++
++    return p0
++
++    .line 235
++    :catch_14
++    move-exception p0
++
++    return p3
++.end method
++
++.method private static physicalDisplayId(Landroid/view/DisplayAddress;)Ljava/lang/Long;
++    .registers 3
++
++    .line 445
++    instance-of v0, p0, Landroid/view/DisplayAddress$Physical;
++
++    if-eqz v0, :cond_f
++
++    .line 446
++    check-cast p0, Landroid/view/DisplayAddress$Physical;
++
++    invoke-virtual {p0}, Landroid/view/DisplayAddress$Physical;->getPhysicalDisplayId()J
++
++    move-result-wide v0
++
++    invoke-static {v0, v1}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
++
++    move-result-object p0
++
++    return-object p0
++
++    .line 448
++    :cond_f
++    instance-of v0, p0, Landroid/view/DisplayAddress$StablePhysical;
++
++    if-eqz v0, :cond_1e
++
++    .line 449
++    check-cast p0, Landroid/view/DisplayAddress$StablePhysical;
++
++    invoke-virtual {p0}, Landroid/view/DisplayAddress$StablePhysical;->getPhysicalDisplayId()J
++
++    move-result-wide v0
++
++    invoke-static {v0, v1}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
++
++    move-result-object p0
++
++    return-object p0
++
++    .line 451
++    :cond_1e
++    const/4 p0, 0x0
++
++    return-object p0
++.end method
++
++.method private readLevel()V
++    .registers 4
++
++    .line 228
++    :try_start_0
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    const-string v1, "inline_sdr_saturation"
++
++    iget v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    invoke-static {v0, v1, v2}, Landroid/provider/Settings$System;->getStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)Ljava/lang/String;
++
++    move-result-object v0
++
++    invoke-static {v0}, Lcom/android/server/display/color/InlineSdrSaturationController;->parseLevel(Ljava/lang/String;)I
++
++    move-result v0
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->level:I
++    :try_end_10
++    .catch Ljava/lang/RuntimeException; {:try_start_0 .. :try_end_10} :catch_11
++
++    .line 229
++    goto :goto_1e
++
++    :catch_11
++    move-exception v0
++
++    const/16 v1, 0x64
++
++    iput v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->level:I
++
++    const-string v1, "InlineSdrSaturation"
++
++    const-string/jumbo v2, "setting unavailable; neutral"
++
++    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 230
++    :goto_1e
++    return-void
++.end method
++
++.method private rebuild()V
++    .registers 7
++
++    .line 345
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->assertHandler()V
++
++    .line 346
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->invalidateDisplays()V
++
++    .line 347
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++
++    if-eqz v0, :cond_67
++
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ready:Z
++
++    if-nez v0, :cond_f
++
++    goto :goto_67
++
++    .line 348
++    :cond_f
++    const/4 v0, 0x0
++
++    iput-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->failed:Z
++
++    .line 350
++    :try_start_12
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->capture()Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    move-result-object v1
++
++    .line 351
++    iget-wide v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->generation:J
++
++    .line 352
++    iget-object v4, v1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->sf:Landroid/os/IBinder;
++
++    iput-object v4, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->flinger:Landroid/os/IBinder;
++
++    .line 353
++    new-instance v4, Lcom/android/server/display/color/InlineSdrSaturationController$6;
++
++    invoke-direct {v4, p0, v2, v3}, Lcom/android/server/display/color/InlineSdrSaturationController$6;-><init>(Lcom/android/server/display/color/InlineSdrSaturationController;J)V
++
++    iput-object v4, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->deathRecipient:Landroid/os/IBinder$DeathRecipient;
++
++    .line 362
++    iget-object v4, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->flinger:Landroid/os/IBinder;
++
++    iget-object v5, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->deathRecipient:Landroid/os/IBinder$DeathRecipient;
++
++    invoke-interface {v4, v5, v0}, Landroid/os/IBinder;->linkToDeath(Landroid/os/IBinder$DeathRecipient;I)V
++
++    .line 363
++    iput-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->snapshot:Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;
++
++    .line 365
++    iget-boolean v4, v1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->eligible:Z
++
++    if-eqz v4, :cond_57
++
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->wantsMatrix()Z
++
++    move-result v4
++
++    if-nez v4, :cond_37
++
++    goto :goto_57
++
++    .line 366
++    :cond_37
++    nop
++
++    :goto_38
++    iget-object v4, v1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->tokens:[Landroid/os/IBinder;
++
++    array-length v4, v4
++
++    if-ge v0, v4, :cond_53
++
++    .line 367
++    new-instance v4, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;
++
++    iget-object v5, v1, Lcom/android/server/display/color/InlineSdrSaturationController$Snapshot;->tokens:[Landroid/os/IBinder;
++
++    aget-object v5, v5, v0
++
++    invoke-direct {v4, p0, v2, v3, v5}, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;-><init>(Lcom/android/server/display/color/InlineSdrSaturationController;JLandroid/os/IBinder;)V
++
++    .line 368
++    iget-object v5, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->listeners:Ljava/util/ArrayList;
++
++    invoke-virtual {v5, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
++
++    .line 369
++    iget-object v5, v4, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->token:Landroid/os/IBinder;
++
++    invoke-virtual {v4, v5}, Lcom/android/server/display/color/InlineSdrSaturationController$HdrListener;->register(Landroid/os/IBinder;)V
++
++    .line 366
++    add-int/lit8 v0, v0, 0x1
++
++    goto :goto_38
++
++    .line 372
++    :cond_53
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->evaluate()V
++    :try_end_56
++    .catch Ljava/lang/Exception; {:try_start_12 .. :try_end_56} :catch_58
++    .catch Ljava/lang/LinkageError; {:try_start_12 .. :try_end_56} :catch_58
++
++    .line 377
++    goto :goto_66
++
++    .line 365
++    :cond_57
++    :goto_57
++    return-void
++
++    .line 373
++    :catch_58
++    move-exception v0
++
++    .line 374
++    const/4 v1, 0x1
++
++    iput-boolean v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->failed:Z
++
++    .line 375
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->invalidateDisplays()V
++
++    .line 376
++    const-string v1, "InlineSdrSaturation"
++
++    const-string v2, "HDR registration failed; neutral"
++
++    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 378
++    :goto_66
++    return-void
++
++    .line 347
++    :cond_67
++    :goto_67
++    return-void
++.end method
++
++.method private scheduleHealth()V
++    .registers 5
++
++    .line 319
++    iget-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++
++    if-eqz v0, :cond_2a
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->health:Ljava/lang/Runnable;
++
++    if-eqz v0, :cond_2a
++
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->wantsMatrix()Z
++
++    move-result v0
++
++    if-nez v0, :cond_1a
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->dtm:Lcom/android/server/display/color/DisplayTransformManager;
++
++    if-eqz v0, :cond_2a
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->dtm:Lcom/android/server/display/color/DisplayTransformManager;
++
++    invoke-virtual {v0}, Lcom/android/server/display/color/DisplayTransformManager;->isInlineSdrNeutralPending()Z
++
++    move-result v0
++
++    if-eqz v0, :cond_2a
++
++    .line 320
++    :cond_1a
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->health:Ljava/lang/Runnable;
++
++    invoke-virtual {v0, v1}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
++
++    .line 321
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->health:Ljava/lang/Runnable;
++
++    const-wide/16 v2, 0x3e8
++
++    invoke-virtual {v0, v1, v2, v3}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
++
++    .line 323
++    :cond_2a
++    return-void
++.end method
++
++.method private syncHdrProperties()V
++    .registers 11
++
++    .line 239
++    const-string/jumbo v0, "persist.sys.oplus.cpu_boost"
++
++    iget v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    if-gez v1, :cond_8
++
++    return-void
++
++    .line 241
++    :cond_8
++    :try_start_8
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    const-string/jumbo v2, "oplus_customize_hdr_peak_level"
++
++    iget v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    invoke-static {v1, v2, v3}, Landroid/provider/Settings$System;->getStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)Ljava/lang/String;
++
++    move-result-object v1
++
++    const/16 v2, 0x7d
++
++    const/16 v3, 0x64
++
++    const/16 v4, 0x32
++
++    invoke-static {v1, v4, v2, v3}, Lcom/android/server/display/color/InlineSdrSaturationController;->parseRange(Ljava/lang/String;III)I
++
++    move-result v1
++
++    .line 242
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    const-string/jumbo v5, "oplus_customize_sdr2hdr_boost_enable"
++
++    iget v6, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    invoke-static {v2, v5, v6}, Landroid/provider/Settings$System;->getStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)Ljava/lang/String;
++
++    move-result-object v2
++
++    const/4 v5, 0x1
++
++    const/4 v6, 0x0
++
++    invoke-static {v2, v6, v5, v6}, Lcom/android/server/display/color/InlineSdrSaturationController;->parseRange(Ljava/lang/String;III)I
++
++    move-result v2
++
++    .line 243
++    iget-object v7, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    const-string/jumbo v8, "oplus_customize_sdr2hdr_boost_level"
++
++    iget v9, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    invoke-static {v7, v8, v9}, Landroid/provider/Settings$System;->getStringForUser(Landroid/content/ContentResolver;Ljava/lang/String;I)Ljava/lang/String;
++
++    move-result-object v7
++
++    invoke-static {v7, v6, v3, v4}, Lcom/android/server/display/color/InlineSdrSaturationController;->parseRange(Ljava/lang/String;III)I
++
++    move-result v3
++
++    .line 244
++    iget-object v4, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    const-string/jumbo v7, "oplus_disable_memory_killer"
++
++    invoke-static {v4, v7}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object v4
++
++    invoke-static {v4, v6, v5, v6}, Lcom/android/server/display/color/InlineSdrSaturationController;->parseRange(Ljava/lang/String;III)I
++
++    move-result v4
++
++    .line 245
++    iget-object v7, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    const-string/jumbo v8, "oplus_memory_killer_min_free_mb"
++
++    invoke-static {v7, v8}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object v7
++
++    const/16 v8, 0x1f4
++
++    invoke-static {v7, v6, v8, v8}, Lcom/android/server/display/color/InlineSdrSaturationController;->parseRange(Ljava/lang/String;III)I
++
++    move-result v7
++
++    .line 246
++    iget-object v8, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    const-string v9, "cos17_cpu_boost_enable"
++
++    invoke-static {v8, v9}, Landroid/provider/Settings$Global;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object v8
++
++    invoke-static {v8, v6, v5, v6}, Lcom/android/server/display/color/InlineSdrSaturationController;->parseRange(Ljava/lang/String;III)I
++
++    move-result v5
++
++    .line 247
++    iput v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->hdrPeakLevel:I
++
++    .line 248
++    iput v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrEnable:I
++
++    .line 249
++    iput v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrLevel:I
++
++    .line 250
++    const-string/jumbo v6, "persist.sys.oplus.hdr_peak_level"
++
++    invoke-static {v1}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++
++    move-result-object v1
++
++    invoke-static {v6, v1}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 251
++    const-string/jumbo v1, "persist.sys.oplus.sdr2hdr_enable"
++
++    invoke-static {v2}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++
++    move-result-object v2
++
++    invoke-static {v1, v2}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 252
++    const-string/jumbo v1, "persist.sys.oplus.sdr2hdr_level"
++
++    invoke-static {v3}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++
++    move-result-object v2
++
++    invoke-static {v1, v2}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 253
++    const-string/jumbo v1, "persist.sys.oplus.disable_mem_killer"
++
++    invoke-static {v4}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++
++    move-result-object v2
++
++    invoke-static {v1, v2}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 254
++    const-string/jumbo v1, "persist.sys.oplus.mem_killer_floor_mb"
++
++    invoke-static {v7}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++
++    move-result-object v2
++
++    invoke-static {v1, v2}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 255
++    invoke-static {v5}, Ljava/lang/Integer;->toString(I)Ljava/lang/String;
++
++    move-result-object v1
++
++    .line 256
++    const-string v2, ""
++
++    invoke-static {v0, v2}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
++
++    move-result-object v2
++
++    invoke-virtual {v1, v2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v2
++
++    if-nez v2, :cond_b0
++
++    .line 257
++    invoke-static {v0, v1}, Landroid/os/SystemProperties;->set(Ljava/lang/String;Ljava/lang/String;)V
++    :try_end_b0
++    .catch Ljava/lang/RuntimeException; {:try_start_8 .. :try_end_b0} :catch_b1
++    .catch Ljava/lang/LinkageError; {:try_start_8 .. :try_end_b0} :catch_b1
++
++    .line 261
++    :cond_b0
++    goto :goto_b9
++
++    .line 259
++    :catch_b1
++    move-exception v0
++
++    .line 260
++    const-string v1, "InlineSdrSaturation"
++
++    const-string v2, "HDR property sync failed"
++
++    invoke-static {v1, v2, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 262
++    :goto_b9
++    return-void
++.end method
++
++.method private wantsMatrix()Z
++    .registers 4
++
++    .line 224
++    iget v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->level:I
++
++    const/4 v1, 0x1
++
++    const/16 v2, 0x64
++
++    if-ne v0, v2, :cond_15
++
++    iget v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->hdrPeakLevel:I
++
++    if-gt v0, v2, :cond_15
++
++    iget v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrEnable:I
++
++    if-ne v0, v1, :cond_14
++
++    iget v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrLevel:I
++
++    if-lez v0, :cond_14
++
++    goto :goto_15
++
++    :cond_14
++    const/4 v1, 0x0
++
++    :cond_15
++    :goto_15
++    return v1
++.end method
++
++
++# virtual methods
++.method public setUp(I)V
++    .registers 15
++
++    .line 94
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->assertHandler()V
++
++    .line 95
++    invoke-virtual {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->tearDown()V
++
++    .line 96
++    if-gez p1, :cond_9
++
++    return-void
++
++    .line 97
++    :cond_9
++    iget-wide v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->session:J
++
++    .line 98
++    iput p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    .line 99
++    const/4 p1, 0x1
++
++    iput-boolean p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++
++    .line 100
++    const/4 v8, 0x0
++
++    iput-boolean v8, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->failed:Z
++
++    .line 102
++    :try_start_13
++    const-class v0, Lcom/android/server/display/color/DisplayTransformManager;
++
++    invoke-static {v0}, Lcom/android/server/LocalServices;->getService(Ljava/lang/Class;)Ljava/lang/Object;
++
++    move-result-object v0
++
++    check-cast v0, Lcom/android/server/display/color/DisplayTransformManager;
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->dtm:Lcom/android/server/display/color/DisplayTransformManager;
++
++    .line 103
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->dtm:Lcom/android/server/display/color/DisplayTransformManager;
++
++    if-eqz v0, :cond_10b
++
++    .line 104
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->context:Landroid/content/Context;
++
++    const-string v1, "display"
++
++    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
++
++    move-result-object v0
++
++    check-cast v0, Landroid/hardware/display/DisplayManager;
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->displays:Landroid/hardware/display/DisplayManager;
++
++    .line 105
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->context:Landroid/content/Context;
++
++    const-string/jumbo v1, "power"
++
++    invoke-virtual {v0, v1}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
++
++    move-result-object v0
++
++    check-cast v0, Landroid/os/PowerManager;
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->power:Landroid/os/PowerManager;
++
++    .line 106
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->displays:Landroid/hardware/display/DisplayManager;
++
++    if-eqz v0, :cond_103
++
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->power:Landroid/os/PowerManager;
++
++    if-eqz v0, :cond_103
++
++    .line 109
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->power:Landroid/os/PowerManager;
++
++    invoke-virtual {v0}, Landroid/os/PowerManager;->isInteractive()Z
++
++    move-result v0
++
++    if-nez v0, :cond_4c
++
++    move v0, p1
++
++    goto :goto_4d
++
++    :cond_4c
++    move v0, v8
++
++    :goto_4d
++    iput-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->screenBlocked:Z
++
++    .line 110
++    const-string v0, "inline_sdr_saturation"
++
++    invoke-static {v0}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
++
++    move-result-object v9
++
++    .line 111
++    const-string/jumbo v0, "oplus_customize_hdr_peak_level"
++
++    invoke-static {v0}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
++
++    move-result-object v10
++
++    .line 112
++    const-string/jumbo v0, "oplus_customize_sdr2hdr_boost_enable"
++
++    invoke-static {v0}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
++
++    move-result-object v11
++
++    .line 113
++    const-string/jumbo v0, "oplus_customize_sdr2hdr_boost_level"
++
++    invoke-static {v0}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
++
++    move-result-object v12
++
++    .line 114
++    const-string/jumbo v0, "oplus_disable_memory_killer"
++
++    invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
++
++    move-result-object v5
++
++    .line 115
++    const-string/jumbo v0, "oplus_memory_killer_min_free_mb"
++
++    invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
++
++    move-result-object v6
++
++    .line 116
++    const-string v0, "cos17_cpu_boost_enable"
++
++    invoke-static {v0}, Landroid/provider/Settings$Global;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
++
++    move-result-object v7
++
++    .line 117
++    new-instance v0, Lcom/android/server/display/color/InlineSdrSaturationController$2;
++
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    move-object v1, p0
++
++    invoke-direct/range {v0 .. v7}, Lcom/android/server/display/color/InlineSdrSaturationController$2;-><init>(Lcom/android/server/display/color/InlineSdrSaturationController;Landroid/os/Handler;JLandroid/net/Uri;Landroid/net/Uri;Landroid/net/Uri;)V
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    .line 129
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    iget v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    invoke-virtual {v0, v9, v8, v1, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
++
++    .line 130
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    iget v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    invoke-virtual {v0, v10, v8, v1, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
++
++    .line 131
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    iget v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    invoke-virtual {v0, v11, v8, v1, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
++
++    .line 132
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    iget v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    invoke-virtual {v0, v12, v8, v1, v2}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;I)V
++
++    .line 133
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    invoke-virtual {v0, v5, v8, v1}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
++
++    .line 134
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    invoke-virtual {v0, v6, v8, v1}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
++
++    .line 135
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    invoke-virtual {v0, v7, v8, v1}, Landroid/content/ContentResolver;->registerContentObserver(Landroid/net/Uri;ZLandroid/database/ContentObserver;)V
++
++    .line 136
++    new-instance v0, Lcom/android/server/display/color/InlineSdrSaturationController$3;
++
++    invoke-direct {v0, p0, v3, v4}, Lcom/android/server/display/color/InlineSdrSaturationController$3;-><init>(Lcom/android/server/display/color/InlineSdrSaturationController;J)V
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->displayListener:Landroid/hardware/display/DisplayManager$DisplayListener;
++
++    .line 144
++    iget-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->displays:Landroid/hardware/display/DisplayManager;
++
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->displayListener:Landroid/hardware/display/DisplayManager$DisplayListener;
++
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    invoke-virtual {v0, v1, v2}, Landroid/hardware/display/DisplayManager;->registerDisplayListener(Landroid/hardware/display/DisplayManager$DisplayListener;Landroid/os/Handler;)V
++
++    .line 145
++    new-instance v0, Lcom/android/server/display/color/InlineSdrSaturationController$4;
++
++    invoke-direct {v0, p0, v3, v4}, Lcom/android/server/display/color/InlineSdrSaturationController$4;-><init>(Lcom/android/server/display/color/InlineSdrSaturationController;J)V
++
++    iput-object v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->receiver:Landroid/content/BroadcastReceiver;
++
++    .line 160
++    new-instance v0, Landroid/content/IntentFilter;
++
++    invoke-direct {v0}, Landroid/content/IntentFilter;-><init>()V
++
++    .line 161
++    const-string v1, "android.intent.action.SCREEN_ON"
++
++    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
++
++    .line 162
++    const-string v1, "android.intent.action.SCREEN_OFF"
++
++    invoke-virtual {v0, v1}, Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V
++
++    .line 163
++    iget-object v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->context:Landroid/content/Context;
++
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->receiver:Landroid/content/BroadcastReceiver;
++
++    iget-object v5, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    const/4 v6, 0x0
++
++    invoke-virtual {v1, v2, v0, v6, v5}, Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;Ljava/lang/String;Landroid/os/Handler;)Landroid/content/Intent;
++
++    .line 164
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->syncHdrProperties()V
++
++    .line 165
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->readLevel()V
++
++    .line 166
++    iput-boolean p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ready:Z
++
++    .line 167
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->wantsMatrix()Z
++
++    move-result v0
++
++    if-eqz v0, :cond_102
++
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->rebuild()V
++
++    .line 172
++    :cond_102
++    goto :goto_121
++
++    .line 107
++    :cond_103
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    const-string v1, "display services unavailable"
++
++    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++
++    .line 103
++    :cond_10b
++    new-instance v0, Ljava/lang/IllegalStateException;
++
++    const-string v1, "DTM unavailable"
++
++    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
++
++    throw v0
++    :try_end_113
++    .catch Ljava/lang/Exception; {:try_start_13 .. :try_end_113} :catch_113
++    .catch Ljava/lang/LinkageError; {:try_start_13 .. :try_end_113} :catch_113
++
++    .line 168
++    :catch_113
++    move-exception v0
++
++    .line 169
++    iput-boolean p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->failed:Z
++
++    .line 170
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++
++    .line 171
++    const-string p1, "InlineSdrSaturation"
++
++    const-string/jumbo v1, "setup failed; neutral"
++
++    invoke-static {p1, v1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 173
++    :goto_121
++    new-instance p1, Lcom/android/server/display/color/InlineSdrSaturationController$5;
++
++    invoke-direct {p1, p0, v3, v4}, Lcom/android/server/display/color/InlineSdrSaturationController$5;-><init>(Lcom/android/server/display/color/InlineSdrSaturationController;J)V
++
++    iput-object p1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->health:Ljava/lang/Runnable;
++
++    .line 192
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->scheduleHealth()V
++
++    .line 193
++    return-void
++.end method
++
++.method public tearDown()V
++    .registers 6
++
++    .line 196
++    const-string v0, "InlineSdrSaturation"
++
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->assertHandler()V
++
++    .line 198
++    iget-wide v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->session:J
++
++    const-wide/16 v3, 0x1
++
++    add-long/2addr v1, v3
++
++    iput-wide v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->session:J
++
++    .line 199
++    const/4 v1, 0x0
++
++    iput-boolean v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->active:Z
++
++    .line 200
++    iput-boolean v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->ready:Z
++
++    .line 201
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->clearSlot()V
++
++    .line 202
++    invoke-direct {p0}, Lcom/android/server/display/color/InlineSdrSaturationController;->invalidateDisplays()V
++
++    .line 203
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->health:Ljava/lang/Runnable;
++
++    if-eqz v2, :cond_22
++
++    iget-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->handler:Landroid/os/Handler;
++
++    iget-object v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->health:Ljava/lang/Runnable;
++
++    invoke-virtual {v2, v3}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
++
++    .line 204
++    :cond_22
++    const/4 v2, 0x0
++
++    iput-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->health:Ljava/lang/Runnable;
++
++    .line 205
++    :try_start_25
++    iget-object v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    if-eqz v3, :cond_30
++
++    iget-object v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->resolver:Landroid/content/ContentResolver;
++
++    iget-object v4, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    invoke-virtual {v3, v4}, Landroid/content/ContentResolver;->unregisterContentObserver(Landroid/database/ContentObserver;)V
++    :try_end_30
++    .catch Ljava/lang/RuntimeException; {:try_start_25 .. :try_end_30} :catch_31
++
++    .line 206
++    :cond_30
++    goto :goto_38
++
++    :catch_31
++    move-exception v3
++
++    const-string/jumbo v4, "observer cleanup"
++
++    invoke-static {v0, v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 207
++    :goto_38
++    iput-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->observer:Landroid/database/ContentObserver;
++
++    .line 208
++    :try_start_3a
++    iget-object v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->displayListener:Landroid/hardware/display/DisplayManager$DisplayListener;
++
++    if-eqz v3, :cond_45
++
++    iget-object v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->displays:Landroid/hardware/display/DisplayManager;
++
++    iget-object v4, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->displayListener:Landroid/hardware/display/DisplayManager$DisplayListener;
++
++    invoke-virtual {v3, v4}, Landroid/hardware/display/DisplayManager;->unregisterDisplayListener(Landroid/hardware/display/DisplayManager$DisplayListener;)V
++    :try_end_45
++    .catch Ljava/lang/RuntimeException; {:try_start_3a .. :try_end_45} :catch_46
++
++    .line 209
++    :cond_45
++    goto :goto_4c
++
++    :catch_46
++    move-exception v3
++
++    const-string v4, "display cleanup"
++
++    invoke-static {v0, v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 210
++    :goto_4c
++    iput-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->displayListener:Landroid/hardware/display/DisplayManager$DisplayListener;
++
++    .line 211
++    :try_start_4e
++    iget-object v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->receiver:Landroid/content/BroadcastReceiver;
++
++    if-eqz v3, :cond_59
++
++    iget-object v3, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->context:Landroid/content/Context;
++
++    iget-object v4, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->receiver:Landroid/content/BroadcastReceiver;
++
++    invoke-virtual {v3, v4}, Landroid/content/Context;->unregisterReceiver(Landroid/content/BroadcastReceiver;)V
++    :try_end_59
++    .catch Ljava/lang/RuntimeException; {:try_start_4e .. :try_end_59} :catch_5a
++
++    .line 212
++    :cond_59
++    goto :goto_61
++
++    :catch_5a
++    move-exception v3
++
++    const-string/jumbo v4, "power cleanup"
++
++    invoke-static {v0, v4, v3}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 213
++    :goto_61
++    iput-object v2, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->receiver:Landroid/content/BroadcastReceiver;
++
++    .line 214
++    const/16 v0, -0x2710
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->user:I
++
++    .line 215
++    const/16 v0, 0x64
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->level:I
++
++    .line 216
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->hdrPeakLevel:I
++
++    .line 217
++    iput v1, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrEnable:I
++
++    .line 218
++    const/16 v0, 0x32
++
++    iput v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->sdr2HdrLevel:I
++
++    .line 219
++    const/4 v0, 0x1
++
++    iput-boolean v0, p0, Lcom/android/server/display/color/InlineSdrSaturationController;->screenBlocked:Z
++
++    .line 221
++    return-void
++.end method

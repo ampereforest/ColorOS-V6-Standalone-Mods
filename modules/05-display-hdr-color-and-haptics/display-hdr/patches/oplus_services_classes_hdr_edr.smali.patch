@@ -1,0 +1,89 @@
+# Patch: oplus-services.jar (classes.dex) HDR headroom 4.9f & EDR UI dimming fix
+--- a/com/android/server/display/DisplayManagerServiceExtImpl.smali	2026-11-26 10:22:18.892833556 +0700
++++ b/com/android/server/display/DisplayManagerServiceExtImpl.smali	2026-11-26 10:22:21.087335662 +0700
+@@ -1715,45 +1715,45 @@
+     .line 853
+     iget-boolean v0, p0, Lcom/android/server/display/DisplayManagerServiceExtImpl;->mSupportEdrWithUiDimming:Z
+ 
+-    if-nez v0, :cond_c
++    if-nez v0, :cond_d
+ 
+     iget-boolean v0, p0, Lcom/android/server/display/DisplayManagerServiceExtImpl;->mSupportEdrNoUiDimming:Z
+ 
+     if-eqz v0, :cond_9
+ 
+-    goto :goto_c
++    goto :goto_d
+ 
+     .line 862
+     :cond_9
+-    const/high16 v0, 0x3f800000    # 1.0f
++    const v0, 0x409ccccd    # 4.9f
+ 
+     return v0
+ 
+     .line 855
+-    :cond_c
+-    :goto_c
++    :cond_d
++    :goto_d
+     invoke-static {}, Lcom/android/server/display/util/OplusBrightnessUtils;->isRM()Z
+ 
+     move-result v0
+ 
+     const/high16 v1, 0x40a00000    # 5.0f
+ 
+-    if-eqz v0, :cond_1d
++    if-eqz v0, :cond_1e
+ 
+     .line 856
+     iget v0, p0, Lcom/android/server/display/DisplayManagerServiceExtImpl;->mHightestHdrSdrRatio:F
+ 
+     cmpl-float v0, v0, v1
+ 
+-    if-lez v0, :cond_1c
++    if-lez v0, :cond_1d
+ 
+     iget v1, p0, Lcom/android/server/display/DisplayManagerServiceExtImpl;->mHightestHdrSdrRatio:F
+ 
+-    :cond_1c
++    :cond_1d
+     return v1
+ 
+     .line 859
+-    :cond_1d
++    :cond_1e
+     return v1
+ .end method
+ 
+
+--- a/com/android/server/display/LocalDisplayDeviceExtImpl.smali	2026-11-26 10:22:18.894249813 +0700
++++ b/com/android/server/display/LocalDisplayDeviceExtImpl.smali	2026-11-26 10:22:21.087947556 +0700
+@@ -968,27 +968,8 @@
+ .method public isSupportSdrToHdrRatio()Z
+     .registers 2
+ 
+-    .line 129
+-    iget-boolean v0, p0, Lcom/android/server/display/LocalDisplayDeviceExtImpl;->mSupportEdrWithUiDimming:Z
+-
+-    if-nez v0, :cond_b
+-
+-    iget-boolean v0, p0, Lcom/android/server/display/LocalDisplayDeviceExtImpl;->mSupportEdrNoUiDimming:Z
+-
+-    if-eqz v0, :cond_9
+-
+-    goto :goto_b
+-
+-    :cond_9
+-    const/4 v0, 0x0
+-
+-    goto :goto_c
+-
+-    :cond_b
+-    :goto_b
+     const/4 v0, 0x1
+ 
+-    :goto_c
+     return v0
+ .end method
+ 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="com.dada.coloros.angle">
+        <permission name="android.permission.WRITE_SECURE_SETTINGS" />
+        <permission name="android.permission.QUERY_ALL_PACKAGES" />
+    </privapp-permissions>
+</permissions>

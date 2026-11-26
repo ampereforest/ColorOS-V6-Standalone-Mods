@@ -1,0 +1,29 @@
+# Local private signing keys — NEVER commit!
+signing/keys/*
+!signing/keys/.gitkeep
+*.pk8
+*.p12
+*.jks
+*.keystore
+*.key
+*.pass
+*.x509.pem
+
+# Downloaded >100 MB GitHub Release assets (fetched via scripts/fetch_release_assets.sh)
+modules/09-apps-and-ui/openalive-wallpaper/product/app/OpenAlive/OpenAlive.apk
+modules/09-apps-and-ui/google-suite/product/priv-app/VelvetCtS/VelvetCtS.apk
+modules/04-camera-oplus-experimental/my_product/app/OplusCamera/OplusCamera.apk
+modules/09-apps-and-ui/osee-op15-global/my_stock/del-app/OcrScanner/OcrScanner.apk
+modules/10-modem-and-flashing/images/modemfirmware.img
+modules/09-apps-and-ui/titanium-browser/TitaniumBrowser.apk
+
+# Build/temp outputs
+*.orig
+*.rej
+*.tmp
+__pycache__/
+*.pyc
+.DS_Store
+out/
+build/
+.gradle/

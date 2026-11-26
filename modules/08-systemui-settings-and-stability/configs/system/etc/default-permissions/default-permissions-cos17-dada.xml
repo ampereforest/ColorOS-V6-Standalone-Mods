@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CP86: SystemUI is re-signed with the Project1 key, so it is no longer
+  "persistent + platform-signed" and DefaultPermissionGrantPolicy skips it in
+  grantPermissionsToSysComponentsAndPrivApps(). Without these grants SystemUI
+  crash-loops on BLUETOOTH_CONNECT / READ_CONTACTS (-> reboot,ui_repair_abandoned).
+-->
+<exceptions>
+    <exception package="com.android.systemui">
+        <permission name="android.permission.ACCESS_COARSE_LOCATION" fixed="true"/>
+        <permission name="android.permission.ACCESS_FINE_LOCATION" fixed="true"/>
+        <permission name="android.permission.BLUETOOTH_ADVERTISE" fixed="true"/>
+        <permission name="android.permission.BLUETOOTH_CONNECT" fixed="true"/>
+        <permission name="android.permission.BLUETOOTH_SCAN" fixed="true"/>
+        <permission name="android.permission.CAMERA" fixed="true"/>
+        <permission name="android.permission.GET_ACCOUNTS" fixed="true"/>
+        <permission name="android.permission.POST_NOTIFICATIONS" fixed="true"/>
+        <permission name="android.permission.READ_CONTACTS" fixed="true"/>
+        <permission name="android.permission.READ_EXTERNAL_STORAGE" fixed="true"/>
+        <permission name="android.permission.READ_PHONE_STATE" fixed="true"/>
+        <permission name="android.permission.RECORD_AUDIO" fixed="true"/>
+    </exception>
+</exceptions>

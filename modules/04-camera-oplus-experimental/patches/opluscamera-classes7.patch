@@ -1,0 +1,7941 @@
+diff -ruN a/com/oplus/camera/feature/zoom/ui/m2.smali b/com/oplus/camera/feature/zoom/ui/m2.smali
+--- a/com/oplus/camera/feature/zoom/ui/m2.smali
++++ b/com/oplus/camera/feature/zoom/ui/m2.smali
+@@ -2083,6 +2083,367 @@
+     .line 596
+ .end method
+ 
++.method private final S_orig(FI)Z
++    .registers 6
++
++    .line 1
++    iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->y:Ljava/util/concurrent/atomic/AtomicBoolean;
++
++    .line 2
++    .line 3
++    invoke-virtual {v0}, Ljava/util/concurrent/atomic/AtomicBoolean;->get()Z
++
++    .line 4
++    .line 5
++    .line 6
++    move-result v0
++
++    .line 7
++    const/4 v1, 0x0
++
++    .line 8
++    if-nez v0, :cond_5e
++
++    .line 9
++    .line 10
++    iget-boolean v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->s:Z
++
++    .line 11
++    .line 12
++    if-eqz v0, :cond_5e
++
++    .line 13
++    .line 14
++    iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
++
++    .line 15
++    .line 16
++    if-eqz v0, :cond_1a
++
++    .line 17
++    .line 18
++    const/high16 v2, 0x42f00000    # 120.0f
++
++    .line 19
++    .line 20
++    iget v0, v0, Ldb/c;->H0:F
++
++    .line 21
++    .line 22
++    cmpl-float v0, v2, v0
++
++    .line 23
++    .line 24
++    if-nez v0, :cond_1a
++
++    .line 25
++    .line 26
++    goto :goto_2b
++
++    .line 27
++    :cond_1a
++    invoke-static {}, Lcom/oplus/camera/configure/CameraConfig;->H()Z
++
++    .line 28
++    .line 29
++    .line 30
++    move-result v0
++
++    .line 31
++    if-eqz v0, :cond_27
++
++    .line 32
++    .line 33
++    invoke-virtual {p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->M()Z
++
++    .line 34
++    .line 35
++    .line 36
++    move-result v0
++
++    .line 37
++    if-eqz v0, :cond_27
++
++    .line 38
++    .line 39
++    goto :goto_2b
++
++    .line 40
++    :cond_27
++    iget-boolean v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->N0:Z
++
++    .line 41
++    .line 42
++    if-eqz v0, :cond_5e
++
++    .line 43
++    .line 44
++    :goto_2b
++    iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
++
++    .line 45
++    .line 46
++    if-eqz v0, :cond_34
++
++    .line 47
++    .line 48
++    iget-boolean v0, v0, Ldb/c;->n:Z
++
++    .line 49
++    .line 50
++    if-nez v0, :cond_34
++
++    .line 51
++    .line 52
++    goto :goto_5e
++
++    .line 53
++    :cond_34
++    invoke-static {}, Lll/e;->c()Z
++
++    .line 54
++    .line 55
++    .line 56
++    move-result v0
++
++    .line 57
++    const/4 v2, 0x1
++
++    .line 58
++    if-eqz v0, :cond_55
++
++    .line 59
++    .line 60
++    const/4 v0, -0x1
++
++    .line 61
++    if-eq v0, p2, :cond_4c
++
++    .line 62
++    .line 63
++    const/4 v0, 0x2
++
++    .line 64
++    if-ne v0, p2, :cond_5e
++
++    .line 65
++    .line 66
++    iget p0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->B:F
++
++    .line 67
++    .line 68
++    sub-float/2addr p1, p0
++
++    .line 69
++    sget p0, Lcom/oplus/camera/feature/zoom/ui/m2;->m1:F
++
++    .line 70
++    .line 71
++    cmpg-float p0, p1, p0
++
++    .line 72
++    .line 73
++    if-gez p0, :cond_5e
++
++    .line 74
++    .line 75
++    :goto_4a
++    move v1, v2
++
++    .line 76
++    goto :goto_5e
++
++    .line 77
++    :cond_4c
++    iget p0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->B:F
++
++    .line 78
++    .line 79
++    invoke-static {p1, p0}, Ljava/lang/Float;->compare(FF)I
++
++    .line 80
++    .line 81
++    .line 82
++    move-result p0
++
++    .line 83
++    if-gtz p0, :cond_5e
++
++    .line 84
++    .line 85
++    goto :goto_4a
++
++    .line 86
++    :cond_55
++    iget p0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->C:F
++
++    .line 87
++    .line 88
++    invoke-static {p1, p0}, Ljava/lang/Float;->compare(FF)I
++
++    .line 89
++    .line 90
++    .line 91
++    move-result p0
++
++    .line 92
++    if-ltz p0, :cond_5e
++
++    .line 93
++    .line 94
++    goto :goto_4a
++
++    .line 95
++    :cond_5e
++    :goto_5e
++    return v1
++    .line 96
++    .line 97
++    .line 98
++    .line 99
++    .line 100
++    .line 101
++    .line 102
++    .line 103
++    .line 104
++    .line 105
++    .line 106
++    .line 107
++    .line 108
++    .line 109
++    .line 110
++    .line 111
++    .line 112
++    .line 113
++    .line 114
++    .line 115
++    .line 116
++    .line 117
++    .line 118
++    .line 119
++    .line 120
++    .line 121
++    .line 122
++    .line 123
++    .line 124
++    .line 125
++    .line 126
++    .line 127
++    .line 128
++    .line 129
++    .line 130
++    .line 131
++    .line 132
++    .line 133
++    .line 134
++    .line 135
++    .line 136
++    .line 137
++    .line 138
++    .line 139
++    .line 140
++    .line 141
++    .line 142
++    .line 143
++    .line 144
++    .line 145
++    .line 146
++    .line 147
++    .line 148
++    .line 149
++    .line 150
++    .line 151
++    .line 152
++    .line 153
++    .line 154
++    .line 155
++    .line 156
++    .line 157
++    .line 158
++    .line 159
++    .line 160
++    .line 161
++    .line 162
++    .line 163
++    .line 164
++    .line 165
++    .line 166
++    .line 167
++    .line 168
++    .line 169
++    .line 170
++    .line 171
++    .line 172
++    .line 173
++    .line 174
++    .line 175
++    .line 176
++    .line 177
++    .line 178
++    .line 179
++    .line 180
++    .line 181
++    .line 182
++    .line 183
++    .line 184
++    .line 185
++    .line 186
++    .line 187
++    .line 188
++    .line 189
++    .line 190
++    .line 191
++    .line 192
++    .line 193
++    .line 194
++    .line 195
++    .line 196
++    .line 197
++    .line 198
++    .line 199
++    .line 200
++    .line 201
++    .line 202
++    .line 203
++    .line 204
++    .line 205
++    .line 206
++    .line 207
++    .line 208
++    .line 209
++    .line 210
++    .line 211
++    .line 212
++    .line 213
++    .line 214
++    .line 215
++    .line 216
++    .line 217
++    .line 218
++    .line 219
++    .line 220
++    .line 221
++    .line 222
++    .line 223
++    .line 224
++    .line 225
++    .line 226
++    .line 227
++    .line 228
++    .line 229
++    .line 230
++    .line 231
++    .line 232
++    .line 233
++    .line 234
++    .line 235
++    .line 236
++    .line 237
++    .line 238
++    .line 239
++    .line 240
++.end method
++
+ .method public static a(Lcom/oplus/camera/feature/zoom/ui/m2;)V
+     .registers 8
+ 
+@@ -13110,6 +13471,23 @@
+ 
+     move/from16 v6, p1
+ 
++    const/high16 v7, 0x3f800000    # 1.0f
++
++    cmpl-float v7, v6, v7
++
++    if-nez v7, :cond_48
++
++    move/from16 v7, p2
++
++    const/high16 v8, 0x40a00000    # 5.0f
++
++    cmpl-float v7, v7, v8
++
++    if-ltz v7, :cond_48
++
++    const v6, 0x3f19999a    # 0.6f
++
++    :cond_48
+     iput v6, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->m:F
+ 
+     move/from16 v6, p2
+@@ -13145,7 +13523,7 @@
+ 
+     const/high16 v10, 0x3f800000    # 1.0f
+ 
+-    if-eqz v2, :cond_ce
++    if-eqz v2, :cond_df
+ 
+     .line 10
+     invoke-static {}, Lll/h;->d()Lll/h;
+@@ -13166,22 +13544,22 @@
+ 
+     move-result v11
+ 
+-    if-eqz v11, :cond_ad
++    if-eqz v11, :cond_be
+ 
+     .line 13
+     iget-boolean v11, v2, Ldb/c;->A0:Z
+ 
+-    if-eqz v11, :cond_75
++    if-eqz v11, :cond_86
+ 
+     .line 14
+     invoke-virtual {v7, v8}, Ljl/h0;->Y2(Ljava/lang/String;)Lil/g;
+ 
+     move-result-object v11
+ 
+-    goto :goto_7e
++    goto :goto_8f
+ 
+     .line 15
+-    :cond_75
++    :cond_86
+     new-instance v11, Lil/g;
+ 
+     invoke-static {}, Lll/f;->e()F
+@@ -13190,7 +13568,7 @@
+ 
+     invoke-direct {v11, v12}, Lil/g;-><init>(F)V
+ 
+-    :goto_7e
++    :goto_8f
+     iput-object v11, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->o:Lil/g;
+ 
+     .line 16
+@@ -13210,20 +13588,20 @@
+ 
+     invoke-virtual {v13, v12}, Lll/h;->g(Ljava/util/List;)V
+ 
+-    if-eqz v12, :cond_c8
++    if-eqz v12, :cond_d9
+ 
+     .line 19
+     invoke-interface {v12}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+ 
+     move-result-object v12
+ 
+-    :cond_95
+-    :goto_95
++    :cond_a6
++    :goto_a6
+     invoke-interface {v12}, Ljava/util/Iterator;->hasNext()Z
+ 
+     move-result v13
+ 
+-    if-eqz v13, :cond_c8
++    if-eqz v13, :cond_d9
+ 
+     invoke-interface {v12}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+ 
+@@ -13239,25 +13617,25 @@
+ 
+     move-result v14
+ 
+-    if-gez v14, :cond_95
++    if-gez v14, :cond_a6
+ 
+     .line 22
+     invoke-virtual {v9, v13}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    goto :goto_95
++    goto :goto_a6
+ 
+     .line 23
+-    :cond_ad
++    :cond_be
+     iget-boolean v11, v2, Ldb/c;->A0:Z
+ 
+-    if-eqz v11, :cond_c1
++    if-eqz v11, :cond_d2
+ 
+     .line 24
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->j()Z
+ 
+     move-result v11
+ 
+-    if-eqz v11, :cond_c1
++    if-eqz v11, :cond_d2
+ 
+     .line 25
+     iget-object v11, v7, Ljl/h0;->z0:Lil/f;
+@@ -13269,62 +13647,62 @@
+ 
+     move-result-object v11
+ 
+-    goto :goto_c6
++    goto :goto_d7
+ 
+     .line 27
+-    :cond_c1
++    :cond_d2
+     new-instance v11, Lil/g;
+ 
+     invoke-direct {v11, v10}, Lil/g;-><init>(F)V
+ 
+-    :goto_c6
++    :goto_d7
+     iput-object v11, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->o:Lil/g;
+ 
+     .line 28
+-    :cond_c8
++    :cond_d9
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->f()I
+ 
+     move-result v11
+ 
+     iput v11, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->w:I
+ 
+-    :cond_ce
+-    if-eqz v2, :cond_d8
++    :cond_df
++    if-eqz v2, :cond_e9
+ 
+     .line 29
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->B()Z
+ 
+     move-result v11
+ 
+-    if-eqz v11, :cond_d8
++    if-eqz v11, :cond_e9
+ 
+     move v11, v5
+ 
+-    goto :goto_d9
++    goto :goto_ea
+ 
+-    :cond_d8
++    :cond_e9
+     move v11, v6
+ 
+-    :goto_d9
++    :goto_ea
+     iput-boolean v11, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->u:Z
+ 
+-    if-eqz v2, :cond_e5
++    if-eqz v2, :cond_f6
+ 
+     .line 30
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->k()Z
+ 
+     move-result v11
+ 
+-    if-eqz v11, :cond_e5
++    if-eqz v11, :cond_f6
+ 
+     move v11, v5
+ 
+-    goto :goto_e6
++    goto :goto_f7
+ 
+-    :cond_e5
++    :cond_f6
+     move v11, v6
+ 
+-    :goto_e6
++    :goto_f7
+     iput-boolean v11, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->v:Z
+ 
+     const-string v11, "com.oplus.portrait.zoom.point.focal.length.85mm.value"
+@@ -13338,35 +13716,35 @@
+ 
+     iget-object v11, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v11, :cond_fa
++    if-eqz v11, :cond_10b
+ 
+     .line 32
+     iget-boolean v11, v11, Ldb/c;->C:Z
+ 
+-    if-eqz v11, :cond_fa
++    if-eqz v11, :cond_10b
+ 
+     move v11, v5
+ 
+-    goto :goto_fb
++    goto :goto_10c
+ 
+-    :cond_fa
++    :cond_10b
+     move v11, v6
+ 
+-    :goto_fb
++    :goto_10c
+     const/high16 v12, 0x40000000    # 2.0f
+ 
+-    if-eqz v11, :cond_116
++    if-eqz v11, :cond_127
+ 
+     .line 33
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->m()Z
+ 
+     move-result v13
+ 
+-    if-eqz v13, :cond_114
++    if-eqz v13, :cond_125
+ 
+     iget-object v13, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v13, :cond_114
++    if-eqz v13, :cond_125
+ 
+     .line 34
+     invoke-static {}, Ldb/c;->d()F
+@@ -13375,20 +13753,20 @@
+ 
+     cmpl-float v13, v12, v13
+ 
+-    if-nez v13, :cond_114
++    if-nez v13, :cond_125
+ 
+     iput v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+-    goto :goto_116
++    goto :goto_127
+ 
+-    :cond_114
++    :cond_125
+     iput v10, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+-    :cond_116
+-    :goto_116
++    :cond_127
++    :goto_127
+     iget-object v13, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v13, :cond_129
++    if-eqz v13, :cond_13a
+ 
+     iget-object v14, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->X:Lcom/oplus/camera/feature/zoom/view/f;
+ 
+@@ -13406,7 +13784,7 @@
+     invoke-virtual {v14, v15}, Ljava/util/Optional;->ifPresent(Ljava/util/function/Consumer;)V
+ 
+     .line 36
+-    :cond_129
++    :cond_13a
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->B0()V
+ 
+     .line 37
+@@ -13414,7 +13792,7 @@
+ 
+     iget-object v4, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->X:Lcom/oplus/camera/feature/zoom/view/f;
+ 
+-    if-eqz v4, :cond_13c
++    if-eqz v4, :cond_14d
+ 
+     iget-boolean v13, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->s:Z
+ 
+@@ -13426,7 +13804,7 @@
+     invoke-virtual {v4, v14, v15, v13}, Lcom/oplus/camera/feature/zoom/view/ZoomSeekBar;->pe(FFZ)V
+ 
+     .line 39
+-    :cond_13c
++    :cond_14d
+     new-instance v4, Ljava/util/ArrayList;
+ 
+     invoke-direct {v4}, Ljava/util/ArrayList;-><init>()V
+@@ -13456,14 +13834,14 @@
+ 
+     const/high16 v5, 0x40400000    # 3.0f
+ 
+-    if-eqz v2, :cond_196
++    if-eqz v2, :cond_1a7
+ 
+     .line 43
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->A()Z
+ 
+     move-result v16
+ 
+-    if-eqz v16, :cond_196
++    if-eqz v16, :cond_1a7
+ 
+     const-string v12, "highPixel"
+ 
+@@ -13472,7 +13850,7 @@
+ 
+     move-result v12
+ 
+-    if-eqz v12, :cond_18b
++    if-eqz v12, :cond_19c
+ 
+     .line 45
+     invoke-static {}, Lcom/oplus/camera/data/DataManager;->getInstance()Lcom/oplus/camera/data/DataManager;
+@@ -13489,9 +13867,9 @@
+ 
+     move-result v12
+ 
+-    if-eqz v12, :cond_18b
++    if-eqz v12, :cond_19c
+ 
+-    if-nez v11, :cond_18b
++    if-nez v11, :cond_19c
+ 
+     .line 46
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+@@ -13503,18 +13881,18 @@
+ 
+     iput v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+-    :cond_185
+-    :goto_185
++    :cond_196
++    :goto_196
+     move/from16 v17, v11
+ 
+     move-object/from16 v18, v15
+ 
+-    goto/16 :goto_60c
++    goto/16 :goto_61f
+ 
+-    :cond_18b
+-    if-nez v11, :cond_185
++    :cond_19c
++    if-nez v11, :cond_196
+ 
+-    if-nez v14, :cond_185
++    if-nez v14, :cond_196
+ 
+     .line 48
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+@@ -13522,9 +13900,9 @@
+     .line 49
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    goto :goto_185
++    goto :goto_196
+ 
+-    :cond_196
++    :cond_1a7
+     const-string v14, "com.oplus.feature.front.camera.auto.zoom.support"
+ 
+     .line 50
+@@ -13532,9 +13910,9 @@
+ 
+     move-result v14
+ 
+-    if-eqz v14, :cond_1c9
++    if-eqz v14, :cond_1da
+ 
+-    if-eqz v11, :cond_1c9
++    if-eqz v11, :cond_1da
+ 
+     .line 51
+     sget v5, Lcom/oplus/camera/feature/zoom/ui/n;->l:F
+@@ -13557,11 +13935,11 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_185
++    if-eqz v5, :cond_196
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v5, :cond_185
++    if-eqz v5, :cond_196
+ 
+     .line 56
+     invoke-static {}, Ldb/c;->d()F
+@@ -13570,7 +13948,7 @@
+ 
+     cmpl-float v5, v12, v5
+ 
+-    if-nez v5, :cond_185
++    if-nez v5, :cond_196
+ 
+     .line 57
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+@@ -13578,125 +13956,125 @@
+     .line 58
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    goto :goto_185
++    goto :goto_196
+ 
+-    :cond_1c9
++    :cond_1da
+     iget-object v14, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->A:F
+ 
+-    if-eqz v14, :cond_2a9
++    if-eqz v14, :cond_2ba
+ 
+     .line 59
+     iget-boolean v12, v14, Ldb/c;->v:Z
+ 
+-    if-eqz v12, :cond_1d9
++    if-eqz v12, :cond_1ea
+ 
+     .line 60
+     invoke-virtual {v14}, Ldb/c;->l0()Z
+ 
+     move-result v12
+ 
+-    if-nez v12, :cond_201
++    if-nez v12, :cond_212
+ 
+-    :cond_1d9
++    :cond_1ea
+     iget-object v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 61
+     iget-boolean v14, v12, Ldb/c;->v:Z
+ 
+-    if-eqz v14, :cond_1e5
++    if-eqz v14, :cond_1f6
+ 
+     .line 62
+     invoke-virtual {v12}, Ldb/c;->k0()Z
+ 
+     move-result v12
+ 
+-    if-nez v12, :cond_201
++    if-nez v12, :cond_212
+ 
+-    :cond_1e5
++    :cond_1f6
+     iget-object v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 63
+     iget-boolean v14, v12, Ldb/c;->l:Z
+ 
+-    if-nez v14, :cond_201
++    if-nez v14, :cond_212
+ 
+     .line 64
+     invoke-virtual {v12}, Ldb/c;->q()Z
+ 
+     move-result v12
+ 
+-    if-eqz v12, :cond_1f7
++    if-eqz v12, :cond_208
+ 
+     iget-object v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 65
+     iget-boolean v12, v12, Ldb/c;->m:Z
+ 
+-    if-nez v12, :cond_201
++    if-nez v12, :cond_212
+ 
+-    :cond_1f7
++    :cond_208
+     iget-object v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 66
+     iget-boolean v14, v12, Ldb/c;->f0:Z
+ 
+-    if-nez v14, :cond_201
++    if-nez v14, :cond_212
+ 
+     .line 67
+     iget-boolean v12, v12, Ldb/c;->b0:Z
+ 
+-    if-eqz v12, :cond_2a9
++    if-eqz v12, :cond_2ba
+ 
+-    :cond_201
++    :cond_212
+     iget-object v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 68
+     iget-boolean v13, v12, Ldb/c;->v:Z
+ 
+-    if-eqz v13, :cond_213
++    if-eqz v13, :cond_224
+ 
+     .line 69
+     invoke-virtual {v12}, Ldb/c;->l0()Z
+ 
+     move-result v12
+ 
+-    if-eqz v12, :cond_218
++    if-eqz v12, :cond_229
+ 
+     .line 70
+     sget v12, Ll9/a$c;->l:F
+ 
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    goto :goto_218
++    goto :goto_229
+ 
+     .line 71
+-    :cond_213
++    :cond_224
+     sget v12, Ll9/a$c;->l:F
+ 
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     .line 72
+-    :cond_218
+-    :goto_218
++    :cond_229
++    :goto_229
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     iget-object v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v12, :cond_228
++    if-eqz v12, :cond_239
+ 
+     .line 73
+     iget-boolean v12, v12, Ldb/c;->y0:Z
+ 
+-    if-eqz v12, :cond_228
++    if-eqz v12, :cond_239
+ 
+     .line 74
+     sget v12, Ll9/a$c;->p:F
+ 
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    :cond_228
++    :cond_239
+     iget v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     .line 75
+@@ -13708,7 +14086,7 @@
+ 
+     move-result v12
+ 
+-    if-ltz v12, :cond_24e
++    if-ltz v12, :cond_25f
+ 
+     const-string v12, "pref_tele_high_picture_size_key"
+ 
+@@ -13717,7 +14095,7 @@
+ 
+     move-result v12
+ 
+-    if-eqz v12, :cond_24e
++    if-eqz v12, :cond_25f
+ 
+     .line 77
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->z()F
+@@ -13728,7 +14106,7 @@
+ 
+     iget-boolean v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->v:Z
+ 
+-    if-eqz v12, :cond_24e
++    if-eqz v12, :cond_25f
+ 
+     .line 78
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->z()F
+@@ -13737,15 +14115,15 @@
+ 
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_24e
+-    if-eqz v2, :cond_262
++    :cond_25f
++    if-eqz v2, :cond_273
+ 
+     .line 79
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->J()Z
+ 
+     move-result v12
+ 
+-    if-eqz v12, :cond_262
++    if-eqz v12, :cond_273
+ 
+     .line 80
+     sget v12, Ll9/a$c;->n:F
+@@ -13754,32 +14132,32 @@
+ 
+     iget-boolean v13, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->v:Z
+ 
+-    if-eqz v13, :cond_262
++    if-eqz v13, :cond_273
+ 
+     .line 81
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_262
+-    if-eqz v2, :cond_274
++    :cond_273
++    if-eqz v2, :cond_285
+ 
+     .line 82
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->L()Z
+ 
+     move-result v12
+ 
+-    if-eqz v12, :cond_274
++    if-eqz v12, :cond_285
+ 
+     .line 83
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     iget-boolean v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->v:Z
+ 
+-    if-eqz v12, :cond_274
++    if-eqz v12, :cond_285
+ 
+     .line 84
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_274
++    :cond_285
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     .line 85
+@@ -13791,14 +14169,14 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_2a4
++    if-ltz v5, :cond_2b5
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 86
+     iget-boolean v5, v5, Ldb/c;->o:Z
+ 
+-    if-eqz v5, :cond_2a4
++    if-eqz v5, :cond_2b5
+ 
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+@@ -13811,7 +14189,7 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_2a4
++    if-ltz v5, :cond_2b5
+ 
+     .line 88
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->A()F
+@@ -13822,7 +14200,7 @@
+ 
+     iget-boolean v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->v:Z
+ 
+-    if-eqz v5, :cond_2a4
++    if-eqz v5, :cond_2b5
+ 
+     .line 89
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->A()F
+@@ -13832,25 +14210,25 @@
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+     .line 90
+-    :cond_2a4
++    :cond_2b5
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    goto/16 :goto_185
++    goto/16 :goto_196
+ 
+-    :cond_2a9
++    :cond_2ba
+     iget-object v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v12, :cond_2f1
++    if-eqz v12, :cond_302
+ 
+     .line 91
+     iget-boolean v14, v12, Ldb/c;->T0:Z
+ 
+-    if-eqz v14, :cond_2f1
++    if-eqz v14, :cond_302
+ 
+     .line 92
+     iget-boolean v5, v12, Ldb/c;->m:Z
+ 
+-    if-eqz v5, :cond_2ba
++    if-eqz v5, :cond_2cb
+ 
+     .line 93
+     sget v5, Ll9/a$c;->l:F
+@@ -13858,7 +14236,7 @@
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     .line 94
+-    :cond_2ba
++    :cond_2cb
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+@@ -13866,7 +14244,7 @@
+     .line 95
+     iget-boolean v5, v5, Ldb/c;->n:Z
+ 
+-    if-eqz v5, :cond_2d6
++    if-eqz v5, :cond_2e7
+ 
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+@@ -13879,7 +14257,7 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_2d6
++    if-ltz v5, :cond_2e7
+ 
+     .line 97
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->z()F
+@@ -13888,13 +14266,13 @@
+ 
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    :cond_2d6
++    :cond_2e7
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 98
+     iget-boolean v5, v5, Ldb/c;->o:Z
+ 
+-    if-eqz v5, :cond_185
++    if-eqz v5, :cond_196
+ 
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+@@ -13907,7 +14285,7 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_185
++    if-ltz v5, :cond_196
+ 
+     .line 100
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->A()F
+@@ -13916,9 +14294,9 @@
+ 
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    goto/16 :goto_185
++    goto/16 :goto_196
+ 
+-    :cond_2f1
++    :cond_302
+     iget v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->m:F
+ 
+     .line 101
+@@ -13926,7 +14304,7 @@
+ 
+     move-result v12
+ 
+-    if-gez v12, :cond_325
++    if-gez v12, :cond_336
+ 
+     .line 102
+     new-instance v12, Ljava/math/BigDecimal;
+@@ -13972,36 +14350,36 @@
+ 
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    goto :goto_33c
++    goto :goto_34d
+ 
+-    :cond_325
++    :cond_336
+     move/from16 v17, v11
+ 
+     move-object/from16 v18, v15
+ 
+-    if-eqz v3, :cond_33c
++    if-eqz v3, :cond_34d
+ 
+     iget-object v10, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v10, :cond_33c
++    if-eqz v10, :cond_34d
+ 
+     .line 104
+     iget-boolean v11, v10, Ldb/c;->m:Z
+ 
+-    if-eqz v11, :cond_33c
++    if-eqz v11, :cond_34d
+ 
+     .line 105
+     iget-boolean v10, v10, Ldb/c;->K:Z
+ 
+-    if-nez v10, :cond_33c
++    if-nez v10, :cond_34d
+ 
+     .line 106
+     sget v10, Ll9/a$c;->l:F
+ 
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    :cond_33c
+-    :goto_33c
++    :cond_34d
++    :goto_34d
+     iget v10, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->m:F
+ 
+     const/high16 v11, 0x3f800000    # 1.0f
+@@ -14011,7 +14389,7 @@
+ 
+     move-result v10
+ 
+-    if-gtz v10, :cond_34d
++    if-gtz v10, :cond_35e
+ 
+     iget-object v10, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->o:Lil/g;
+ 
+@@ -14022,26 +14400,26 @@
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     .line 110
+-    :cond_34d
++    :cond_35e
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->e()F
+ 
+     move-result v10
+ 
+     iget-object v11, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v11, :cond_36a
++    if-eqz v11, :cond_37b
+ 
+     .line 111
+     iget-boolean v12, v11, Ldb/c;->I:Z
+ 
+-    if-eqz v12, :cond_35c
++    if-eqz v12, :cond_36d
+ 
+     const/high16 v11, 0x40400000    # 3.0f
+ 
+-    goto :goto_36c
++    goto :goto_37d
+ 
+     .line 112
+-    :cond_35c
++    :cond_36d
+     iget v11, v11, Ldb/c;->L0:F
+ 
+     const/4 v12, 0x0
+@@ -14051,22 +14429,22 @@
+ 
+     move-result v11
+ 
+-    if-eqz v11, :cond_36a
++    if-eqz v11, :cond_37b
+ 
+     iget-object v11, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 114
+     iget v11, v11, Ldb/c;->L0:F
+ 
+-    goto :goto_36c
++    goto :goto_37d
+ 
+-    :cond_36a
++    :cond_37b
+     const/high16 v11, 0x40000000    # 2.0f
+ 
+-    :goto_36c
++    :goto_37d
+     const/high16 v12, 0x41200000    # 10.0f
+ 
+-    if-nez v17, :cond_4a9
++    if-nez v17, :cond_4bb
+ 
+     iget v15, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+@@ -14075,31 +14453,31 @@
+ 
+     move-result v15
+ 
+-    if-ltz v15, :cond_48c
++    if-ltz v15, :cond_49e
+ 
+     iget-object v15, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v15, :cond_385
++    if-eqz v15, :cond_396
+ 
+     .line 116
+     iget-boolean v15, v15, Ldb/c;->y0:Z
+ 
+-    if-eqz v15, :cond_385
++    if-eqz v15, :cond_396
+ 
+     .line 117
+     sget v15, Ll9/a$c;->p:F
+ 
+     invoke-virtual {v0, v15}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    :cond_385
++    :cond_396
+     iget-object v15, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v15, :cond_3a6
++    if-eqz v15, :cond_3b7
+ 
+     .line 118
+     iget-boolean v15, v15, Ldb/c;->J:Z
+ 
+-    if-eqz v15, :cond_3a6
++    if-eqz v15, :cond_3b7
+ 
+     iget-object v15, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->b:Ljava/util/ArrayList;
+ 
+@@ -14112,25 +14490,25 @@
+ 
+     move-result v14
+ 
+-    if-nez v14, :cond_3a6
++    if-nez v14, :cond_3b7
+ 
+     iget v14, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->z:F
+ 
+     cmpl-float v14, v11, v14
+ 
+-    if-eqz v14, :cond_3a6
++    if-eqz v14, :cond_3b7
+ 
+     cmpl-float v14, v11, v12
+ 
+-    if-eqz v14, :cond_3a6
++    if-eqz v14, :cond_3b7
+ 
+     .line 120
+     invoke-virtual {v0, v11}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    :cond_3a6
++    :cond_3b7
+     iget-object v14, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v14, :cond_3ba
++    if-eqz v14, :cond_3cb
+ 
+     .line 121
+     iget v14, v14, Ldb/c;->M0:F
+@@ -14142,7 +14520,7 @@
+ 
+     move-result v14
+ 
+-    if-lez v14, :cond_3ba
++    if-lez v14, :cond_3cb
+ 
+     iget-object v14, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+@@ -14153,12 +14531,12 @@
+     invoke-virtual {v0, v14}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     .line 125
+-    :cond_3ba
++    :cond_3cb
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->L()Z
+ 
+     move-result v14
+ 
+-    if-eqz v14, :cond_3ca
++    if-eqz v14, :cond_3db
+ 
+     iget v14, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+@@ -14167,17 +14545,17 @@
+ 
+     move-result v14
+ 
+-    if-ltz v14, :cond_3ca
++    if-ltz v14, :cond_3db
+ 
+     const/4 v14, 0x1
+ 
+-    goto :goto_3cb
++    goto :goto_3dc
+ 
+-    :cond_3ca
++    :cond_3db
+     const/4 v14, 0x0
+ 
+-    :goto_3cb
+-    if-eqz v14, :cond_3d5
++    :goto_3dc
++    if-eqz v14, :cond_3e6
+ 
+     iget v15, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+@@ -14186,9 +14564,9 @@
+ 
+     move-result v15
+ 
+-    if-gez v15, :cond_3df
++    if-gez v15, :cond_3f0
+ 
+-    :cond_3d5
++    :cond_3e6
+     iget v15, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     iget v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->z:F
+@@ -14198,44 +14576,44 @@
+ 
+     move-result v12
+ 
+-    if-ltz v12, :cond_48c
++    if-ltz v12, :cond_49e
+ 
+-    :cond_3df
+-    if-eqz v14, :cond_3e4
++    :cond_3f0
++    if-eqz v14, :cond_3f5
+ 
+     .line 129
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     .line 130
+-    :cond_3e4
++    :cond_3f5
+     iget-boolean v5, v2, Ldb/c;->u0:Z
+ 
+-    if-eqz v5, :cond_3ee
++    if-eqz v5, :cond_3ff
+ 
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->z:F
+ 
+     .line 131
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    goto :goto_3fb
++    goto :goto_40d
+ 
+-    :cond_3ee
+-    if-nez v14, :cond_3fb
++    :cond_3ff
++    if-nez v14, :cond_40d
+ 
+     .line 132
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->I()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_3fb
++    if-eqz v5, :cond_40d
+ 
+-    const/high16 v5, 0x40a00000    # 5.0f
++    const v5, 0x40266666    # 2.6f
+ 
+     .line 133
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    :cond_3fb
+-    :goto_3fb
++    :cond_40d
++    :goto_40d
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     const/high16 v12, 0x41200000    # 10.0f
+@@ -14245,7 +14623,7 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_410
++    if-ltz v5, :cond_422
+ 
+     sget v5, Lka/d1;->a:I
+ 
+@@ -14254,18 +14632,18 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_410
++    if-eqz v5, :cond_422
+ 
+     .line 136
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     .line 137
+-    :cond_410
++    :cond_422
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->U()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_459
++    if-eqz v5, :cond_46b
+ 
+     const-string v5, "com.oplus.telephoto.zoom.click.zoomvalues"
+ 
+@@ -14276,26 +14654,26 @@
+ 
+     move-result-object v5
+ 
+-    if-eqz v5, :cond_449
++    if-eqz v5, :cond_45b
+ 
+     .line 139
+     invoke-interface {v5}, Ljava/util/List;->isEmpty()Z
+ 
+     move-result v12
+ 
+-    if-nez v12, :cond_449
++    if-nez v12, :cond_45b
+ 
+     .line 140
+     invoke-interface {v5}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+ 
+     move-result-object v5
+ 
+-    :goto_429
++    :goto_43b
+     invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
+ 
+     move-result v12
+ 
+-    if-eqz v12, :cond_444
++    if-eqz v12, :cond_456
+ 
+     invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+ 
+@@ -14317,16 +14695,16 @@
+ 
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    goto :goto_429
++    goto :goto_43b
+ 
+-    :cond_444
++    :cond_456
+     const/high16 v5, 0x41200000    # 10.0f
+ 
+     const/high16 v12, 0x41a00000    # 20.0f
+ 
+-    goto :goto_48c
++    goto :goto_49e
+ 
+-    :cond_449
++    :cond_45b
+     const/high16 v5, 0x41200000    # 10.0f
+ 
+     .line 143
+@@ -14342,9 +14720,9 @@
+     .line 145
+     invoke-virtual {v0, v14}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    goto :goto_48c
++    goto :goto_49e
+ 
+-    :cond_459
++    :cond_46b
+     const/high16 v5, 0x41200000    # 10.0f
+ 
+     const/high16 v12, 0x41a00000    # 20.0f
+@@ -14356,7 +14734,7 @@
+ 
+     move-result v14
+ 
+-    if-ltz v14, :cond_48c
++    if-ltz v14, :cond_49e
+ 
+     const-string v12, "com.oplus.more.tele.zoom.point.value"
+ 
+@@ -14372,12 +14750,12 @@
+ 
+     move-result v12
+ 
+-    if-gez v12, :cond_475
++    if-gez v12, :cond_487
+ 
+     .line 149
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    :cond_475
++    :cond_487
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     const/high16 v12, 0x42480000    # 50.0f
+@@ -14387,7 +14765,7 @@
+ 
+     move-result v5
+ 
+-    if-lez v5, :cond_48c
++    if-lez v5, :cond_49e
+ 
+     const-string v5, "com.oplus.need.max.zoom.click.point"
+ 
+@@ -14396,7 +14774,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_48c
++    if-eqz v5, :cond_49e
+ 
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+@@ -14404,27 +14782,27 @@
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+     .line 153
+-    :cond_48c
+-    :goto_48c
++    :cond_49e
++    :goto_49e
+     invoke-static {}, Lka/l0;->e0()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_4a9
++    if-eqz v5, :cond_4bb
+ 
+     .line 154
+     invoke-static {}, Lcb/o;->K()Z
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_4a9
++    if-nez v5, :cond_4bb
+ 
+     .line 155
+     invoke-static {v10, v11}, Ljava/lang/Float;->compare(FF)I
+ 
+     move-result v5
+ 
+-    if-lez v5, :cond_4a9
++    if-lez v5, :cond_4bb
+ 
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+@@ -14433,12 +14811,12 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_4a9
++    if-ltz v5, :cond_4bb
+ 
+     .line 157
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->i(F)V
+ 
+-    :cond_4a9
++    :cond_4bb
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->m:F
+ 
+     const/high16 v12, 0x3f800000    # 1.0f
+@@ -14448,12 +14826,12 @@
+ 
+     move-result v5
+ 
+-    if-gtz v5, :cond_4b6
++    if-gtz v5, :cond_4c8
+ 
+     .line 159
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_4b6
++    :cond_4c8
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->o:Lil/g;
+ 
+     .line 160
+@@ -14461,12 +14839,12 @@
+ 
+     cmpl-float v14, v5, v12
+ 
+-    if-lez v14, :cond_4c1
++    if-lez v14, :cond_4d3
+ 
+     .line 161
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_4c1
++    :cond_4d3
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     const/high16 v12, 0x40000000    # 2.0f
+@@ -14476,7 +14854,7 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_4d8
++    if-ltz v5, :cond_4ea
+ 
+     invoke-static {v12}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+@@ -14486,12 +14864,12 @@
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_4d8
++    if-nez v5, :cond_4ea
+ 
+     .line 163
+     invoke-virtual {v0, v12}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_4d8
++    :cond_4ea
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     .line 164
+@@ -14499,7 +14877,7 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_4f5
++    if-ltz v5, :cond_507
+ 
+     invoke-static {v11}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+ 
+@@ -14509,21 +14887,21 @@
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_4f5
++    if-nez v5, :cond_507
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v5, :cond_4f5
++    if-eqz v5, :cond_507
+ 
+     .line 165
+     iget-boolean v5, v5, Ldb/c;->J:Z
+ 
+-    if-eqz v5, :cond_4f5
++    if-eqz v5, :cond_507
+ 
+     .line 166
+     invoke-virtual {v0, v11}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_4f5
++    :cond_507
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     const/high16 v11, 0x41000000    # 8.0f
+@@ -14533,54 +14911,54 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_5ab
++    if-ltz v5, :cond_5be
+ 
+     .line 168
+     iget-boolean v5, v2, Ldb/c;->u0:Z
+ 
+-    if-nez v5, :cond_53a
++    if-nez v5, :cond_54d
+ 
+     .line 169
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->K()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_50a
++    if-eqz v5, :cond_51c
+ 
+-    goto :goto_53a
++    goto :goto_54d
+ 
+     .line 170
+-    :cond_50a
++    :cond_51c
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->L()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_518
++    if-eqz v5, :cond_52a
+ 
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->z:F
+ 
+     .line 171
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :goto_515
++    :goto_527
+     const/high16 v11, 0x41200000    # 10.0f
+ 
+-    goto :goto_557
++    goto :goto_56a
+ 
+     .line 172
+-    :cond_518
++    :cond_52a
+     invoke-static {}, Lka/l0;->e0()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_534
++    if-eqz v5, :cond_546
+ 
+     .line 173
+     invoke-static {}, Lcb/o;->K()Z
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_534
++    if-nez v5, :cond_546
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->b:Ljava/util/ArrayList;
+ 
+@@ -14593,23 +14971,23 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_534
++    if-eqz v5, :cond_546
+ 
+     .line 175
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    goto :goto_515
++    goto :goto_527
+ 
+-    :cond_534
+-    const/high16 v5, 0x40a00000    # 5.0f
++    :cond_546
++    const v5, 0x40266666    # 2.6f
+ 
+     .line 176
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    goto :goto_515
++    goto :goto_527
+ 
+-    :cond_53a
+-    :goto_53a
++    :cond_54d
++    :goto_54d
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->z:F
+ 
+     .line 177
+@@ -14633,7 +15011,7 @@
+ 
+     cmpl-float v10, v10, v12
+ 
+-    if-lez v10, :cond_557
++    if-lez v10, :cond_56a
+ 
+     .line 178
+     invoke-static {v5}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+@@ -14642,8 +15020,8 @@
+ 
+     invoke-virtual {v13, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    :cond_557
+-    :goto_557
++    :cond_56a
++    :goto_56a
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     .line 179
+@@ -14651,7 +15029,7 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_5ab
++    if-ltz v5, :cond_5be
+ 
+     .line 180
+     invoke-static {v11}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+@@ -14662,12 +15040,12 @@
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_56c
++    if-nez v5, :cond_57f
+ 
+     .line 181
+     invoke-virtual {v0, v11}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_56c
++    :cond_57f
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     const/high16 v10, 0x41f00000    # 30.0f
+@@ -14677,14 +15055,14 @@
+ 
+     move-result v5
+ 
+-    if-ltz v5, :cond_57b
++    if-ltz v5, :cond_58e
+ 
+     const/high16 v5, 0x41a00000    # 20.0f
+ 
+     .line 183
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_57b
++    :cond_58e
+     iget v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->n:F
+ 
+     .line 184
+@@ -14692,7 +15070,7 @@
+ 
+     move-result v5
+ 
+-    if-lez v5, :cond_5ab
++    if-lez v5, :cond_5be
+ 
+     .line 185
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->U()Z
+@@ -14701,7 +15079,7 @@
+ 
+     const/high16 v11, 0x42700000    # 60.0f
+ 
+-    if-eqz v5, :cond_5a5
++    if-eqz v5, :cond_5b8
+ 
+     const/high16 v5, 0x42200000    # 40.0f
+ 
+@@ -14719,7 +15097,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_5ab
++    if-eqz v5, :cond_5be
+ 
+     .line 188
+     invoke-virtual {v0, v11}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+@@ -14729,31 +15107,31 @@
+     .line 189
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    goto :goto_5ab
++    goto :goto_5be
+ 
+     .line 190
+-    :cond_5a5
++    :cond_5b8
+     invoke-virtual {v0, v10}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+     .line 191
+     invoke-virtual {v0, v11}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_5ab
+-    :goto_5ab
++    :cond_5be
++    :goto_5be
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v5, :cond_5c9
++    if-eqz v5, :cond_5dc
+ 
+     .line 192
+     invoke-virtual {v5}, Ldb/c;->k()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_5c9
++    if-eqz v5, :cond_5dc
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v5, :cond_5c9
++    if-eqz v5, :cond_5dc
+ 
+     .line 193
+     iget v5, v5, Ldb/c;->M0:F
+@@ -14765,7 +15143,7 @@
+ 
+     move-result v5
+ 
+-    if-lez v5, :cond_5c9
++    if-lez v5, :cond_5dc
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+@@ -14776,22 +15154,22 @@
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+     .line 197
+-    :cond_5c9
++    :cond_5dc
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->n()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_60c
++    if-eqz v5, :cond_61f
+ 
+     const/4 v14, 0x0
+ 
+     .line 198
+-    :goto_5d0
++    :goto_5e3
+     invoke-virtual {v9}, Ljava/util/ArrayList;->size()I
+ 
+     move-result v5
+ 
+-    if-ge v14, v5, :cond_609
++    if-ge v14, v5, :cond_61c
+ 
+     .line 199
+     invoke-virtual {v9, v14}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+@@ -14800,24 +15178,24 @@
+ 
+     check-cast v5, Lil/g;
+ 
+-    if-eqz v5, :cond_606
++    if-eqz v5, :cond_619
+ 
+     const/4 v10, 0x0
+ 
+     .line 200
+-    :goto_5df
++    :goto_5f2
+     invoke-virtual {v4}, Ljava/util/ArrayList;->size()I
+ 
+     move-result v11
+ 
+-    if-ge v10, v11, :cond_601
++    if-ge v10, v11, :cond_614
+ 
+     .line 201
+     invoke-virtual {v4, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+ 
+     move-result-object v11
+ 
+-    if-eqz v11, :cond_5fe
++    if-eqz v11, :cond_611
+ 
+     .line 202
+     invoke-virtual {v4, v10}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+@@ -14838,54 +15216,54 @@
+ 
+     move-result v11
+ 
+-    if-nez v11, :cond_5fe
++    if-nez v11, :cond_611
+ 
+-    goto :goto_606
++    goto :goto_619
+ 
+-    :cond_5fe
++    :cond_611
+     add-int/lit8 v10, v10, 0x1
+ 
+-    goto :goto_5df
++    goto :goto_5f2
+ 
+     .line 205
+-    :cond_601
++    :cond_614
+     iget v5, v5, Lil/g;->a:F
+ 
+     .line 206
+     invoke-virtual {v0, v5}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    :cond_606
+-    :goto_606
++    :cond_619
++    :goto_619
+     add-int/lit8 v14, v14, 0x1
+ 
+-    goto :goto_5d0
++    goto :goto_5e3
+ 
+     .line 207
+-    :cond_609
++    :cond_61c
+     invoke-static {v4}, Ljava/util/Collections;->sort(Ljava/util/List;)V
+ 
+-    :cond_60c
+-    :goto_60c
+-    if-eqz v2, :cond_69b
++    :cond_61f
++    :goto_61f
++    if-eqz v2, :cond_6ae
+ 
+     .line 208
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->T()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_69b
++    if-eqz v5, :cond_6ae
+ 
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->A()Z
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_69b
++    if-nez v5, :cond_6ae
+ 
+     invoke-virtual/range {p5 .. p5}, Ldb/c;->n()Z
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_69b
++    if-nez v5, :cond_6ae
+ 
+     .line 209
+     iget-boolean v5, v2, Ldb/c;->e:Z
+@@ -14913,13 +15291,13 @@
+ 
+     move-result-object v5
+ 
+-    :cond_636
+-    :goto_636
++    :cond_649
++    :goto_649
+     invoke-interface {v5}, Ljava/util/Iterator;->hasNext()Z
+ 
+     move-result v10
+ 
+-    if-eqz v10, :cond_663
++    if-eqz v10, :cond_676
+ 
+     invoke-interface {v5}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+ 
+@@ -14943,7 +15321,7 @@
+ 
+     cmpl-float v11, v11, v12
+ 
+-    if-ltz v11, :cond_636
++    if-ltz v11, :cond_649
+ 
+     .line 215
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->y()F
+@@ -14960,14 +15338,14 @@
+ 
+     cmpg-float v11, v11, v12
+ 
+-    if-gtz v11, :cond_636
++    if-gtz v11, :cond_649
+ 
+     .line 216
+     invoke-virtual {v9, v10}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    goto :goto_636
++    goto :goto_649
+ 
+-    :cond_663
++    :cond_676
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->h:Ljava/util/ArrayList;
+ 
+     .line 217
+@@ -14978,12 +15356,12 @@
+ 
+     move-result-object v9
+ 
+-    :goto_66c
++    :goto_67f
+     invoke-interface {v9}, Ljava/util/Iterator;->hasNext()Z
+ 
+     move-result v10
+ 
+-    if-eqz v10, :cond_698
++    if-eqz v10, :cond_6ab
+ 
+     invoke-interface {v9}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+ 
+@@ -15003,7 +15381,7 @@
+ 
+     move-result v12
+ 
+-    if-eqz v12, :cond_694
++    if-eqz v12, :cond_6a7
+ 
+     iget-object v12, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->o:Lil/g;
+ 
+@@ -15011,7 +15389,7 @@
+ 
+     move-result v10
+ 
+-    if-nez v10, :cond_694
++    if-nez v10, :cond_6a7
+ 
+     .line 221
+     invoke-static {v11}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+@@ -15020,19 +15398,19 @@
+ 
+     invoke-virtual {v5, v10}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    goto :goto_66c
++    goto :goto_67f
+ 
+     .line 222
+-    :cond_694
++    :cond_6a7
+     invoke-virtual {v0, v11}, Lcom/oplus/camera/feature/zoom/ui/m2;->j(F)V
+ 
+-    goto :goto_66c
++    goto :goto_67f
+ 
+     .line 223
+-    :cond_698
++    :cond_6ab
+     invoke-static {v4}, Ljava/util/Collections;->sort(Ljava/util/List;)V
+ 
+-    :cond_69b
++    :cond_6ae
+     const-string v5, "com.oplus.available.lens.bag.zoomvalues"
+ 
+     .line 224
+@@ -15040,16 +15418,16 @@
+ 
+     move-result-object v5
+ 
+-    if-eqz v5, :cond_6e9
++    if-eqz v5, :cond_6fc
+ 
+-    if-eqz v2, :cond_6e9
++    if-eqz v2, :cond_6fc
+ 
+     .line 225
+     invoke-virtual {v7}, Llc/p;->t1()Z
+ 
+     move-result v5
+ 
+-    if-nez v5, :cond_6e9
++    if-nez v5, :cond_6fc
+ 
+     const-string v5, "portrait"
+ 
+@@ -15062,7 +15440,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_6e9
++    if-eqz v5, :cond_6fc
+ 
+     .line 227
+     invoke-static {}, Ljl/h0;->a3()Ljava/util/List;
+@@ -15074,12 +15452,12 @@
+ 
+     move-result v9
+ 
+-    if-eqz v9, :cond_6c2
++    if-eqz v9, :cond_6d5
+ 
+     return-void
+ 
+     .line 229
+-    :cond_6c2
++    :cond_6d5
+     invoke-virtual {v4}, Ljava/util/ArrayList;->clear()V
+ 
+     iget-object v4, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->b:Ljava/util/ArrayList;
+@@ -15092,12 +15470,12 @@
+ 
+     move-result-object v4
+ 
+-    :goto_6ce
++    :goto_6e1
+     invoke-interface {v4}, Ljava/util/Iterator;->hasNext()Z
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_6e9
++    if-eqz v5, :cond_6fc
+ 
+     invoke-interface {v4}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+ 
+@@ -15120,34 +15498,34 @@
+ 
+     invoke-virtual {v9, v5}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+ 
+-    goto :goto_6ce
++    goto :goto_6e1
+ 
+     .line 235
+-    :cond_6e9
++    :cond_6fc
+     invoke-static {}, Lka/l0;->z0()Z
+ 
+     move-result v4
+ 
+-    if-nez v4, :cond_6f5
++    if-nez v4, :cond_708
+ 
+     invoke-static {}, Lka/l0;->X()Z
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_6f8
++    if-eqz v4, :cond_70b
+ 
+     .line 236
+-    :cond_6f5
++    :cond_708
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->A0()V
+ 
+-    :cond_6f8
++    :cond_70b
+     iget-object v4, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v4, :cond_729
++    if-eqz v4, :cond_73c
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->X:Lcom/oplus/camera/feature/zoom/view/f;
+ 
+-    if-eqz v5, :cond_729
++    if-eqz v5, :cond_73c
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->M0:Ljava/lang/String;
+ 
+@@ -15156,7 +15534,7 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_71e
++    if-eqz v5, :cond_731
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->X:Lcom/oplus/camera/feature/zoom/view/f;
+ 
+@@ -15169,28 +15547,28 @@
+ 
+     move-result v5
+ 
+-    if-eqz v5, :cond_71c
++    if-eqz v5, :cond_72f
+ 
+     iget-object v5, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 239
+     iget-boolean v5, v5, Ldb/c;->e:Z
+ 
+-    if-nez v5, :cond_71c
++    if-nez v5, :cond_72f
+ 
+-    goto :goto_71e
++    goto :goto_731
+ 
+-    :cond_71c
++    :cond_72f
+     const/4 v5, 0x0
+ 
+-    goto :goto_71f
++    goto :goto_732
+ 
+-    :cond_71e
+-    :goto_71e
++    :cond_731
++    :goto_731
+     const/4 v5, 0x1
+ 
+     .line 240
+-    :goto_71f
++    :goto_732
+     invoke-virtual {v4, v5}, Ldb/c;->a0(Z)V
+ 
+     iget-object v4, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->X:Lcom/oplus/camera/feature/zoom/view/f;
+@@ -15200,17 +15578,17 @@
+     .line 241
+     invoke-virtual {v4, v5}, Lcom/oplus/camera/feature/zoom/view/ZoomSeekBar;->i6(Ldb/c;)V
+ 
+-    :cond_729
++    :cond_73c
+     iget-object v4, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v4, :cond_73a
++    if-eqz v4, :cond_74d
+ 
+     .line 242
+     invoke-virtual {v4}, Ldb/c;->x()Z
+ 
+     move-result v4
+ 
+-    if-eqz v4, :cond_73a
++    if-eqz v4, :cond_74d
+ 
+     .line 243
+     invoke-virtual {v0, v1}, Lcom/oplus/camera/feature/zoom/ui/m2;->B(F)I
+@@ -15219,147 +15597,147 @@
+ 
+     invoke-virtual {v7, v4}, Ljl/h0;->g4(I)V
+ 
+-    :cond_73a
++    :cond_74d
+     iget-object v4, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v4, :cond_744
++    if-eqz v4, :cond_757
+ 
+     .line 244
+     iget-boolean v5, v4, Ldb/c;->d0:Z
+ 
+-    if-eqz v5, :cond_744
++    if-eqz v5, :cond_757
+ 
+     const/4 v5, 0x1
+ 
+-    goto :goto_745
++    goto :goto_758
+ 
+-    :cond_744
++    :cond_757
+     const/4 v5, 0x0
+ 
+-    :goto_745
+-    if-eqz v4, :cond_74d
++    :goto_758
++    if-eqz v4, :cond_760
+ 
+     .line 245
+     iget-boolean v9, v4, Ldb/c;->c0:Z
+ 
+-    if-eqz v9, :cond_74d
++    if-eqz v9, :cond_760
+ 
+     const/4 v9, 0x1
+ 
+-    goto :goto_74e
++    goto :goto_761
+ 
+-    :cond_74d
++    :cond_760
+     const/4 v9, 0x0
+ 
+     .line 246
+-    :goto_74e
++    :goto_761
+     iget v10, v7, Llc/p;->m:I
+ 
+-    if-eqz v4, :cond_758
++    if-eqz v4, :cond_76b
+ 
+     .line 247
+     iget-boolean v11, v4, Ldb/c;->v:Z
+ 
+-    if-eqz v11, :cond_758
++    if-eqz v11, :cond_76b
+ 
+     const/4 v11, 0x1
+ 
+-    goto :goto_759
++    goto :goto_76c
+ 
+-    :cond_758
++    :cond_76b
+     const/4 v11, 0x0
+ 
+-    :goto_759
+-    if-eqz v4, :cond_761
++    :goto_76c
++    if-eqz v4, :cond_774
+ 
+     .line 248
+     iget-boolean v4, v4, Ldb/c;->i0:Z
+ 
+-    if-eqz v4, :cond_761
++    if-eqz v4, :cond_774
+ 
+     const/4 v4, 0x1
+ 
+-    goto :goto_762
++    goto :goto_775
+ 
+-    :cond_761
++    :cond_774
+     const/4 v4, 0x0
+ 
+     .line 249
+-    :goto_762
++    :goto_775
+     invoke-virtual {v7}, Ljl/h0;->f3()Z
+ 
+     move-result v12
+ 
+     iget-object v13, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v13, :cond_770
++    if-eqz v13, :cond_783
+ 
+     .line 250
+     iget-boolean v14, v13, Ldb/c;->K:Z
+ 
+-    if-eqz v14, :cond_770
++    if-eqz v14, :cond_783
+ 
+     const/4 v14, 0x1
+ 
+-    goto :goto_771
++    goto :goto_784
+ 
+-    :cond_770
++    :cond_783
+     const/4 v14, 0x0
+ 
+-    :goto_771
+-    if-eqz v13, :cond_779
++    :goto_784
++    if-eqz v13, :cond_78c
+ 
+     .line 251
+     iget-boolean v15, v13, Ldb/c;->m:Z
+ 
+-    if-eqz v15, :cond_779
++    if-eqz v15, :cond_78c
+ 
+     const/4 v15, 0x1
+ 
+-    goto :goto_77a
++    goto :goto_78d
+ 
+-    :cond_779
++    :cond_78c
+     const/4 v15, 0x0
+ 
+-    :goto_77a
+-    if-eqz v13, :cond_782
++    :goto_78d
++    if-eqz v13, :cond_795
+ 
+     .line 252
+     iget-boolean v13, v13, Ldb/c;->g0:Z
+ 
+-    if-eqz v13, :cond_782
++    if-eqz v13, :cond_795
+ 
+     const/4 v13, 0x1
+ 
+-    goto :goto_783
++    goto :goto_796
+ 
+-    :cond_782
++    :cond_795
+     const/4 v13, 0x0
+ 
+-    :goto_783
++    :goto_796
+     iget-boolean v1, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->V0:Z
+ 
+-    if-eq v13, v1, :cond_789
++    if-eq v13, v1, :cond_79c
+ 
+     const/4 v1, 0x1
+ 
+-    goto :goto_78a
++    goto :goto_79d
+ 
+-    :cond_789
++    :cond_79c
+     const/4 v1, 0x0
+ 
+-    :goto_78a
++    :goto_79d
+     iget-boolean v2, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->N0:Z
+ 
+-    if-ne v5, v2, :cond_7c3
++    if-ne v5, v2, :cond_7d6
+ 
+     iget-boolean v2, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->O0:Z
+ 
+-    if-ne v9, v2, :cond_7c3
++    if-ne v9, v2, :cond_7d6
+ 
+     iget v2, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->L0:I
+ 
+-    if-ne v10, v2, :cond_7c3
++    if-ne v10, v2, :cond_7d6
+ 
+     iget-object v2, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->M0:Ljava/lang/String;
+ 
+@@ -15368,27 +15746,27 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_7c3
++    if-eqz v2, :cond_7d6
+ 
+     iget-boolean v2, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->P0:Z
+ 
+-    if-ne v11, v2, :cond_7c3
++    if-ne v11, v2, :cond_7d6
+ 
+     iget-boolean v2, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->S:Z
+ 
+-    if-ne v15, v2, :cond_7c3
++    if-ne v15, v2, :cond_7d6
+ 
+     move-object/from16 p2, v6
+ 
+     iget-boolean v6, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->Q0:Z
+ 
+-    if-ne v4, v6, :cond_7c5
++    if-ne v4, v6, :cond_7d8
+ 
+-    if-ne v3, v2, :cond_7c5
++    if-ne v3, v2, :cond_7d8
+ 
+     iget-boolean v2, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->S0:Z
+ 
+-    if-eq v12, v2, :cond_7ba
++    if-eq v12, v2, :cond_7cd
+ 
+     const-string v2, "slowVideo"
+ 
+@@ -15397,30 +15775,30 @@
+ 
+     move-result v2
+ 
+-    if-eqz v2, :cond_7c5
++    if-eqz v2, :cond_7d8
+ 
+-    :cond_7ba
++    :cond_7cd
+     iget-boolean v2, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->R0:Z
+ 
+-    if-ne v14, v2, :cond_7c5
++    if-ne v14, v2, :cond_7d8
+ 
+-    if-eqz v1, :cond_7c1
++    if-eqz v1, :cond_7d4
+ 
+-    goto :goto_7c5
++    goto :goto_7d8
+ 
+-    :cond_7c1
++    :cond_7d4
+     const/4 v2, 0x0
+ 
+-    goto :goto_7c6
++    goto :goto_7d9
+ 
+-    :cond_7c3
++    :cond_7d6
+     move-object/from16 p2, v6
+ 
+-    :cond_7c5
+-    :goto_7c5
++    :cond_7d8
++    :goto_7d8
+     const/4 v2, 0x1
+ 
+-    :goto_7c6
++    :goto_7d9
+     iput v10, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->L0:I
+ 
+     iput-object v8, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->M0:Ljava/lang/String;
+@@ -15443,12 +15821,12 @@
+ 
+     iget-object v3, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v3, :cond_7f1
++    if-eqz v3, :cond_804
+ 
+     .line 255
+     iget-boolean v3, v3, Ldb/c;->m:Z
+ 
+-    if-eqz v3, :cond_7f1
++    if-eqz v3, :cond_804
+ 
+     .line 256
+     invoke-virtual {v7}, Llc/p;->k()Ljava/lang/String;
+@@ -15466,10 +15844,10 @@
+ 
+     move-result v3
+ 
+-    if-nez v3, :cond_847
++    if-nez v3, :cond_85a
+ 
+     .line 258
+-    :cond_7f1
++    :cond_804
+     iget-object v3, v7, Llc/p;->w:Lcom/oplus/camera/ig;
+ 
+     const-string v4, "com.oplus.configure.video.stabilization"
+@@ -15479,7 +15857,7 @@
+ 
+     move-result-object v3
+ 
+-    if-eqz v3, :cond_80a
++    if-eqz v3, :cond_81d
+ 
+     .line 260
+     sget-object v4, Lcom/oplus/camera/ig$c;->w1:Lcom/oplus/camera/ig$b;
+@@ -15494,26 +15872,26 @@
+ 
+     move-result v3
+ 
+-    if-eqz v3, :cond_80a
++    if-eqz v3, :cond_81d
+ 
+-    goto :goto_847
++    goto :goto_85a
+ 
+-    :cond_80a
++    :cond_81d
+     iget-object v3, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v3, :cond_82d
++    if-eqz v3, :cond_840
+ 
+     .line 261
+     iget-boolean v4, v3, Ldb/c;->v:Z
+ 
+-    if-eqz v4, :cond_82d
++    if-eqz v4, :cond_840
+ 
+     .line 262
+     invoke-virtual {v3}, Ldb/c;->l0()Z
+ 
+     move-result v3
+ 
+-    if-eqz v3, :cond_82d
++    if-eqz v3, :cond_840
+ 
+     .line 263
+     invoke-static {}, Lcom/oplus/camera/data/DataManager;->getInstance()Lcom/oplus/camera/data/DataManager;
+@@ -15534,22 +15912,22 @@
+ 
+     move-result v3
+ 
+-    if-eqz v3, :cond_82f
++    if-eqz v3, :cond_842
+ 
+-    goto :goto_847
++    goto :goto_85a
+ 
+-    :cond_82d
++    :cond_840
+     move-object/from16 v5, v18
+ 
+-    :cond_82f
++    :cond_842
+     iget-object v3, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v3, :cond_849
++    if-eqz v3, :cond_85c
+ 
+     .line 264
+     iget-boolean v3, v3, Ldb/c;->b0:Z
+ 
+-    if-eqz v3, :cond_849
++    if-eqz v3, :cond_85c
+ 
+     .line 265
+     invoke-static {}, Lcom/oplus/camera/data/DataManager;->getInstance()Lcom/oplus/camera/data/DataManager;
+@@ -15566,18 +15944,18 @@
+ 
+     move-result v3
+ 
+-    if-eqz v3, :cond_849
++    if-eqz v3, :cond_85c
+ 
+-    :cond_847
+-    :goto_847
++    :cond_85a
++    :goto_85a
+     const/4 v10, 0x1
+ 
+-    goto :goto_84a
++    goto :goto_85d
+ 
+-    :cond_849
++    :cond_85c
+     const/4 v10, 0x0
+ 
+-    :goto_84a
++    :goto_85d
+     iget-object v3, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->b:Ljava/util/ArrayList;
+ 
+     .line 266
+@@ -15585,29 +15963,29 @@
+ 
+     iget-object v3, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->X:Lcom/oplus/camera/feature/zoom/view/f;
+ 
+-    if-eqz v3, :cond_887
++    if-eqz v3, :cond_89a
+ 
+-    if-eqz v1, :cond_858
++    if-eqz v1, :cond_86b
+ 
+     .line 267
+     invoke-virtual/range {p0 .. p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->z0()V
+ 
+-    :cond_858
++    :cond_86b
+     move-object/from16 v1, p5
+ 
+     .line 268
+     invoke-virtual {v0, v1, v2}, Lcom/oplus/camera/feature/zoom/ui/m2;->G(Ldb/c;Z)V
+ 
+-    if-nez v17, :cond_86f
++    if-nez v17, :cond_882
+ 
+     iget-object v1, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v1, :cond_871
++    if-eqz v1, :cond_884
+ 
+     .line 269
+     iget-boolean v1, v1, Ldb/c;->e:Z
+ 
+-    if-eqz v1, :cond_871
++    if-eqz v1, :cond_884
+ 
+     const-string v1, "pref_video_recording_switch"
+ 
+@@ -15616,52 +15994,52 @@
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_871
++    if-eqz v1, :cond_884
+ 
+-    :cond_86f
++    :cond_882
+     const/4 v1, 0x0
+ 
+-    goto :goto_884
++    goto :goto_897
+ 
+     .line 271
+-    :cond_871
++    :cond_884
+     invoke-virtual {v7}, Llc/p;->x1()Z
+ 
+     move-result v1
+ 
+-    if-eqz v1, :cond_887
++    if-eqz v1, :cond_89a
+ 
+     iget-object v1, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+-    if-eqz v1, :cond_887
++    if-eqz v1, :cond_89a
+ 
+     .line 272
+     iget-boolean v1, v1, Ldb/c;->e:Z
+ 
+-    if-nez v1, :cond_887
++    if-nez v1, :cond_89a
+ 
+     const/4 v1, 0x1
+ 
+     .line 273
+     invoke-virtual {v0, v1}, Lcom/oplus/camera/feature/zoom/ui/m2;->m0(Z)V
+ 
+-    goto :goto_887
++    goto :goto_89a
+ 
+     .line 274
+-    :goto_884
++    :goto_897
+     invoke-virtual {v0, v1}, Lcom/oplus/camera/feature/zoom/ui/m2;->m0(Z)V
+ 
+-    :cond_887
+-    :goto_887
++    :cond_89a
++    :goto_89a
+     iget-object v1, v0, Lcom/oplus/camera/feature/zoom/ui/m2;->G0:Lcom/oplus/camera/feature/zoom/ui/SpruceView;
+ 
+-    if-eqz v1, :cond_88e
++    if-eqz v1, :cond_8a1
+ 
+     .line 275
+     invoke-virtual {v1}, Lcom/oplus/camera/feature/zoom/ui/SpruceView;->h()V
+ 
+     .line 276
+-    :cond_88e
++    :cond_8a1
+     new-instance v1, Lcom/oplus/camera/feature/zoom/ui/p1;
+ 
+     move/from16 v2, p3
+@@ -17753,362 +18131,9 @@
+ .method public final S(FI)Z
+     .registers 6
+ 
+-    .line 1
+-    iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->y:Ljava/util/concurrent/atomic/AtomicBoolean;
+-
+-    .line 2
+-    .line 3
+-    invoke-virtual {v0}, Ljava/util/concurrent/atomic/AtomicBoolean;->get()Z
+-
+-    .line 4
+-    .line 5
+-    .line 6
+-    move-result v0
+-
+-    .line 7
+-    const/4 v1, 0x0
+-
+-    .line 8
+-    if-nez v0, :cond_5e
+-
+-    .line 9
+-    .line 10
+-    iget-boolean v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->s:Z
+-
+-    .line 11
+-    .line 12
+-    if-eqz v0, :cond_5e
+-
+-    .line 13
+-    .line 14
+-    iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+-
+-    .line 15
+-    .line 16
+-    if-eqz v0, :cond_1a
+-
+-    .line 17
+-    .line 18
+-    const/high16 v2, 0x42f00000    # 120.0f
+-
+-    .line 19
+-    .line 20
+-    iget v0, v0, Ldb/c;->H0:F
+-
+-    .line 21
+-    .line 22
+-    cmpl-float v0, v2, v0
+-
+-    .line 23
+-    .line 24
+-    if-nez v0, :cond_1a
+-
+-    .line 25
+-    .line 26
+-    goto :goto_2b
+-
+-    .line 27
+-    :cond_1a
+-    invoke-static {}, Lcom/oplus/camera/configure/CameraConfig;->H()Z
+-
+-    .line 28
+-    .line 29
+-    .line 30
+-    move-result v0
+-
+-    .line 31
+-    if-eqz v0, :cond_27
+-
+-    .line 32
+-    .line 33
+-    invoke-virtual {p0}, Lcom/oplus/camera/feature/zoom/ui/m2;->M()Z
+-
+-    .line 34
+-    .line 35
+-    .line 36
+-    move-result v0
+-
+-    .line 37
+-    if-eqz v0, :cond_27
+-
+-    .line 38
+-    .line 39
+-    goto :goto_2b
+-
+-    .line 40
+-    :cond_27
+-    iget-boolean v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->N0:Z
+-
+-    .line 41
+-    .line 42
+-    if-eqz v0, :cond_5e
+-
+-    .line 43
+-    .line 44
+-    :goto_2b
+-    iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+-
+-    .line 45
+-    .line 46
+-    if-eqz v0, :cond_34
+-
+-    .line 47
+-    .line 48
+-    iget-boolean v0, v0, Ldb/c;->n:Z
+-
+-    .line 49
+-    .line 50
+-    if-nez v0, :cond_34
+-
+-    .line 51
+-    .line 52
+-    goto :goto_5e
+-
+-    .line 53
+-    :cond_34
+-    invoke-static {}, Lll/e;->c()Z
+-
+-    .line 54
+-    .line 55
+-    .line 56
+-    move-result v0
+-
+-    .line 57
+-    const/4 v2, 0x1
+-
+-    .line 58
+-    if-eqz v0, :cond_55
+-
+-    .line 59
+-    .line 60
+-    const/4 v0, -0x1
+-
+-    .line 61
+-    if-eq v0, p2, :cond_4c
+-
+-    .line 62
+-    .line 63
+-    const/4 v0, 0x2
+-
+-    .line 64
+-    if-ne v0, p2, :cond_5e
+-
+-    .line 65
+-    .line 66
+-    iget p0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->B:F
+-
+-    .line 67
+-    .line 68
+-    sub-float/2addr p1, p0
+-
+-    .line 69
+-    sget p0, Lcom/oplus/camera/feature/zoom/ui/m2;->m1:F
+-
+-    .line 70
+-    .line 71
+-    cmpg-float p0, p1, p0
+-
+-    .line 72
+-    .line 73
+-    if-gez p0, :cond_5e
+-
+-    .line 74
+-    .line 75
+-    :goto_4a
+-    move v1, v2
+-
+-    .line 76
+-    goto :goto_5e
+-
+-    .line 77
+-    :cond_4c
+-    iget p0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->B:F
+-
+-    .line 78
+-    .line 79
+-    invoke-static {p1, p0}, Ljava/lang/Float;->compare(FF)I
+-
+-    .line 80
+-    .line 81
+-    .line 82
+-    move-result p0
+-
+-    .line 83
+-    if-gtz p0, :cond_5e
+-
+-    .line 84
+-    .line 85
+-    goto :goto_4a
+-
+-    .line 86
+-    :cond_55
+-    iget p0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->C:F
+-
+-    .line 87
+-    .line 88
+-    invoke-static {p1, p0}, Ljava/lang/Float;->compare(FF)I
+-
+-    .line 89
+-    .line 90
+-    .line 91
+-    move-result p0
+-
+-    .line 92
+-    if-ltz p0, :cond_5e
+-
+-    .line 93
+-    .line 94
+-    goto :goto_4a
++    const/4 v0, 0x0
+ 
+-    .line 95
+-    :cond_5e
+-    :goto_5e
+-    return v1
+-    .line 96
+-    .line 97
+-    .line 98
+-    .line 99
+-    .line 100
+-    .line 101
+-    .line 102
+-    .line 103
+-    .line 104
+-    .line 105
+-    .line 106
+-    .line 107
+-    .line 108
+-    .line 109
+-    .line 110
+-    .line 111
+-    .line 112
+-    .line 113
+-    .line 114
+-    .line 115
+-    .line 116
+-    .line 117
+-    .line 118
+-    .line 119
+-    .line 120
+-    .line 121
+-    .line 122
+-    .line 123
+-    .line 124
+-    .line 125
+-    .line 126
+-    .line 127
+-    .line 128
+-    .line 129
+-    .line 130
+-    .line 131
+-    .line 132
+-    .line 133
+-    .line 134
+-    .line 135
+-    .line 136
+-    .line 137
+-    .line 138
+-    .line 139
+-    .line 140
+-    .line 141
+-    .line 142
+-    .line 143
+-    .line 144
+-    .line 145
+-    .line 146
+-    .line 147
+-    .line 148
+-    .line 149
+-    .line 150
+-    .line 151
+-    .line 152
+-    .line 153
+-    .line 154
+-    .line 155
+-    .line 156
+-    .line 157
+-    .line 158
+-    .line 159
+-    .line 160
+-    .line 161
+-    .line 162
+-    .line 163
+-    .line 164
+-    .line 165
+-    .line 166
+-    .line 167
+-    .line 168
+-    .line 169
+-    .line 170
+-    .line 171
+-    .line 172
+-    .line 173
+-    .line 174
+-    .line 175
+-    .line 176
+-    .line 177
+-    .line 178
+-    .line 179
+-    .line 180
+-    .line 181
+-    .line 182
+-    .line 183
+-    .line 184
+-    .line 185
+-    .line 186
+-    .line 187
+-    .line 188
+-    .line 189
+-    .line 190
+-    .line 191
+-    .line 192
+-    .line 193
+-    .line 194
+-    .line 195
+-    .line 196
+-    .line 197
+-    .line 198
+-    .line 199
+-    .line 200
+-    .line 201
+-    .line 202
+-    .line 203
+-    .line 204
+-    .line 205
+-    .line 206
+-    .line 207
+-    .line 208
+-    .line 209
+-    .line 210
+-    .line 211
+-    .line 212
+-    .line 213
+-    .line 214
+-    .line 215
+-    .line 216
+-    .line 217
+-    .line 218
+-    .line 219
+-    .line 220
+-    .line 221
+-    .line 222
+-    .line 223
+-    .line 224
+-    .line 225
+-    .line 226
+-    .line 227
+-    .line 228
+-    .line 229
+-    .line 230
+-    .line 231
+-    .line 232
+-    .line 233
+-    .line 234
+-    .line 235
+-    .line 236
+-    .line 237
+-    .line 238
+-    .line 239
+-    .line 240
++    return v0
+ .end method
+ 
+ .method public final T(Z)Z
+@@ -19188,6 +19213,8 @@
+     .line 141
+     :cond_8c
+     :goto_8c
++    goto :goto_f0
++
+     iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 142
+@@ -19196,7 +19223,7 @@
+ 
+     .line 144
+     .line 145
+-    if-eqz v3, :cond_ef
++    if-eqz v3, :cond_f0
+ 
+     .line 146
+     .line 147
+@@ -19204,7 +19231,7 @@
+ 
+     .line 148
+     .line 149
+-    if-nez v3, :cond_ef
++    if-nez v3, :cond_f0
+ 
+     .line 150
+     .line 151
+@@ -19212,7 +19239,7 @@
+ 
+     .line 152
+     .line 153
+-    if-nez v3, :cond_ef
++    if-nez v3, :cond_f0
+ 
+     .line 154
+     .line 155
+@@ -19220,7 +19247,7 @@
+ 
+     .line 156
+     .line 157
+-    if-nez v0, :cond_ef
++    if-nez v0, :cond_f0
+ 
+     .line 158
+     .line 159
+@@ -19240,7 +19267,7 @@
+     move-result v3
+ 
+     .line 167
+-    if-nez v3, :cond_be
++    if-nez v3, :cond_bf
+ 
+     .line 168
+     .line 169
+@@ -19252,7 +19279,7 @@
+     move-result v3
+ 
+     .line 173
+-    if-nez v3, :cond_be
++    if-nez v3, :cond_bf
+ 
+     .line 174
+     .line 175
+@@ -19264,7 +19291,7 @@
+     move-result v3
+ 
+     .line 179
+-    if-gtz v3, :cond_be
++    if-gtz v3, :cond_bf
+ 
+     .line 180
+     .line 181
+@@ -19285,10 +19312,10 @@
+     .line 188
+     .line 189
+     .line 190
+-    goto :goto_ef
++    goto :goto_f0
+ 
+     .line 191
+-    :cond_be
++    :cond_bf
+     invoke-static {}, Lll/e;->c()Z
+ 
+     .line 192
+@@ -19297,7 +19324,7 @@
+     move-result v3
+ 
+     .line 195
+-    if-eqz v3, :cond_d4
++    if-eqz v3, :cond_d5
+ 
+     .line 196
+     .line 197
+@@ -19309,7 +19336,7 @@
+     move-result v3
+ 
+     .line 201
+-    if-lez v3, :cond_d4
++    if-lez v3, :cond_d5
+ 
+     .line 202
+     .line 203
+@@ -19330,10 +19357,10 @@
+     .line 210
+     .line 211
+     .line 212
+-    goto :goto_ef
++    goto :goto_f0
+ 
+     .line 213
+-    :cond_d4
++    :cond_d5
+     iget-object v3, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 214
+@@ -19342,7 +19369,7 @@
+ 
+     .line 216
+     .line 217
+-    if-eqz v3, :cond_ef
++    if-eqz v3, :cond_f0
+ 
+     .line 218
+     .line 219
+@@ -19354,7 +19381,7 @@
+     move-result v3
+ 
+     .line 223
+-    if-eqz v3, :cond_ef
++    if-eqz v3, :cond_f0
+ 
+     .line 224
+     .line 225
+@@ -19366,7 +19393,7 @@
+     move-result v0
+ 
+     .line 229
+-    if-gtz v0, :cond_ef
++    if-gtz v0, :cond_f0
+ 
+     .line 230
+     .line 231
+@@ -19387,8 +19414,8 @@
+     .line 238
+     .line 239
+     .line 240
+-    :cond_ef
+-    :goto_ef
++    :cond_f0
++    :goto_f0
+     iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 241
+@@ -19397,7 +19424,7 @@
+ 
+     .line 243
+     .line 244
+-    if-eqz v3, :cond_104
++    if-eqz v3, :cond_105
+ 
+     .line 245
+     .line 246
+@@ -19432,16 +19459,16 @@
+     .line 257
+     .line 258
+     .line 259
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 260
+     .line 261
+-    :cond_104
++    :cond_105
+     iget-boolean v3, v0, Ldb/c;->r:Z
+ 
+     .line 262
+     .line 263
+-    if-nez v3, :cond_279
++    if-nez v3, :cond_272
+ 
+     .line 264
+     .line 265
+@@ -19449,7 +19476,7 @@
+ 
+     .line 266
+     .line 267
+-    if-nez v3, :cond_279
++    if-nez v3, :cond_272
+ 
+     .line 268
+     .line 269
+@@ -19457,20 +19484,20 @@
+ 
+     .line 270
+     .line 271
+-    if-eqz v3, :cond_112
++    if-eqz v3, :cond_113
+ 
+     .line 272
+     .line 273
+-    goto/16 :goto_279
++    goto/16 :goto_272
+ 
+     .line 274
+     .line 275
+-    :cond_112
++    :cond_113
+     iget-boolean v3, v0, Ldb/c;->v:Z
+ 
+     .line 276
+     .line 277
+-    if-eqz v3, :cond_136
++    if-eqz v3, :cond_137
+ 
+     .line 278
+     .line 279
+@@ -19478,7 +19505,7 @@
+ 
+     .line 280
+     .line 281
+-    if-nez v3, :cond_11e
++    if-nez v3, :cond_11f
+ 
+     .line 282
+     .line 283
+@@ -19486,11 +19513,11 @@
+ 
+     .line 284
+     .line 285
+-    if-eqz v3, :cond_136
++    if-eqz v3, :cond_137
+ 
+     .line 286
+     .line 287
+-    :cond_11e
++    :cond_11f
+     sget v0, Ll9/a$c;->l:F
+ 
+     .line 288
+@@ -19503,18 +19530,18 @@
+     move-result v0
+ 
+     .line 293
+-    if-nez v0, :cond_127
++    if-nez v0, :cond_128
+ 
+     .line 294
+     .line 295
+-    goto :goto_128
++    goto :goto_129
+ 
+     .line 296
+-    :cond_127
++    :cond_128
+     move-object v1, v2
+ 
+     .line 297
+-    :goto_128
++    :goto_129
+     invoke-static {}, Lcom/oplus/camera/data/DataManager;->getInstance()Lcom/oplus/camera/data/DataManager;
+ 
+     .line 298
+@@ -19537,11 +19564,11 @@
+     .line 307
+     .line 308
+     .line 309
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 310
+     .line 311
+-    :cond_136
++    :cond_137
+     invoke-virtual {v0}, Ldb/c;->q()Z
+ 
+     .line 312
+@@ -19550,7 +19577,7 @@
+     move-result v0
+ 
+     .line 315
+-    if-eqz v0, :cond_162
++    if-eqz v0, :cond_163
+ 
+     .line 316
+     .line 317
+@@ -19562,7 +19589,7 @@
+ 
+     .line 320
+     .line 321
+-    if-eqz v0, :cond_162
++    if-eqz v0, :cond_163
+ 
+     .line 322
+     .line 323
+@@ -19626,11 +19653,11 @@
+     .line 351
+     .line 352
+     .line 353
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 354
+     .line 355
+-    :cond_162
++    :cond_163
+     iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 356
+@@ -19639,7 +19666,7 @@
+ 
+     .line 358
+     .line 359
+-    if-eqz v0, :cond_170
++    if-eqz v0, :cond_171
+ 
+     .line 360
+     .line 361
+@@ -19653,11 +19680,11 @@
+     .line 365
+     .line 366
+     .line 367
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 368
+     .line 369
+-    :cond_170
++    :cond_171
+     sget v0, Ll9/a$c;->l:F
+ 
+     .line 370
+@@ -19670,7 +19697,7 @@
+     move-result v0
+ 
+     .line 375
+-    if-nez v0, :cond_1ff
++    if-nez v0, :cond_1f8
+ 
+     .line 376
+     .line 377
+@@ -19682,7 +19709,7 @@
+ 
+     .line 380
+     .line 381
+-    if-eqz v3, :cond_18e
++    if-eqz v3, :cond_18f
+ 
+     .line 382
+     .line 383
+@@ -19712,16 +19739,16 @@
+     .line 395
+     .line 396
+     .line 397
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 398
+     .line 399
+-    :cond_18e
++    :cond_18f
+     iget-boolean v3, v0, Ldb/c;->m:Z
+ 
+     .line 400
+     .line 401
+-    if-eqz v3, :cond_1c1
++    if-eqz v3, :cond_1c2
+ 
+     .line 402
+     .line 403
+@@ -19729,7 +19756,7 @@
+ 
+     .line 404
+     .line 405
+-    if-nez v0, :cond_1bc
++    if-nez v0, :cond_1bd
+ 
+     .line 406
+     .line 407
+@@ -19805,22 +19832,22 @@
+     .line 443
+     .line 444
+     .line 445
+-    :cond_1bc
++    :cond_1bd
+     invoke-virtual {p0, p1, p1}, Lcom/oplus/camera/feature/zoom/ui/m2;->o(FF)V
+ 
+     .line 446
+     .line 447
+     .line 448
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 449
+     .line 450
+-    :cond_1c1
++    :cond_1c2
+     iget-boolean v1, v0, Ldb/c;->f0:Z
+ 
+     .line 451
+     .line 452
+-    if-eqz v1, :cond_1d5
++    if-eqz v1, :cond_1d6
+ 
+     .line 453
+     .line 454
+@@ -19850,16 +19877,16 @@
+     .line 466
+     .line 467
+     .line 468
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 469
+     .line 470
+-    :cond_1d5
++    :cond_1d6
+     iget-boolean v0, v0, Ldb/c;->b0:Z
+ 
+     .line 471
+     .line 472
+-    if-eqz v0, :cond_1e7
++    if-eqz v0, :cond_1e8
+ 
+     .line 473
+     .line 474
+@@ -19885,11 +19912,11 @@
+     .line 484
+     .line 485
+     .line 486
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 487
+     .line 488
+-    :cond_1e7
++    :cond_1e8
+     invoke-virtual {v7}, Llc/p;->t1()Z
+ 
+     .line 489
+@@ -19898,7 +19925,7 @@
+     move-result v0
+ 
+     .line 492
+-    if-eqz v0, :cond_1f2
++    if-eqz v0, :cond_1f3
+ 
+     .line 493
+     .line 494
+@@ -19907,37 +19934,18 @@
+     .line 495
+     .line 496
+     .line 497
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 498
+     .line 499
+-    :cond_1f2
+-    invoke-static {}, Lcom/oplus/camera/data/DataManager;->getInstance()Lcom/oplus/camera/data/DataManager;
+-
+-    .line 500
+-    .line 501
+-    .line 502
+-    move-result-object v0
+-
+-    .line 503
+-    sget-object v1, Lil/b;->m:Lcom/oplus/camera/data/DataKey;
+-
+-    .line 504
+-    .line 505
+-    sget-object v2, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
+-
+-    .line 506
+-    .line 507
+-    invoke-virtual {v0, v1, v2, v8}, Lcom/oplus/camera/data/DataManager;->h(Lcom/oplus/camera/data/DataKey;Ljava/lang/Object;Z)V
++    :cond_1f3
++    invoke-virtual {p0, p1, p1}, Lcom/oplus/camera/feature/zoom/ui/m2;->o(FF)V
+ 
+-    .line 508
+-    .line 509
+-    .line 510
+-    goto/16 :goto_27f
++    goto/16 :goto_278
+ 
+     .line 511
+     .line 512
+-    :cond_1ff
++    :cond_1f8
+     iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 513
+@@ -19946,7 +19954,7 @@
+ 
+     .line 515
+     .line 516
+-    if-eqz v0, :cond_247
++    if-eqz v0, :cond_240
+ 
+     .line 517
+     .line 518
+@@ -19974,7 +19982,7 @@
+     move-result v0
+ 
+     .line 530
+-    if-eqz v0, :cond_247
++    if-eqz v0, :cond_240
+ 
+     .line 531
+     .line 532
+@@ -19982,7 +19990,7 @@
+ 
+     .line 533
+     .line 534
+-    if-nez v0, :cond_247
++    if-nez v0, :cond_240
+ 
+     .line 535
+     .line 536
+@@ -20036,7 +20044,7 @@
+     move-result v1
+ 
+     .line 562
+-    if-nez v1, :cond_243
++    if-nez v1, :cond_23c
+ 
+     .line 563
+     .line 564
+@@ -20064,29 +20072,29 @@
+     move-result v1
+ 
+     .line 576
+-    if-eqz v1, :cond_243
++    if-eqz v1, :cond_23c
+ 
+     .line 577
+     .line 578
+     move v1, v9
+ 
+     .line 579
+-    goto :goto_244
++    goto :goto_23d
+ 
+     .line 580
+-    :cond_243
++    :cond_23c
+     move v1, v8
+ 
+     .line 581
+-    :goto_244
++    :goto_23d
+     iput-boolean v1, v0, Ldb/c;->h:Z
+ 
+     .line 582
+     .line 583
+-    goto :goto_275
++    goto :goto_26e
+ 
+     .line 584
+-    :cond_247
++    :cond_240
+     iget-object v0, p0, Lcom/oplus/camera/feature/zoom/ui/m2;->q0:Ldb/c;
+ 
+     .line 585
+@@ -20095,7 +20103,7 @@
+ 
+     .line 587
+     .line 588
+-    if-eqz v2, :cond_259
++    if-eqz v2, :cond_252
+ 
+     .line 589
+     .line 590
+@@ -20120,15 +20128,15 @@
+     .line 599
+     .line 600
+     .line 601
+-    goto :goto_275
++    goto :goto_26e
+ 
+     .line 602
+-    :cond_259
++    :cond_252
+     iget-boolean v0, v0, Ldb/c;->b0:Z
+ 
+     .line 603
+     .line 604
+-    if-eqz v0, :cond_26a
++    if-eqz v0, :cond_263
+ 
+     .line 605
+     .line 606
+@@ -20154,10 +20162,10 @@
+     .line 616
+     .line 617
+     .line 618
+-    goto :goto_275
++    goto :goto_26e
+ 
+     .line 619
+-    :cond_26a
++    :cond_263
+     invoke-static {}, Lcom/oplus/camera/data/DataManager;->getInstance()Lcom/oplus/camera/data/DataManager;
+ 
+     .line 620
+@@ -20179,17 +20187,17 @@
+     .line 628
+     .line 629
+     .line 630
+-    :goto_275
++    :goto_26e
+     invoke-virtual {p0, p1, p1}, Lcom/oplus/camera/feature/zoom/ui/m2;->o(FF)V
+ 
+     .line 631
+     .line 632
+     .line 633
+-    goto :goto_27f
++    goto :goto_278
+ 
+     .line 634
+-    :cond_279
+-    :goto_279
++    :cond_272
++    :goto_272
+     invoke-virtual {p0, p1, p1}, Lcom/oplus/camera/feature/zoom/ui/m2;->o(FF)V
+ 
+     .line 635
+@@ -20200,13 +20208,13 @@
+     .line 638
+     .line 639
+     .line 640
+-    :goto_27f
++    :goto_278
+     invoke-virtual {v7, v8}, Ljl/h0;->h4(Z)V
+ 
+     .line 641
+     .line 642
+     .line 643
+-    if-eqz p2, :cond_287
++    if-eqz p2, :cond_280
+ 
+     .line 644
+     .line 645
+@@ -20215,7 +20223,7 @@
+     .line 646
+     .line 647
+     .line 648
+-    :cond_287
++    :cond_280
+     return v9
+     .line 649
+     .line 650
+diff -ruN a/com/oplus/camera/module/a.smali b/com/oplus/camera/module/a.smali
+--- a/com/oplus/camera/module/a.smali
++++ b/com/oplus/camera/module/a.smali
+@@ -62008,10 +62008,10 @@
+     .line 37
+     .line 38
+     .line 39
+-    move-result p0
++    move-result v0
+ 
+     .line 40
+-    if-eqz p0, :cond_2c
++    if-eqz v0, :cond_2c
+ 
+     .line 41
+     .line 42
+@@ -62023,6 +62023,17 @@
+ 
+     .line 45
+     :cond_2c
++    invoke-virtual {p0}, Lcom/oplus/camera/module/a;->sl()I
++
++    move-result v0
++
++    const/16 p0, 0x18
++
++    if-ne v0, p0, :cond_35
++
++    return p0
++
++    :cond_35
+     return v1
+     .line 46
+     .line 47
+diff -ruN a/com/oplus/camera/module/BaseMode.smali b/com/oplus/camera/module/BaseMode.smali
+--- a/com/oplus/camera/module/BaseMode.smali
++++ b/com/oplus/camera/module/BaseMode.smali
+@@ -7217,120 +7217,9 @@
+ .method public Bb(Lcom/oplus/camera/device/CameraConstant$SwitchEventType;)Z
+     .registers 2
+ 
+-    .line 1
+-    iget-boolean p1, p0, Lcom/oplus/camera/module/BaseMode;->F0:Z
+-
+-    .line 2
+-    .line 3
+-    if-eqz p1, :cond_10
+-
+-    .line 4
+-    .line 5
+-    iget-object p0, p0, Lcom/oplus/camera/module/BaseMode;->Q1:Lfm/k4;
+-
+-    .line 6
+-    .line 7
+-    iget-object p0, p0, Lfm/k4;->B0:Lcom/oplus/camera/module/processor/storageprocessor/g1;
+-
+-    .line 8
+-    .line 9
+-    invoke-virtual {p0}, Lcom/oplus/camera/module/processor/storageprocessor/g1;->z()Z
++    iget-boolean p0, p0, Lcom/oplus/camera/module/BaseMode;->F0:Z
+ 
+-    .line 10
+-    .line 11
+-    .line 12
+-    move-result p0
+-
+-    .line 13
+-    if-nez p0, :cond_10
+-
+-    .line 14
+-    .line 15
+-    const/4 p0, 0x1
+-
+-    .line 16
+-    goto :goto_11
+-
+-    .line 17
+-    :cond_10
+-    const/4 p0, 0x0
+-
+-    .line 18
+-    :goto_11
+     return p0
+-    .line 19
+-    .line 20
+-    .line 21
+-    .line 22
+-    .line 23
+-    .line 24
+-    .line 25
+-    .line 26
+-    .line 27
+-    .line 28
+-    .line 29
+-    .line 30
+-    .line 31
+-    .line 32
+-    .line 33
+-    .line 34
+-    .line 35
+-    .line 36
+-    .line 37
+-    .line 38
+-    .line 39
+-    .line 40
+-    .line 41
+-    .line 42
+-    .line 43
+-    .line 44
+-    .line 45
+-    .line 46
+-    .line 47
+-    .line 48
+-    .line 49
+-    .line 50
+-    .line 51
+-    .line 52
+-    .line 53
+-    .line 54
+-    .line 55
+-    .line 56
+-    .line 57
+-    .line 58
+-    .line 59
+-    .line 60
+-    .line 61
+-    .line 62
+-    .line 63
+-    .line 64
+-    .line 65
+-    .line 66
+-    .line 67
+-    .line 68
+-    .line 69
+-    .line 70
+-    .line 71
+-    .line 72
+-    .line 73
+-    .line 74
+-    .line 75
+-    .line 76
+-    .line 77
+-    .line 78
+-    .line 79
+-    .line 80
+-    .line 81
+-    .line 82
+-    .line 83
+-    .line 84
+-    .line 85
+-    .line 86
+-    .line 87
+-    .line 88
+-    .line 89
+-    .line 90
+-    .line 91
+ .end method
+ 
+ .method public Bc()Z
+@@ -23809,41 +23698,12 @@
+     .registers 2
+ 
+     .line 1
+-    const-string p0, "com.oplus.feature.video.8k.24fps.support"
+-
+-    .line 2
+-    .line 3
+-    invoke-static {p0}, Lcom/oplus/camera/configure/CameraConfig;->getConfigBooleanValue(Ljava/lang/String;)Z
+-
+-    .line 4
+-    .line 5
+-    .line 6
+-    move-result p0
+-
+-    .line 7
+-    if-eqz p0, :cond_f
+-
+-    .line 8
+-    .line 9
+-    const-string p0, "video_size_8k"
++    const-string p0, "video_size_4kuhd"
+ 
+-    .line 10
+-    .line 11
+     invoke-virtual {p0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+-    .line 12
+-    .line 13
+-    .line 14
+     move-result p0
+ 
+-    .line 15
+-    return p0
+-
+-    .line 16
+-    :cond_f
+-    const/4 p0, 0x0
+-
+-    .line 17
+     return p0
+     .line 18
+     .line 19
+@@ -27400,18 +27260,8 @@
+     .registers 2
+ 
+     .line 1
+-    invoke-virtual {p0, p1}, Lcom/oplus/camera/module/BaseMode;->Ge(Ljava/lang/String;)Z
+-
+-    .line 2
+-    .line 3
+-    .line 4
+-    move-result p0
+-
+-    .line 5
+-    xor-int/lit8 p0, p0, 0x1
++    const/4 p0, 0x1
+ 
+-    .line 6
+-    .line 7
+     return p0
+     .line 8
+     .line 9
+@@ -85347,7 +85197,7 @@
+     .line 95
+     move-result v4
+     :try_end_5f
+-    .catchall {:try_start_51 .. :try_end_5f} :catchall_31d
++    .catchall {:try_start_51 .. :try_end_5f} :catchall_31e
+ 
+     .line 96
+     const/4 v5, 0x1
+@@ -85494,7 +85344,7 @@
+     .line 161
+     monitor-exit v3
+     :try_end_a1
+-    .catchall {:try_start_9e .. :try_end_a1} :catchall_31a
++    .catchall {:try_start_9e .. :try_end_a1} :catchall_31b
+ 
+     .line 162
+     invoke-virtual {p0, v0, p3, p4}, Lcom/oplus/camera/module/BaseMode;->n8(Lcb/e;ZZ)Z
+@@ -85504,11 +85354,13 @@
+     .line 165
+     move-result p4
+ 
++    const/4 p4, 0x1
++
+     .line 166
+     const/4 v3, 0x6
+ 
+     .line 167
+-    if-nez p4, :cond_164
++    if-nez p4, :cond_165
+ 
+     .line 168
+     .line 169
+@@ -85545,7 +85397,7 @@
+     move-result p3
+ 
+     .line 186
+-    if-eqz p3, :cond_f8
++    if-eqz p3, :cond_f9
+ 
+     .line 187
+     .line 188
+@@ -85561,7 +85413,7 @@
+     move-result-object p3
+ 
+     .line 194
+-    if-eqz p3, :cond_f8
++    if-eqz p3, :cond_f9
+ 
+     .line 195
+     .line 196
+@@ -85585,7 +85437,7 @@
+     move-result p3
+ 
+     .line 206
+-    if-nez p3, :cond_f8
++    if-nez p3, :cond_f9
+ 
+     .line 207
+     .line 208
+@@ -85601,7 +85453,7 @@
+     move-result p3
+ 
+     .line 214
+-    if-nez p3, :cond_f8
++    if-nez p3, :cond_f9
+ 
+     .line 215
+     .line 216
+@@ -85617,11 +85469,11 @@
+     move-result p3
+ 
+     .line 222
+-    if-eqz p3, :cond_f8
++    if-eqz p3, :cond_f9
+ 
+     .line 223
+     .line 224
+-    if-eqz p2, :cond_f8
++    if-eqz p2, :cond_f9
+ 
+     .line 225
+     .line 226
+@@ -85633,7 +85485,7 @@
+     move-result p2
+ 
+     .line 230
+-    if-nez p2, :cond_f8
++    if-nez p2, :cond_f9
+ 
+     .line 231
+     .line 232
+@@ -85641,7 +85493,7 @@
+ 
+     .line 233
+     .line 234
+-    if-nez p2, :cond_f8
++    if-nez p2, :cond_f9
+ 
+     .line 235
+     .line 236
+@@ -85657,7 +85509,7 @@
+     move-result p2
+ 
+     .line 242
+-    if-eqz p2, :cond_f8
++    if-eqz p2, :cond_f9
+ 
+     .line 243
+     .line 244
+@@ -85670,7 +85522,7 @@
+     .line 247
+     .line 248
+     .line 249
+-    :cond_f8
++    :cond_f9
+     invoke-virtual {p0}, Lcom/oplus/camera/module/BaseMode;->nd()Z
+ 
+     .line 250
+@@ -85679,7 +85531,7 @@
+     move-result p2
+ 
+     .line 253
+-    if-eqz p2, :cond_111
++    if-eqz p2, :cond_112
+ 
+     .line 254
+     .line 255
+@@ -85720,7 +85572,7 @@
+     .line 272
+     .line 273
+     .line 274
+-    :cond_111
++    :cond_112
+     iget-object p2, p0, Lcom/oplus/camera/module/BaseMode;->M1:Lcom/oplus/camera/s6;
+ 
+     .line 275
+@@ -85733,11 +85585,11 @@
+     move-result-object p2
+ 
+     .line 280
+-    if-eqz p2, :cond_163
++    if-eqz p2, :cond_164
+ 
+     .line 281
+     .line 282
+-    if-eqz v0, :cond_14e
++    if-eqz v0, :cond_14f
+ 
+     .line 283
+     .line 284
+@@ -85745,18 +85597,18 @@
+ 
+     .line 285
+     .line 286
+-    if-eq v5, p2, :cond_122
++    if-eq v5, p2, :cond_123
+ 
+     .line 287
+     .line 288
+     const/4 p3, 0x7
+ 
+     .line 289
+-    if-ne p3, p2, :cond_14e
++    if-ne p3, p2, :cond_14f
+ 
+     .line 290
+     .line 291
+-    :cond_122
++    :cond_123
+     invoke-virtual {p0, p1}, Lcom/oplus/camera/module/BaseMode;->qf(Z)Z
+ 
+     .line 292
+@@ -85765,7 +85617,7 @@
+     move-result p1
+ 
+     .line 295
+-    if-eqz p1, :cond_13f
++    if-eqz p1, :cond_140
+ 
+     .line 296
+     .line 297
+@@ -85811,10 +85663,10 @@
+     .line 317
+     .line 318
+     .line 319
+-    goto :goto_14e
++    goto :goto_14f
+ 
+     .line 320
+-    :cond_13f
++    :cond_140
+     invoke-virtual {p0}, Lcom/oplus/camera/module/BaseMode;->z9()Lcom/oplus/camera/protocal/ui/a;
+ 
+     .line 321
+@@ -85844,8 +85696,8 @@
+     .line 333
+     .line 334
+     .line 335
+-    :cond_14e
+-    :goto_14e
++    :cond_14f
++    :goto_14f
+     iget-object p1, p0, Lcom/oplus/camera/module/BaseMode;->M1:Lcom/oplus/camera/s6;
+ 
+     .line 336
+@@ -85866,7 +85718,7 @@
+     move-result p1
+ 
+     .line 345
+-    if-eqz p1, :cond_163
++    if-eqz p1, :cond_164
+ 
+     .line 346
+     .line 347
+@@ -85887,11 +85739,11 @@
+     .line 354
+     .line 355
+     .line 356
+-    :cond_163
++    :cond_164
+     return v2
+ 
+     .line 357
+-    :cond_164
++    :cond_165
+     invoke-static {}, Lin/d;->n()Lin/d;
+ 
+     .line 358
+@@ -85928,7 +85780,7 @@
+     move-result p1
+ 
+     .line 375
+-    if-nez p1, :cond_1c6
++    if-nez p1, :cond_1c7
+ 
+     .line 376
+     .line 377
+@@ -85953,7 +85805,7 @@
+     move-result p1
+ 
+     .line 388
+-    if-eqz p1, :cond_197
++    if-eqz p1, :cond_198
+ 
+     .line 389
+     .line 390
+@@ -85990,10 +85842,10 @@
+     .line 405
+     .line 406
+     .line 407
+-    goto :goto_19c
++    goto :goto_19d
+ 
+     .line 408
+-    :cond_197
++    :cond_198
+     iget-object p1, p0, Lcom/oplus/camera/module/BaseMode;->D2:Lfm/e2;
+ 
+     .line 409
+@@ -86003,7 +85855,7 @@
+     .line 411
+     .line 412
+     .line 413
+-    :goto_19c
++    :goto_19d
+     invoke-static {}, Lcom/oplus/camera/statistics/events/DcsReporter;->getFuncProxy()Lcom/oplus/camera/statistics/events/DcsFunctionEventProxy;
+ 
+     .line 414
+@@ -86060,7 +85912,7 @@
+ 
+     .line 440
+     .line 441
+-    if-nez p3, :cond_1c5
++    if-nez p3, :cond_1c6
+ 
+     .line 442
+     .line 443
+@@ -86085,11 +85937,11 @@
+     .line 452
+     .line 453
+     .line 454
+-    :cond_1c5
++    :cond_1c6
+     return v2
+ 
+     .line 455
+-    :cond_1c6
++    :cond_1c7
+     invoke-virtual {p0}, Lcom/oplus/camera/module/BaseMode;->s()Z
+ 
+     .line 456
+@@ -86098,7 +85950,7 @@
+     move-result p1
+ 
+     .line 459
+-    if-eqz p1, :cond_210
++    if-eqz p1, :cond_211
+ 
+     .line 460
+     .line 461
+@@ -86114,7 +85966,7 @@
+     move-result p1
+ 
+     .line 467
+-    if-eqz p1, :cond_210
++    if-eqz p1, :cond_211
+ 
+     .line 468
+     .line 469
+@@ -86126,7 +85978,7 @@
+     move-result p1
+ 
+     .line 473
+-    if-nez p1, :cond_210
++    if-nez p1, :cond_211
+ 
+     .line 474
+     .line 475
+@@ -86146,7 +85998,7 @@
+     move-result p1
+ 
+     .line 483
+-    if-eqz p1, :cond_210
++    if-eqz p1, :cond_211
+ 
+     .line 484
+     .line 485
+@@ -86218,7 +86070,7 @@
+     move-result p1
+ 
+     .line 519
+-    if-nez p1, :cond_210
++    if-nez p1, :cond_211
+ 
+     .line 520
+     .line 521
+@@ -86238,7 +86090,7 @@
+     return v2
+ 
+     .line 529
+-    :cond_210
++    :cond_211
+     iget-object p1, p0, Lcom/oplus/camera/module/BaseMode;->M1:Lcom/oplus/camera/s6;
+ 
+     .line 530
+@@ -86251,7 +86103,7 @@
+     move-result-object p1
+ 
+     .line 535
+-    if-eqz p1, :cond_235
++    if-eqz p1, :cond_236
+ 
+     .line 536
+     .line 537
+@@ -86275,7 +86127,7 @@
+     move-result p1
+ 
+     .line 547
+-    if-eqz p1, :cond_235
++    if-eqz p1, :cond_236
+ 
+     .line 548
+     .line 549
+@@ -86312,7 +86164,7 @@
+     .line 564
+     .line 565
+     .line 566
+-    :cond_235
++    :cond_236
+     iget-object p1, p0, Lcom/oplus/camera/module/BaseMode;->Q1:Lfm/k4;
+ 
+     .line 567
+@@ -86325,7 +86177,7 @@
+ 
+     .line 571
+     .line 572
+-    if-nez p1, :cond_245
++    if-nez p1, :cond_246
+ 
+     .line 573
+     .line 574
+@@ -86345,7 +86197,7 @@
+     return v2
+ 
+     .line 582
+-    :cond_245
++    :cond_246
+     invoke-virtual {p0}, Lcom/oplus/camera/module/BaseMode;->Vc()Z
+ 
+     .line 583
+@@ -86354,14 +86206,14 @@
+     move-result p1
+ 
+     .line 586
+-    if-nez p1, :cond_24c
++    if-nez p1, :cond_24d
+ 
+     .line 587
+     .line 588
+-    goto :goto_272
++    goto :goto_273
+ 
+     .line 589
+-    :cond_24c
++    :cond_24d
+     iget-object p1, p0, Lcom/oplus/camera/module/BaseMode;->Z0:Landroid/app/Activity;
+ 
+     .line 590
+@@ -86382,7 +86234,7 @@
+     move-result-object p1
+ 
+     .line 599
+-    if-eqz p1, :cond_25e
++    if-eqz p1, :cond_25f
+ 
+     .line 600
+     .line 601
+@@ -86390,22 +86242,22 @@
+ 
+     .line 602
+     .line 603
+-    if-eqz p1, :cond_25e
++    if-eqz p1, :cond_25f
+ 
+     .line 604
+     .line 605
+     move p1, v5
+ 
+     .line 606
+-    goto :goto_25f
++    goto :goto_260
+ 
+     .line 607
+-    :cond_25e
++    :cond_25f
+     move p1, v2
+ 
+     .line 608
+-    :goto_25f
+-    if-nez p1, :cond_268
++    :goto_260
++    if-nez p1, :cond_269
+ 
+     .line 609
+     .line 610
+@@ -86422,8 +86274,8 @@
+     .line 615
+     .line 616
+     .line 617
+-    :cond_268
+-    if-nez p1, :cond_272
++    :cond_269
++    if-nez p1, :cond_273
+ 
+     .line 618
+     .line 619
+@@ -86443,13 +86295,13 @@
+     return v2
+ 
+     .line 627
+-    :cond_272
+-    :goto_272
++    :cond_273
++    :goto_273
+     iget-object p1, p0, Lcom/oplus/camera/module/BaseMode;->d1:Lcb/e;
+ 
+     .line 628
+     .line 629
+-    if-eqz p1, :cond_2ed
++    if-eqz p1, :cond_2ee
+ 
+     .line 630
+     .line 631
+@@ -86461,7 +86313,7 @@
+ 
+     .line 634
+     .line 635
+-    if-ne p2, p3, :cond_2ed
++    if-ne p2, p3, :cond_2ee
+ 
+     .line 636
+     .line 637
+@@ -86469,7 +86321,7 @@
+ 
+     .line 638
+     .line 639
+-    if-nez p2, :cond_2ed
++    if-nez p2, :cond_2ee
+ 
+     .line 640
+     .line 641
+@@ -86477,7 +86329,7 @@
+ 
+     .line 642
+     .line 643
+-    if-ne p2, v5, :cond_2ed
++    if-ne p2, v5, :cond_2ee
+ 
+     .line 644
+     .line 645
+@@ -86494,21 +86346,21 @@
+ 
+     .line 651
+     .line 652
+-    if-ltz p2, :cond_28f
++    if-ltz p2, :cond_290
+ 
+     .line 653
+     .line 654
+     move p2, v5
+ 
+     .line 655
+-    goto :goto_290
++    goto :goto_291
+ 
+     .line 656
+-    :cond_28f
++    :cond_290
+     move p2, v2
+ 
+     .line 657
+-    :goto_290
++    :goto_291
+     invoke-virtual {p0}, Lcom/oplus/camera/module/BaseMode;->P8()J
+ 
+     .line 658
+@@ -86521,21 +86373,21 @@
+ 
+     .line 662
+     .line 663
+-    if-ltz v0, :cond_29a
++    if-ltz v0, :cond_29b
+ 
+     .line 664
+     .line 665
+     move v0, v5
+ 
+     .line 666
+-    goto :goto_29b
++    goto :goto_29c
+ 
+     .line 667
+-    :cond_29a
++    :cond_29b
+     move v0, v2
+ 
+     .line 668
+-    :goto_29b
++    :goto_29c
+     const-wide/16 v6, -0x1
+ 
+     .line 669
+@@ -86544,7 +86396,7 @@
+ 
+     .line 671
+     .line 672
+-    if-lez v1, :cond_2ed
++    if-lez v1, :cond_2ee
+ 
+     .line 673
+     .line 674
+@@ -86556,11 +86408,11 @@
+ 
+     .line 677
+     .line 678
+-    if-eqz v1, :cond_2ed
++    if-eqz v1, :cond_2ee
+ 
+     .line 679
+     .line 680
+-    if-eq p2, v0, :cond_2ed
++    if-eq p2, v0, :cond_2ee
+ 
+     .line 681
+     .line 682
+@@ -86587,7 +86439,7 @@
+ 
+     .line 692
+     .line 693
+-    if-lez p2, :cond_2ed
++    if-lez p2, :cond_2ee
+ 
+     .line 694
+     .line 695
+@@ -86666,7 +86518,7 @@
+     move-result p1
+ 
+     .line 734
+-    if-eqz p1, :cond_2ed
++    if-eqz p1, :cond_2ee
+ 
+     .line 735
+     .line 736
+@@ -86678,7 +86530,7 @@
+     move-result p1
+ 
+     .line 740
+-    if-nez p1, :cond_2ed
++    if-nez p1, :cond_2ee
+ 
+     .line 741
+     .line 742
+@@ -86698,7 +86550,7 @@
+     return v2
+ 
+     .line 750
+-    :cond_2ed
++    :cond_2ee
+     invoke-static {}, Lcom/oplus/camera/feature/defer/a;->o()Z
+ 
+     .line 751
+@@ -86707,7 +86559,7 @@
+     move-result p1
+ 
+     .line 754
+-    if-nez p1, :cond_319
++    if-nez p1, :cond_31a
+ 
+     .line 755
+     .line 756
+@@ -86719,7 +86571,7 @@
+     move-result p1
+ 
+     .line 760
+-    if-eqz p1, :cond_319
++    if-eqz p1, :cond_31a
+ 
+     .line 761
+     .line 762
+@@ -86735,7 +86587,7 @@
+     move-result p1
+ 
+     .line 768
+-    if-eqz p1, :cond_319
++    if-eqz p1, :cond_31a
+ 
+     .line 769
+     .line 770
+@@ -86747,7 +86599,7 @@
+     move-result p1
+ 
+     .line 774
+-    if-nez p1, :cond_319
++    if-nez p1, :cond_31a
+ 
+     .line 775
+     .line 776
+@@ -86755,7 +86607,7 @@
+ 
+     .line 777
+     .line 778
+-    if-le p1, v3, :cond_319
++    if-le p1, v3, :cond_31a
+ 
+     .line 779
+     .line 780
+@@ -86767,7 +86619,7 @@
+ 
+     .line 783
+     .line 784
+-    if-ge p1, p2, :cond_319
++    if-ge p1, p2, :cond_31a
+ 
+     .line 785
+     .line 786
+@@ -86787,24 +86639,24 @@
+     return v2
+ 
+     .line 794
+-    :cond_319
++    :cond_31a
+     return v5
+ 
+     .line 795
+-    :catchall_31a
++    :catchall_31b
+     move-exception p0
+ 
+     .line 796
+-    :try_start_31b
++    :try_start_31c
+     monitor-exit v3
+-    :try_end_31c
+-    .catchall {:try_start_31b .. :try_end_31c} :catchall_31a
++    :try_end_31d
++    .catchall {:try_start_31c .. :try_end_31d} :catchall_31b
+ 
+     .line 797
+     throw p0
+ 
+     .line 798
+-    :catchall_31d
++    :catchall_31e
+     move-exception p0
+ 
+     .line 799
+@@ -159773,9 +159625,32 @@
+ .end method
+ 
+ .method public final l7(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z
+-    .registers 5
++    .registers 6
++
++    const-string v0, "60"
++
++    invoke-virtual {v0, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_14
++
++    if-eqz p4, :cond_14
++
++    const-string v0, "pref_video_fps_key"
++
++    invoke-virtual {p4, v0}, Ljava/lang/String;->startsWith(Ljava/lang/String;)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_14
++
++    const/4 v0, 0x0
++
++    return v0
+ 
+     .line 1
++    :cond_14
+     invoke-interface {p0}, Lcom/oplus/camera/r6;->Q0()Landroid/app/Activity;
+ 
+     .line 2
+diff -ruN a/com/oplus/camera/module/processor/captureprocessor/CaptureProcessor.smali b/com/oplus/camera/module/processor/captureprocessor/CaptureProcessor.smali
+--- a/com/oplus/camera/module/processor/captureprocessor/CaptureProcessor.smali
++++ b/com/oplus/camera/module/processor/captureprocessor/CaptureProcessor.smali
+@@ -35516,7 +35516,80 @@
+ .method public final v(Lmm/b;Z)V
+     .registers 13
+ 
++    iget-wide v0, p0, Lcom/oplus/camera/module/processor/captureprocessor/CaptureProcessor;->n:J
++
++    iget-wide v2, p1, Lmm/b;->u:J
++
++    cmp-long v0, v0, v2
++
++    if-nez v0, :cond_b
++
++    invoke-virtual {p0, p1}, Lcom/oplus/camera/module/processor/captureprocessor/CaptureProcessor;->X(Lmm/b;)V
++
++    :cond_b
++    iget-object v0, p0, Lcom/oplus/camera/module/processor/captureprocessor/CaptureProcessor;->i:Lcom/oplus/camera/s6;
++
++    if-eqz v0, :cond_2d
++
++    invoke-interface {v0}, Lcom/oplus/camera/s6;->X()Lhp/q0;
++
++    move-result-object v0
++
++    if-eqz v0, :cond_2d
++
++    iget-object v1, v0, Lhp/i2;->i:Lvq/f;
++
++    if-eqz v1, :cond_1d
++
++    const/4 v2, 0x1
++
++    invoke-virtual {v1, v2}, Lvq/f;->l0(Z)V
++
++    :cond_1d
++    iget-object v0, v0, Lhp/i2;->f:Lkp/g0;
++
++    if-eqz v0, :cond_2d
++
++    new-instance v1, Lkp/g0$l;
++
++    invoke-direct {v1, v0}, Lkp/g0$l;-><init>(Lkp/g0;)V
++
++    iput-object v1, v0, Lkp/g0;->r1:Lkp/g0$l;
++
++    const-wide/16 v2, 0x12c
++
++    invoke-static {v1, v2, v3}, Lcom/oplus/camera/common/thread/ThreadManager;->n(Ljava/lang/Runnable;J)V
++
++    :cond_2d
++    iget-object v0, p0, Lcom/oplus/camera/module/processor/captureprocessor/CaptureProcessor;->p:Lfm/k4;
++
++    if-eqz v0, :cond_39
++
++    iget-object v0, v0, Lfm/k4;->B0:Lcom/oplus/camera/module/processor/storageprocessor/g1;
++
++    if-eqz v0, :cond_39
++
++    const/4 v1, 0x0
++
++    invoke-virtual {v0, v1}, Lcom/oplus/camera/module/processor/storageprocessor/g1;->l(I)V
++
++    :cond_39
++    iget-object v0, p0, Lcom/oplus/camera/module/processor/captureprocessor/CaptureProcessor;->p:Lfm/k4;
++
++    if-eqz v0, :cond_47
++
++    invoke-virtual {v0}, Lfm/k4;->m()Lcom/oplus/camera/module/BaseMode;
++
++    move-result-object v0
++
++    if-eqz v0, :cond_47
++
++    const/4 v1, 0x1
++
++    invoke-virtual {v0, v1}, Lcom/oplus/camera/module/BaseMode;->Uh(Z)V
++
+     .line 1
++    :cond_47
+     const-string v0, "CaptureProcessor"
+ 
+     .line 2
+@@ -35596,7 +35669,7 @@
+     move-result v0
+ 
+     .line 44
+-    if-eqz v0, :cond_35
++    if-eqz v0, :cond_7c
+ 
+     .line 45
+     .line 46
+@@ -35616,7 +35689,7 @@
+     return-void
+ 
+     .line 54
+-    :cond_35
++    :cond_7c
+     iget-wide v0, p0, Lcom/oplus/camera/module/processor/captureprocessor/CaptureProcessor;->n:J
+ 
+     .line 55
+@@ -35635,26 +35708,26 @@
+     const/4 v2, 0x0
+ 
+     .line 62
+-    if-nez v0, :cond_41
++    if-nez v0, :cond_88
+ 
+     .line 63
+     .line 64
+     move v0, v1
+ 
+     .line 65
+-    goto :goto_42
++    goto :goto_89
+ 
+     .line 66
+-    :cond_41
++    :cond_88
+     move v0, v2
+ 
+     .line 67
+-    :goto_42
+-    if-eqz p2, :cond_56
++    :goto_89
++    if-eqz p2, :cond_9d
+ 
+     .line 68
+     .line 69
+-    if-eqz v0, :cond_56
++    if-eqz v0, :cond_9d
+ 
+     .line 70
+     .line 71
+@@ -35662,7 +35735,7 @@
+ 
+     .line 72
+     .line 73
+-    if-eqz v3, :cond_56
++    if-eqz v3, :cond_9d
+ 
+     .line 74
+     .line 75
+@@ -35670,7 +35743,7 @@
+ 
+     .line 76
+     .line 77
+-    if-nez v3, :cond_56
++    if-nez v3, :cond_9d
+ 
+     .line 78
+     .line 79
+@@ -35690,7 +35763,7 @@
+     return-void
+ 
+     .line 87
+-    :cond_56
++    :cond_9d
+     sget-object v3, Lcom/oplus/camera/module/processor/captureprocessor/CaptureProcessor;->I0:Landroid/util/LongSparseArray;
+ 
+     .line 88
+@@ -35698,16 +35771,16 @@
+     monitor-enter v3
+ 
+     .line 90
+-    if-nez p2, :cond_6a
++    if-nez p2, :cond_b1
+ 
+     .line 91
+     .line 92
+-    :try_start_5b
++    :try_start_a2
+     iget-boolean v4, p1, Lmm/b;->B:Z
+ 
+     .line 93
+     .line 94
+-    if-nez v4, :cond_67
++    if-nez v4, :cond_ae
+ 
+     .line 95
+     .line 96
+@@ -35715,36 +35788,36 @@
+ 
+     .line 97
+     .line 98
+-    if-eqz v4, :cond_6a
++    if-eqz v4, :cond_b1
+ 
+     .line 99
+     .line 100
+-    goto :goto_67
++    goto :goto_ae
+ 
+     .line 101
+-    :catchall_64
++    :catchall_ab
+     move-exception p0
+ 
+     .line 102
+-    goto/16 :goto_13f
++    goto/16 :goto_186
+ 
+     .line 103
+     .line 104
+-    :cond_67
+-    :goto_67
++    :cond_ae
++    :goto_ae
+     iput v2, p1, Lmm/b;->y:I
+ 
+     .line 105
+     .line 106
+-    goto :goto_76
++    goto :goto_bd
+ 
+     .line 107
+-    :cond_6a
++    :cond_b1
+     iget-boolean v4, p1, Lmm/b;->c:Z
+ 
+     .line 108
+     .line 109
+-    if-eqz v4, :cond_71
++    if-eqz v4, :cond_b8
+ 
+     .line 110
+     .line 111
+@@ -35752,10 +35825,10 @@
+ 
+     .line 112
+     .line 113
+-    goto :goto_76
++    goto :goto_bd
+ 
+     .line 114
+-    :cond_71
++    :cond_b8
+     iget v4, p1, Lmm/b;->y:I
+ 
+     .line 115
+@@ -35767,10 +35840,10 @@
+ 
+     .line 118
+     .line 119
+-    :goto_76
++    :goto_bd
+     monitor-exit v3
+-    :try_end_77
+-    .catchall {:try_start_5b .. :try_end_77} :catchall_64
++    :try_end_be
++    .catchall {:try_start_a2 .. :try_end_be} :catchall_ab
+ 
+     .line 120
+     invoke-virtual {p1}, Lmm/b;->c()Z
+@@ -35781,7 +35854,7 @@
+     move-result v1
+ 
+     .line 124
+-    if-eqz v1, :cond_86
++    if-eqz v1, :cond_cd
+ 
+     .line 125
+     .line 126
+@@ -35789,7 +35862,7 @@
+ 
+     .line 127
+     .line 128
+-    if-nez v1, :cond_86
++    if-nez v1, :cond_cd
+ 
+     .line 129
+     .line 130
+@@ -35802,7 +35875,7 @@
+     .line 133
+     .line 134
+     .line 135
+-    :cond_86
++    :cond_cd
+     const/16 v6, 0x14
+ 
+     .line 136
+@@ -35825,7 +35898,7 @@
+     .line 143
+     .line 144
+     .line 145
+-    if-eqz p2, :cond_ab
++    if-eqz p2, :cond_f2
+ 
+     .line 146
+     .line 147
+@@ -35833,7 +35906,7 @@
+ 
+     .line 148
+     .line 149
+-    if-nez v1, :cond_ab
++    if-nez v1, :cond_f2
+ 
+     .line 150
+     .line 151
+@@ -35848,7 +35921,7 @@
+     const/4 v4, 0x2
+ 
+     .line 156
+-    if-eq v4, v1, :cond_ab
++    if-eq v4, v1, :cond_f2
+ 
+     .line 157
+     .line 158
+@@ -35874,11 +35947,11 @@
+     .line 168
+     .line 169
+     .line 170
+-    goto/16 :goto_136
++    goto/16 :goto_17d
+ 
+     .line 171
+     .line 172
+-    :cond_ab
++    :cond_f2
+     invoke-virtual {p1}, Lmm/b;->c()Z
+ 
+     .line 173
+@@ -35887,11 +35960,11 @@
+     move-result v1
+ 
+     .line 176
+-    if-eqz v1, :cond_136
++    if-eqz v1, :cond_17d
+ 
+     .line 177
+     .line 178
+-    if-eqz v0, :cond_b6
++    if-eqz v0, :cond_fd
+ 
+     .line 179
+     .line 180
+@@ -35900,22 +35973,22 @@
+     .line 181
+     .line 182
+     .line 183
+-    :cond_b6
++    :cond_fd
+     iget-object v1, p1, Lmm/b;->L:Lcb/k1;
+ 
+     .line 184
+     .line 185
+-    if-nez v1, :cond_bc
++    if-nez v1, :cond_103
+ 
+     .line 186
+     .line 187
+     const/4 v1, 0x0
+ 
+     .line 188
+-    goto :goto_c0
++    goto :goto_107
+ 
+     .line 189
+-    :cond_bc
++    :cond_103
+     invoke-virtual {v1}, Lcb/k1;->b()Landroid/hardware/camera2/CaptureResult;
+ 
+     .line 190
+@@ -35924,7 +35997,7 @@
+     move-result-object v1
+ 
+     .line 193
+-    :goto_c0
++    :goto_107
+     invoke-virtual {p0, p1}, Lcom/oplus/camera/module/processor/captureprocessor/CaptureProcessor;->z(Lmm/b;)Lcom/oplus/camera/protocal/event/message/deviceProtocol/deviceControlRequest/EventMessageCaptureRequestStage$a;
+ 
+     .line 194
+@@ -35982,7 +36055,7 @@
+ 
+     .line 223
+     .line 224
+-    if-eqz v0, :cond_f0
++    if-eqz v0, :cond_137
+ 
+     .line 225
+     .line 226
+@@ -36013,11 +36086,11 @@
+     .line 239
+     .line 240
+     .line 241
+-    :cond_f0
++    :cond_137
+     monitor-enter v3
+ 
+     .line 242
+-    :try_start_f1
++    :try_start_138
+     iget-wide v0, p1, Lmm/b;->u:J
+ 
+     .line 243
+@@ -36035,7 +36108,7 @@
+     move-result v0
+ 
+     .line 251
+-    if-nez v0, :cond_101
++    if-nez v0, :cond_148
+ 
+     .line 252
+     .line 253
+@@ -36048,7 +36121,7 @@
+     .line 256
+     .line 257
+     .line 258
+-    :cond_101
++    :cond_148
+     const-string v0, "CaptureProcessor"
+ 
+     .line 259
+@@ -36072,15 +36145,15 @@
+     .line 269
+     .line 270
+     monitor-exit v3
+-    :try_end_10e
+-    .catchall {:try_start_f1 .. :try_end_10e} :catchall_133
++    :try_end_155
++    .catchall {:try_start_138 .. :try_end_155} :catchall_17a
+ 
+     .line 271
+     iget-boolean v0, p1, Lmm/b;->b:Z
+ 
+     .line 272
+     .line 273
+-    if-eqz v0, :cond_129
++    if-eqz v0, :cond_170
+ 
+     .line 274
+     .line 275
+@@ -36092,7 +36165,7 @@
+ 
+     .line 278
+     .line 279
+-    if-eqz v0, :cond_123
++    if-eqz v0, :cond_16a
+ 
+     .line 280
+     .line 281
+@@ -36114,10 +36187,10 @@
+     .line 289
+     .line 290
+     .line 291
+-    goto :goto_136
++    goto :goto_17d
+ 
+     .line 292
+-    :cond_123
++    :cond_16a
+     const-string v0, "completeCapture-burst"
+ 
+     .line 293
+@@ -36127,11 +36200,11 @@
+     .line 295
+     .line 296
+     .line 297
+-    goto :goto_136
++    goto :goto_17d
+ 
+     .line 298
+-    :cond_129
+-    if-nez p2, :cond_136
++    :cond_170
++    if-nez p2, :cond_17d
+ 
+     .line 299
+     .line 300
+@@ -36148,24 +36221,24 @@
+     .line 305
+     .line 306
+     .line 307
+-    goto :goto_136
++    goto :goto_17d
+ 
+     .line 308
+-    :catchall_133
++    :catchall_17a
+     move-exception p0
+ 
+     .line 309
+-    :try_start_134
++    :try_start_17b
+     monitor-exit v3
+-    :try_end_135
+-    .catchall {:try_start_134 .. :try_end_135} :catchall_133
++    :try_end_17c
++    .catchall {:try_start_17b .. :try_end_17c} :catchall_17a
+ 
+     .line 310
+     throw p0
+ 
+     .line 311
+-    :cond_136
+-    :goto_136
++    :cond_17d
++    :goto_17d
+     new-instance p1, Lmm/h;
+ 
+     .line 312
+@@ -36183,11 +36256,11 @@
+     return-void
+ 
+     .line 320
+-    :goto_13f
+-    :try_start_13f
++    :goto_186
++    :try_start_186
+     monitor-exit v3
+-    :try_end_140
+-    .catchall {:try_start_13f .. :try_end_140} :catchall_64
++    :try_end_187
++    .catchall {:try_start_186 .. :try_end_187} :catchall_ab
+ 
+     .line 321
+     throw p0
+diff -ruN a/com/oplus/camera/module/processor/storageprocessor/ThumbnailHelper$c.smali b/com/oplus/camera/module/processor/storageprocessor/ThumbnailHelper$c.smali
+--- a/com/oplus/camera/module/processor/storageprocessor/ThumbnailHelper$c.smali
++++ b/com/oplus/camera/module/processor/storageprocessor/ThumbnailHelper$c.smali
+@@ -5646,6 +5646,24 @@
+ .method public final k(Lcom/oplus/ocs/camera/CameraPictureCallback$CameraPictureImage;)V
+     .registers 16
+ 
++    iget-object v0, p0, Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper$c;->a:Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper;
++
++    iget-object v0, v0, Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper;->r:Lcom/oplus/camera/aps/service/ApsService;
++
++    invoke-virtual {p1}, Lcom/oplus/ocs/camera/CameraPictureCallback$CameraPictureImage;->getImage()[B
++
++    move-result-object v1
++
++    invoke-virtual {p1}, Lcom/oplus/ocs/camera/CameraPictureCallback$CameraPictureImage;->getOrientation()I
++
++    move-result v2
++
++    invoke-virtual {p1}, Lcom/oplus/ocs/camera/CameraPictureCallback$CameraPictureImage;->getTimestamp()J
++
++    move-result-wide v3
++
++    invoke-static {v0, v1, v2, v3, v4}, Lcom/oplus/camera/util/DadaJpegSaver;->save(Landroid/content/Context;[BIJ)V
++
+     .line 1
+     const-string v0, "processPictureImage, closeHardwareBuffer for burst capture stopped, buffer: "
+ 
+@@ -5674,7 +5692,7 @@
+     monitor-enter v10
+ 
+     .line 14
+-    :try_start_d
++    :try_start_20
+     iget-object v2, p0, Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper$c;->a:Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper;
+ 
+     .line 15
+@@ -5745,7 +5763,7 @@
+     const/4 v3, 0x0
+ 
+     .line 46
+-    if-nez v11, :cond_59
++    if-nez v11, :cond_6c
+ 
+     .line 47
+     .line 48
+@@ -5824,15 +5842,15 @@
+     return-void
+ 
+     .line 87
+-    :catchall_56
++    :catchall_69
+     move-exception p0
+ 
+     .line 88
+-    goto/16 :goto_15f
++    goto/16 :goto_172
+ 
+     .line 89
+     .line 90
+-    :cond_59
++    :cond_6c
+     invoke-static {}, Lcom/oplus/camera/util/CaptureFailInfoUtil;->d()Lcom/oplus/camera/util/CaptureFailInfoUtil;
+ 
+     .line 91
+@@ -5865,7 +5883,7 @@
+     const/4 v4, 0x0
+ 
+     .line 106
+-    if-eqz v3, :cond_8e
++    if-eqz v3, :cond_a1
+ 
+     .line 107
+     .line 108
+@@ -5934,8 +5952,8 @@
+     .line 141
+     .line 142
+     .line 143
+-    :cond_8e
+-    if-eqz v1, :cond_b5
++    :cond_a1
++    if-eqz v1, :cond_c8
+ 
+     .line 144
+     .line 145
+@@ -5947,7 +5965,7 @@
+     move-result v0
+ 
+     .line 149
+-    if-eqz v0, :cond_a3
++    if-eqz v0, :cond_b6
+ 
+     .line 150
+     .line 151
+@@ -5955,7 +5973,7 @@
+ 
+     .line 152
+     .line 153
+-    if-eqz v0, :cond_9e
++    if-eqz v0, :cond_b1
+ 
+     .line 154
+     .line 155
+@@ -5963,11 +5981,11 @@
+ 
+     .line 156
+     .line 157
+-    if-nez v0, :cond_a3
++    if-nez v0, :cond_b6
+ 
+     .line 158
+     .line 159
+-    :cond_9e
++    :cond_b1
+     iget-object v0, p0, Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper$c;->a:Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper;
+ 
+     .line 160
+@@ -5977,7 +5995,7 @@
+     .line 162
+     .line 163
+     .line 164
+-    :cond_a3
++    :cond_b6
+     iget-object v0, p0, Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper$c;->a:Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper;
+ 
+     .line 165
+@@ -6008,16 +6026,16 @@
+     .line 178
+     .line 179
+     .line 180
+-    goto/16 :goto_136
++    goto/16 :goto_149
+ 
+     .line 181
+     .line 182
+-    :cond_b5
++    :cond_c8
+     iget-object v3, v11, Lcom/oplus/camera/module/processor/storageprocessor/p;->b:Lcom/oplus/ocs/camera/CameraPictureCallback$CameraPictureResult;
+ 
+     .line 183
+     .line 184
+-    if-eqz v3, :cond_104
++    if-eqz v3, :cond_117
+ 
+     .line 185
+     .line 186
+@@ -6045,7 +6063,7 @@
+     move-result v3
+ 
+     .line 198
+-    if-le v3, v2, :cond_104
++    if-le v3, v2, :cond_117
+ 
+     .line 199
+     .line 200
+@@ -6084,16 +6102,16 @@
+ 
+     .line 218
+     monitor-enter p0
+-    :try_end_da
+-    .catchall {:try_start_d .. :try_end_da} :catchall_56
++    :try_end_ed
++    .catchall {:try_start_20 .. :try_end_ed} :catchall_69
+ 
+     .line 219
+-    :try_start_da
++    :try_start_ed
+     iget-object v3, p0, Lin/j;->g:Lin/g;
+ 
+     .line 220
+     .line 221
+-    if-eqz v3, :cond_e3
++    if-eqz v3, :cond_f6
+ 
+     .line 222
+     .line 223
+@@ -6102,14 +6120,14 @@
+     .line 224
+     .line 225
+     invoke-virtual {v3, v4}, Lcom/oplus/camera/module/processor/captureprocessor/CaptureProcessor$k;->a(Lcom/oplus/camera/picturestore/CameraPicture;)V
+-    :try_end_e3
+-    .catchall {:try_start_da .. :try_end_e3} :catchall_101
++    :try_end_f6
++    .catchall {:try_start_ed .. :try_end_f6} :catchall_114
+ 
+     .line 226
+     .line 227
+     .line 228
+-    :cond_e3
+-    :try_start_e3
++    :cond_f6
++    :try_start_f6
+     monitor-exit p0
+ 
+     .line 229
+@@ -6165,10 +6183,10 @@
+     .line 255
+     .line 256
+     .line 257
+-    goto :goto_136
++    goto :goto_149
+ 
+     .line 258
+-    :catchall_101
++    :catchall_114
+     move-exception p1
+ 
+     .line 259
+@@ -6178,7 +6196,7 @@
+     throw p1
+ 
+     .line 261
+-    :cond_104
++    :cond_117
+     iput-object p1, v11, Lcom/oplus/camera/module/processor/storageprocessor/p;->c:Lcom/oplus/ocs/camera/CameraPictureCallback$CameraPictureImage;
+ 
+     .line 262
+@@ -6199,7 +6217,7 @@
+     move-result p1
+ 
+     .line 271
+-    if-eqz p1, :cond_136
++    if-eqz p1, :cond_149
+ 
+     .line 272
+     .line 273
+@@ -6227,7 +6245,7 @@
+     move-result v3
+ 
+     .line 285
+-    if-nez v3, :cond_121
++    if-nez v3, :cond_134
+ 
+     .line 286
+     .line 287
+@@ -6236,7 +6254,7 @@
+     .line 288
+     .line 289
+     .line 290
+-    :cond_121
++    :cond_134
+     iget-object p1, p0, Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper$c;->a:Lcom/oplus/camera/module/processor/storageprocessor/ThumbnailHelper;
+ 
+     .line 291
+@@ -6262,7 +6280,7 @@
+ 
+     .line 302
+     .line 303
+-    if-eqz p1, :cond_136
++    if-eqz p1, :cond_149
+ 
+     .line 304
+     .line 305
+@@ -6276,13 +6294,13 @@
+     .line 309
+     .line 310
+     .line 311
+-    :cond_136
+-    :goto_136
++    :cond_149
++    :goto_149
+     sget-boolean p0, Lbb/s;->b:Z
+ 
+     .line 312
+     .line 313
+-    if-eqz p0, :cond_15d
++    if-eqz p0, :cond_170
+ 
+     .line 314
+     .line 315
+@@ -6351,17 +6369,17 @@
+     .line 348
+     .line 349
+     .line 350
+-    :cond_15d
++    :cond_170
+     monitor-exit v10
+ 
+     .line 351
+     return-void
+ 
+     .line 352
+-    :goto_15f
++    :goto_172
+     monitor-exit v10
+-    :try_end_160
+-    .catchall {:try_start_e3 .. :try_end_160} :catchall_56
++    :try_end_173
++    .catchall {:try_start_f6 .. :try_end_173} :catchall_69
+ 
+     .line 353
+     throw p0
+diff -ruN a/com/oplus/camera/performance/statistics/DiagnosisTools.smali b/com/oplus/camera/performance/statistics/DiagnosisTools.smali
+--- a/com/oplus/camera/performance/statistics/DiagnosisTools.smali
++++ b/com/oplus/camera/performance/statistics/DiagnosisTools.smali
+@@ -4,7 +4,7 @@
+ 
+ 
+ # static fields
+-.field public static a:Z = false
++.field public static a:Z
+ 
+ .field public static final b:Ljava/util/LinkedHashMap;
+     .annotation system Ldalvik/annotation/Signature;
+diff -ruN a/com/oplus/camera/performance/statistics/LaunchPerformance.smali b/com/oplus/camera/performance/statistics/LaunchPerformance.smali
+--- a/com/oplus/camera/performance/statistics/LaunchPerformance.smali
++++ b/com/oplus/camera/performance/statistics/LaunchPerformance.smali
+@@ -63,13 +63,13 @@
+ 
+ .field private static sLaunchMode:Ljava/lang/String; = ""
+ 
+-.field private static sOnCreateTime:J = 0x0L
++.field private static sOnCreateTime:J
+ 
+-.field private static sOnResumeTime:J = 0x0L
++.field private static sOnResumeTime:J
+ 
+-.field private static sOpenCameraTime:J = 0x0L
++.field private static sOpenCameraTime:J
+ 
+-.field private static sPauseClose2Resume:Z = false
++.field private static sPauseClose2Resume:Z
+ 
+ .field private static final sPerfRecordMap:Ljava/util/TreeMap;
+     .annotation system Ldalvik/annotation/Signature;
+@@ -82,11 +82,11 @@
+     .end annotation
+ .end field
+ 
+-.field private static sRequestRepeatingTime:J = 0x0L
++.field private static sRequestRepeatingTime:J
+ 
+-.field private static sSessionConfiguredTime:J = 0x0L
++.field private static sSessionConfiguredTime:J
+ 
+-.field private static sSetRepeatingTimeQueue:Ljava/util/ArrayDeque; = null
++.field private static sSetRepeatingTimeQueue:Ljava/util/ArrayDeque;
+     .annotation system Ldalvik/annotation/Signature;
+         value = {
+             "Ljava/util/ArrayDeque<",
+@@ -96,13 +96,13 @@
+     .end annotation
+ .end field
+ 
+-.field private static sTimeGapAfterLastEnter:D = 0.0
++.field private static sTimeGapAfterLastEnter:D
+ 
+-.field private static sUserClickTime:J = 0x0L
++.field private static sUserClickTime:J
+ 
+-.field private static sbFirstFrameDrawed:Z = false
++.field private static sbFirstFrameDrawed:Z
+ 
+-.field private static sbStopBeforeFirstFrameDraw:Z = false
++.field private static sbStopBeforeFirstFrameDraw:Z
+ 
+ 
+ # direct methods
+diff -ruN a/com/oplus/camera/statistics/DcsDataCollector$EnterExitCollector.smali b/com/oplus/camera/statistics/DcsDataCollector$EnterExitCollector.smali
+--- a/com/oplus/camera/statistics/DcsDataCollector$EnterExitCollector.smali
++++ b/com/oplus/camera/statistics/DcsDataCollector$EnterExitCollector.smali
+@@ -15,9 +15,9 @@
+ 
+ 
+ # static fields
+-.field public static sOnPause:Z = false
++.field public static sOnPause:Z
+ 
+-.field public static sbJumpedToGallery:Z = false
++.field public static sbJumpedToGallery:Z
+ 
+ 
+ # direct methods
+diff -ruN a/com/oplus/camera/statistics/DcsDataCollectorImpl$EnterExitImpl.smali b/com/oplus/camera/statistics/DcsDataCollectorImpl$EnterExitImpl.smali
+--- a/com/oplus/camera/statistics/DcsDataCollectorImpl$EnterExitImpl.smali
++++ b/com/oplus/camera/statistics/DcsDataCollectorImpl$EnterExitImpl.smali
+@@ -15,9 +15,9 @@
+ 
+ 
+ # static fields
+-.field private static sExitTimestamp:J = 0x0L
++.field private static sExitTimestamp:J
+ 
+-.field private static sIsToGallery:Z = false
++.field private static sIsToGallery:Z
+ 
+ .field private static sResumeTimestamp:J
+ 
+diff -ruN a/com/oplus/camera/statistics/events/UserBehaviorDataManager.smali b/com/oplus/camera/statistics/events/UserBehaviorDataManager.smali
+--- a/com/oplus/camera/statistics/events/UserBehaviorDataManager.smali
++++ b/com/oplus/camera/statistics/events/UserBehaviorDataManager.smali
+@@ -50,11 +50,11 @@
+ 
+ .field private static sZoomChangeTimes:I = -0x1
+ 
+-.field private static sbEnterOnCharge:Z = false
++.field private static sbEnterOnCharge:Z
+ 
+-.field private static sbExitOnCharge:Z = false
++.field private static sbExitOnCharge:Z
+ 
+-.field private static sbIsDurationRecording:Z = false
++.field private static sbIsDurationRecording:Z
+ 
+ 
+ # direct methods
+diff -ruN a/com/oplus/camera/ui/power/LowPowerTipDialog.smali b/com/oplus/camera/ui/power/LowPowerTipDialog.smali
+--- a/com/oplus/camera/ui/power/LowPowerTipDialog.smali
++++ b/com/oplus/camera/ui/power/LowPowerTipDialog.smali
+@@ -13,7 +13,7 @@
+ 
+ 
+ # static fields
+-.field public static a:Z = false
++.field public static a:Z
+ 
+ .field public static b:Lcom/oplus/camera/ui/power/LowPowerTipDialog$TipType;
+ 
+diff -ruN a/com/oplus/camera/util/AndroidTestHelper.smali b/com/oplus/camera/util/AndroidTestHelper.smali
+--- a/com/oplus/camera/util/AndroidTestHelper.smali
++++ b/com/oplus/camera/util/AndroidTestHelper.smali
+@@ -50,7 +50,7 @@
+ 
+ .field private static final TAG:Ljava/lang/String; = "AndroidTestHelper"
+ 
+-.field public static sAndroidTest:Z = false
++.field public static sAndroidTest:Z
+ 
+ .field public static sAndroidTestCallBack:Lcom/oplus/camera/util/AndroidTestHelper$AndroidTestCallBack;
+ 
+diff -ruN a/com/oplus/camera/util/DadaJpegSaver$1.smali b/com/oplus/camera/util/DadaJpegSaver$1.smali
+--- a/com/oplus/camera/util/DadaJpegSaver$1.smali
++++ b/com/oplus/camera/util/DadaJpegSaver$1.smali
+@@ -0,0 +1,71 @@
++.class Lcom/oplus/camera/util/DadaJpegSaver$1;
++.super Ljava/lang/Object;
++.source "DadaJpegSaver.java"
++
++# interfaces
++.implements Ljava/lang/Runnable;
++
++
++# annotations
++.annotation system Ldalvik/annotation/EnclosingMethod;
++    value = Lcom/oplus/camera/util/DadaJpegSaver;->save(Landroid/content/Context;[BIJ)V
++.end annotation
++
++.annotation system Ldalvik/annotation/InnerClass;
++    accessFlags = 0x0
++    name = null
++.end annotation
++
++
++# instance fields
++.field final synthetic val$fcr:Landroid/content/ContentResolver;
++
++
++# direct methods
++.method constructor <init>(Landroid/content/ContentResolver;)V
++    .registers 2
++    .annotation system Ldalvik/annotation/Signature;
++        value = {
++            "()V"
++        }
++    .end annotation
++
++    .line 129
++    iput-object p1, p0, Lcom/oplus/camera/util/DadaJpegSaver$1;->val$fcr:Landroid/content/ContentResolver;
++
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++
++# virtual methods
++.method public run()V
++    .registers 3
++
++    .line 133
++    const-wide/16 v0, 0x5dc
++
++    :try_start_2
++    invoke-static {v0, v1}, Ljava/lang/Thread;->sleep(J)V
++    :try_end_5
++    .catch Ljava/lang/InterruptedException; {:try_start_2 .. :try_end_5} :catch_6
++
++    .line 135
++    goto :goto_7
++
++    .line 134
++    :catch_6
++    move-exception v0
++
++    .line 136
++    :goto_7
++    iget-object v0, p0, Lcom/oplus/camera/util/DadaJpegSaver$1;->val$fcr:Landroid/content/ContentResolver;
++
++    const-string v1, "late"
++
++    invoke-static {v0, v1}, Lcom/oplus/camera/util/DadaJpegSaver;->purgeAppPendingRows(Landroid/content/ContentResolver;Ljava/lang/String;)V
++
++    .line 137
++    return-void
++.end method
+diff -ruN a/com/oplus/camera/util/DadaJpegSaver.smali b/com/oplus/camera/util/DadaJpegSaver.smali
+--- a/com/oplus/camera/util/DadaJpegSaver.smali
++++ b/com/oplus/camera/util/DadaJpegSaver.smali
+@@ -0,0 +1,1045 @@
++.class public final Lcom/oplus/camera/util/DadaJpegSaver;
++.super Ljava/lang/Object;
++.source "DadaJpegSaver.java"
++
++
++# static fields
++.field private static final MIN_BYTES:I = 0x493e0
++
++.field private static final TAG:Ljava/lang/String; = "DadaJpegSaver"
++
++.field private static volatile sLastTimestamp:J
++
++
++# direct methods
++.method static constructor <clinit>()V
++    .registers 2
++
++    .line 34
++    const-wide/16 v0, -0x1
++
++    sput-wide v0, Lcom/oplus/camera/util/DadaJpegSaver;->sLastTimestamp:J
++
++    return-void
++.end method
++
++.method private constructor <init>()V
++    .registers 1
++
++    .line 36
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    .line 37
++    return-void
++.end method
++
++.method static purgeAppPendingRows(Landroid/content/ContentResolver;Ljava/lang/String;)V
++    .registers 11
++
++    .line 163
++    const-string v0, "purge("
++
++    const-string v1, "DadaJpegSaver"
++
++    .line 164
++    nop
++
++    .line 166
++    const/4 v2, 0x0
++
++    :try_start_6
++    new-instance v3, Landroid/os/Bundle;
++
++    invoke-direct {v3}, Landroid/os/Bundle;-><init>()V
++
++    .line 167
++    const-string v4, "android:query-arg-match-pending"
++
++    const/4 v5, 0x3
++
++    invoke-virtual {v3, v4, v5}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
++
++    .line 168
++    const-string v4, "android:query-arg-sql-selection"
++
++    const-string v5, "relative_path=? AND _display_name LIKE \'IMG2%\' AND (_size IS NULL OR _size=0)"
++
++    invoke-virtual {v3, v4, v5}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 170
++    const-string v4, "android:query-arg-sql-selection-args"
++
++    const-string v5, "DCIM/Camera/"
++
++    filled-new-array {v5}, [Ljava/lang/String;
++
++    move-result-object v5
++
++    invoke-virtual {v3, v4, v5}, Landroid/os/Bundle;->putStringArray(Ljava/lang/String;[Ljava/lang/String;)V
++
++    .line 171
++    sget-object v4, Landroid/provider/MediaStore$Images$Media;->EXTERNAL_CONTENT_URI:Landroid/net/Uri;
++
++    const-string v5, "_id"
++
++    filled-new-array {v5}, [Ljava/lang/String;
++
++    move-result-object v5
++
++    invoke-virtual {p0, v4, v5, v3, v2}, Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Landroid/os/Bundle;Landroid/os/CancellationSignal;)Landroid/database/Cursor;
++
++    move-result-object v3
++    :try_end_2f
++    .catchall {:try_start_6 .. :try_end_2f} :catchall_78
++
++    .line 172
++    const/4 v4, 0x0
++
++    if-eqz v3, :cond_4e
++
++    move v5, v4
++
++    .line 173
++    :goto_33
++    :try_start_33
++    invoke-interface {v3}, Landroid/database/Cursor;->moveToNext()Z
++
++    move-result v6
++
++    if-eqz v6, :cond_49
++
++    .line 174
++    sget-object v6, Landroid/provider/MediaStore$Images$Media;->EXTERNAL_CONTENT_URI:Landroid/net/Uri;
++
++    invoke-interface {v3, v4}, Landroid/database/Cursor;->getLong(I)J
++
++    move-result-wide v7
++
++    invoke-static {v6, v7, v8}, Landroid/content/ContentUris;->withAppendedId(Landroid/net/Uri;J)Landroid/net/Uri;
++
++    move-result-object v6
++
++    .line 175
++    invoke-virtual {p0, v6, v2, v2}, Landroid/content/ContentResolver;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
++
++    move-result v6
++
++    add-int/2addr v5, v6
++
++    .line 176
++    goto :goto_33
++
++    .line 173
++    :cond_49
++    move v4, v5
++
++    goto :goto_4e
++
++    .line 179
++    :catchall_4b
++    move-exception p0
++
++    move-object v2, v3
++
++    goto :goto_79
++
++    .line 178
++    :cond_4e
++    :goto_4e
++    new-instance p0, Ljava/lang/StringBuilder;
++
++    invoke-direct {p0}, Ljava/lang/StringBuilder;-><init>()V
++
++    invoke-virtual {p0, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p0
++
++    invoke-virtual {p0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p0
++
++    const-string v2, "): deleted "
++
++    invoke-virtual {p0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p0
++
++    invoke-virtual {p0, v4}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++
++    move-result-object p0
++
++    const-string v2, " abandoned pending row(s)"
++
++    invoke-virtual {p0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p0
++
++    invoke-virtual {p0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object p0
++
++    invoke-static {v1, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
++    :try_end_72
++    .catchall {:try_start_33 .. :try_end_72} :catchall_4b
++
++    .line 182
++    if-eqz v3, :cond_98
++
++    .line 183
++    invoke-interface {v3}, Landroid/database/Cursor;->close()V
++
++    goto :goto_98
++
++    .line 179
++    :catchall_78
++    move-exception p0
++
++    .line 180
++    :goto_79
++    :try_start_79
++    new-instance v3, Ljava/lang/StringBuilder;
++
++    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
++
++    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v0
++
++    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p1
++
++    const-string v0, ") failed"
++
++    invoke-virtual {p1, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p1
++
++    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object p1
++
++    invoke-static {v1, p1, p0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++    :try_end_93
++    .catchall {:try_start_79 .. :try_end_93} :catchall_99
++
++    .line 182
++    if-eqz v2, :cond_98
++
++    .line 183
++    invoke-interface {v2}, Landroid/database/Cursor;->close()V
++
++    .line 186
++    :cond_98
++    :goto_98
++    return-void
++
++    .line 182
++    :catchall_99
++    move-exception p0
++
++    if-eqz v2, :cond_9f
++
++    .line 183
++    invoke-interface {v2}, Landroid/database/Cursor;->close()V
++
++    .line 185
++    :cond_9f
++    throw p0
++.end method
++
++.method private static readLastZoomRatio()F
++    .registers 2
++
++    .line 190
++    :try_start_0
++    const-string v0, "com.oplus.ocs.camera.common.util.Util"
++
++    invoke-static {v0}, Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;
++
++    move-result-object v0
++
++    .line 191
++    const-string v1, "sDadaLastZoomRatio"
++
++    invoke-virtual {v0, v1}, Ljava/lang/Class;->getField(Ljava/lang/String;)Ljava/lang/reflect/Field;
++
++    move-result-object v0
++
++    const/4 v1, 0x0
++
++    invoke-virtual {v0, v1}, Ljava/lang/reflect/Field;->getFloat(Ljava/lang/Object;)F
++
++    move-result v0
++    :try_end_11
++    .catchall {:try_start_0 .. :try_end_11} :catchall_12
++
++    return v0
++
++    .line 192
++    :catchall_12
++    move-exception v0
++
++    .line 193
++    const/high16 v0, 0x3f800000    # 1.0f
++
++    return v0
++.end method
++
++.method public static save(Landroid/content/Context;[BIJ)V
++    .registers 15
++
++    .line 40
++    if-eqz p0, :cond_223
++
++    if-eqz p1, :cond_223
++
++    array-length v0, p1
++
++    const v1, 0x493e0
++
++    if-ge v0, v1, :cond_c
++
++    goto/16 :goto_223
++
++    .line 44
++    :cond_c
++    const-class v0, Lcom/oplus/camera/util/DadaJpegSaver;
++
++    monitor-enter v0
++
++    .line 45
++    :try_start_f
++    sget-wide v1, Lcom/oplus/camera/util/DadaJpegSaver;->sLastTimestamp:J
++
++    cmp-long v1, p3, v1
++
++    if-nez v1, :cond_2f
++
++    .line 46
++    const-string p0, "DadaJpegSaver"
++
++    new-instance p1, Ljava/lang/StringBuilder;
++
++    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
++
++    const-string p2, "save: duplicate timestamp "
++
++    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p1
++
++    invoke-virtual {p1, p3, p4}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
++
++    move-result-object p1
++
++    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object p1
++
++    invoke-static {p0, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
++
++    .line 47
++    monitor-exit v0
++
++    return-void
++
++    .line 49
++    :cond_2f
++    sput-wide p3, Lcom/oplus/camera/util/DadaJpegSaver;->sLastTimestamp:J
++
++    .line 50
++    monitor-exit v0
++    :try_end_32
++    .catchall {:try_start_f .. :try_end_32} :catchall_220
++
++    .line 52
++    nop
++
++    .line 53
++    nop
++
++    .line 55
++    const/4 p3, 0x0
++
++    :try_start_35
++    invoke-static {}, Ljava/lang/System;->currentTimeMillis()J
++
++    move-result-wide v0
++
++    .line 56
++    new-instance p4, Ljava/io/File;
++
++    invoke-virtual {p0}, Landroid/content/Context;->getCacheDir()Ljava/io/File;
++
++    move-result-object v2
++
++    new-instance v3, Ljava/lang/StringBuilder;
++
++    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
++
++    const-string v4, "dada_"
++
++    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3, v0, v1}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    const-string v4, ".jpg"
++
++    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v3
++
++    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object v3
++
++    invoke-direct {p4, v2, v3}, Ljava/io/File;-><init>(Ljava/io/File;Ljava/lang/String;)V
++    :try_end_5b
++    .catchall {:try_start_35 .. :try_end_5b} :catchall_1fe
++
++    .line 57
++    :try_start_5b
++    new-instance v2, Ljava/io/FileOutputStream;
++
++    invoke-direct {v2, p4}, Ljava/io/FileOutputStream;-><init>(Ljava/io/File;)V
++
++    .line 58
++    invoke-virtual {v2, p1}, Ljava/io/FileOutputStream;->write([B)V
++
++    .line 59
++    invoke-virtual {v2}, Ljava/io/FileOutputStream;->flush()V
++
++    .line 60
++    invoke-virtual {v2}, Ljava/io/FileOutputStream;->close()V
++    :try_end_69
++    .catchall {:try_start_5b .. :try_end_69} :catchall_1fb
++
++    .line 63
++    const/4 v2, 0x0
++
++    const/4 v3, 0x1
++
++    :try_start_6b
++    new-instance v4, Landroid/media/ExifInterface;
++
++    invoke-virtual {p4}, Ljava/io/File;->getAbsolutePath()Ljava/lang/String;
++
++    move-result-object v5
++
++    invoke-direct {v4, v5}, Landroid/media/ExifInterface;-><init>(Ljava/lang/String;)V
++
++    .line 64
++    new-instance v5, Ljava/text/SimpleDateFormat;
++
++    const-string v6, "yyyy:MM:dd HH:mm:ss"
++
++    sget-object v7, Ljava/util/Locale;->US:Ljava/util/Locale;
++
++    invoke-direct {v5, v6, v7}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
++
++    new-instance v6, Ljava/util/Date;
++
++    invoke-direct {v6, v0, v1}, Ljava/util/Date;-><init>(J)V
++
++    invoke-virtual {v5, v6}, Ljava/text/SimpleDateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
++
++    move-result-object v5
++
++    .line 65
++    const-string v6, "Orientation"
++
++    invoke-static {p2}, Lcom/oplus/camera/util/DadaJpegSaver;->toExifOrientation(I)I
++
++    move-result p2
++
++    invoke-static {p2}, Ljava/lang/String;->valueOf(I)Ljava/lang/String;
++
++    move-result-object p2
++
++    invoke-virtual {v4, v6, p2}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 66
++    const-string p2, "Make"
++
++    const-string v6, "Xiaomi"
++
++    invoke-virtual {v4, p2, v6}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 67
++    const-string p2, "Model"
++
++    const-string v6, "Xiaomi 15"
++
++    invoke-virtual {v4, p2, v6}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 68
++    const-string p2, "DateTime"
++
++    invoke-virtual {v4, p2, v5}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 69
++    const-string p2, "DateTimeOriginal"
++
++    invoke-virtual {v4, p2, v5}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 70
++    new-instance p2, Landroid/graphics/BitmapFactory$Options;
++
++    invoke-direct {p2}, Landroid/graphics/BitmapFactory$Options;-><init>()V
++
++    .line 71
++    iput-boolean v3, p2, Landroid/graphics/BitmapFactory$Options;->inJustDecodeBounds:Z
++
++    .line 72
++    array-length v5, p1
++
++    invoke-static {p1, v2, v5, p2}, Landroid/graphics/BitmapFactory;->decodeByteArray([BIILandroid/graphics/BitmapFactory$Options;)Landroid/graphics/Bitmap;
++
++    .line 73
++    iget p1, p2, Landroid/graphics/BitmapFactory$Options;->outWidth:I
++
++    iget p2, p2, Landroid/graphics/BitmapFactory$Options;->outHeight:I
++
++    invoke-static {p1, p2}, Ljava/lang/Math;->max(II)I
++
++    move-result p1
++
++    const/16 p2, 0xcc0
++
++    if-ne p1, p2, :cond_c4
++
++    move p1, v3
++
++    goto :goto_c5
++
++    :cond_c4
++    move p1, v2
++
++    .line 74
++    :goto_c5
++    if-eqz p1, :cond_d6
++
++    .line 75
++    const-string p1, "FocalLength"
++
++    const-string p2, "283/100"
++
++    invoke-virtual {v4, p1, p2}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 76
++    const-string p1, "FocalLengthIn35mmFilm"
++
++    const-string p2, "21"
++
++    invoke-virtual {v4, p1, p2}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    goto :goto_114
++
++    .line 78
++    :cond_d6
++    invoke-static {}, Lcom/oplus/camera/util/DadaJpegSaver;->readLastZoomRatio()F
++
++    move-result p1
++
++    .line 79
++    const p2, 0x3f733333    # 0.95f
++
++    cmpg-float p2, p1, p2
++
++    if-gez p2, :cond_f0
++
++    .line 80
++    const-string p1, "FocalLength"
++
++    const-string p2, "216/100"
++
++    invoke-virtual {v4, p1, p2}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 81
++    const-string p1, "FocalLengthIn35mmFilm"
++
++    const-string p2, "14"
++
++    invoke-virtual {v4, p1, p2}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    goto :goto_114
++
++    .line 82
++    :cond_f0
++    const p2, 0x40233333    # 2.55f
++
++    cmpl-float p1, p1, p2
++
++    if-ltz p1, :cond_106
++
++    .line 83
++    const-string p1, "FocalLength"
++
++    const-string p2, "900/100"
++
++    invoke-virtual {v4, p1, p2}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 84
++    const-string p1, "FocalLengthIn35mmFilm"
++
++    const-string p2, "60"
++
++    invoke-virtual {v4, p1, p2}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    goto :goto_114
++
++    .line 86
++    :cond_106
++    const-string p1, "FocalLength"
++
++    const-string p2, "655/100"
++
++    invoke-virtual {v4, p1, p2}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 87
++    const-string p1, "FocalLengthIn35mmFilm"
++
++    const-string p2, "23"
++
++    invoke-virtual {v4, p1, p2}, Landroid/media/ExifInterface;->setAttribute(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 90
++    :goto_114
++    invoke-virtual {v4}, Landroid/media/ExifInterface;->saveAttributes()V
++    :try_end_117
++    .catchall {:try_start_6b .. :try_end_117} :catchall_118
++
++    .line 93
++    goto :goto_120
++
++    .line 91
++    :catchall_118
++    move-exception p1
++
++    .line 92
++    :try_start_119
++    const-string p2, "DadaJpegSaver"
++
++    const-string v4, "save: exif failed"
++
++    invoke-static {p2, v4, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++
++    .line 95
++    :goto_120
++    new-instance p1, Ljava/lang/StringBuilder;
++
++    invoke-direct {p1}, Ljava/lang/StringBuilder;-><init>()V
++
++    const-string p2, "IMG_"
++
++    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p1
++
++    invoke-virtual {p1, v0, v1}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
++
++    move-result-object p1
++
++    const-string p2, ".jpg"
++
++    invoke-virtual {p1, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p1
++
++    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object p1
++
++    .line 96
++    new-instance p2, Landroid/content/ContentValues;
++
++    invoke-direct {p2}, Landroid/content/ContentValues;-><init>()V
++
++    .line 97
++    const-string v4, "_display_name"
++
++    invoke-virtual {p2, v4, p1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 98
++    const-string v4, "mime_type"
++
++    const-string v5, "image/jpeg"
++
++    invoke-virtual {p2, v4, v5}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 99
++    const-string v4, "relative_path"
++
++    const-string v5, "DCIM/Camera"
++
++    invoke-virtual {p2, v4, v5}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/String;)V
++
++    .line 100
++    const-string v4, "datetaken"
++
++    invoke-static {v0, v1}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
++
++    move-result-object v0
++
++    invoke-virtual {p2, v4, v0}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Long;)V
++
++    .line 101
++    const-string v0, "is_pending"
++
++    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++
++    move-result-object v1
++
++    invoke-virtual {p2, v0, v1}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
++
++    .line 103
++    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++
++    move-result-object v0
++
++    .line 104
++    sget-object v1, Landroid/provider/MediaStore$Images$Media;->EXTERNAL_CONTENT_URI:Landroid/net/Uri;
++
++    invoke-virtual {v0, v1, p2}, Landroid/content/ContentResolver;->insert(Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
++
++    move-result-object p2
++    :try_end_16d
++    .catchall {:try_start_119 .. :try_end_16d} :catchall_1fb
++
++    .line 105
++    if-nez p2, :cond_17b
++
++    .line 106
++    :try_start_16f
++    const-string p1, "DadaJpegSaver"
++
++    const-string v0, "save: insert returned null"
++
++    invoke-static {p1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
++    :try_end_176
++    .catchall {:try_start_16f .. :try_end_176} :catchall_1f9
++
++    .line 150
++    nop
++
++    .line 152
++    invoke-virtual {p4}, Ljava/io/File;->delete()Z
++
++    .line 107
++    return-void
++
++    .line 110
++    :cond_17b
++    :try_start_17b
++    new-instance v1, Ljava/io/FileInputStream;
++
++    invoke-direct {v1, p4}, Ljava/io/FileInputStream;-><init>(Ljava/io/File;)V
++
++    .line 111
++    invoke-virtual {v0, p2}, Landroid/content/ContentResolver;->openOutputStream(Landroid/net/Uri;)Ljava/io/OutputStream;
++
++    move-result-object v4
++
++    .line 112
++    const/high16 v5, 0x10000
++
++    new-array v5, v5, [B
++
++    .line 113
++    const-wide/16 v6, 0x0
++
++    .line 115
++    :goto_18a
++    invoke-virtual {v1, v5}, Ljava/io/InputStream;->read([B)I
++
++    move-result v8
++
++    if-lez v8, :cond_196
++
++    .line 116
++    invoke-virtual {v4, v5, v2, v8}, Ljava/io/OutputStream;->write([BII)V
++
++    .line 117
++    int-to-long v8, v8
++
++    add-long/2addr v6, v8
++
++    goto :goto_18a
++
++    .line 119
++    :cond_196
++    invoke-virtual {v1}, Ljava/io/InputStream;->close()V
++
++    .line 120
++    invoke-virtual {v4}, Ljava/io/OutputStream;->flush()V
++
++    .line 121
++    invoke-virtual {v4}, Ljava/io/OutputStream;->close()V
++
++    .line 123
++    new-instance v1, Landroid/content/ContentValues;
++
++    invoke-direct {v1}, Landroid/content/ContentValues;-><init>()V
++
++    .line 124
++    const-string v4, "is_pending"
++
++    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++
++    move-result-object v2
++
++    invoke-virtual {v1, v4, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
++
++    .line 125
++    invoke-virtual {v0, p2, v1, p3, p3}, Landroid/content/ContentResolver;->update(Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
++
++    .line 126
++    const-string v1, "DadaJpegSaver"
++
++    invoke-static {p2}, Ljava/lang/String;->valueOf(Ljava/lang/Object;)Ljava/lang/String;
++
++    move-result-object v2
++
++    new-instance v4, Ljava/lang/StringBuilder;
++
++    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
++
++    const-string v5, "save: committed "
++
++    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v4
++
++    invoke-virtual {v4, v6, v7}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
++
++    move-result-object v4
++
++    const-string v5, " bytes to "
++
++    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v4
++
++    invoke-virtual {v4, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v2
++
++    const-string v4, " name="
++
++    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object v2
++
++    invoke-virtual {v2, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p1
++
++    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object p1
++
++    invoke-static {v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
++
++    .line 127
++    const-string p1, "now"
++
++    invoke-static {v0, p1}, Lcom/oplus/camera/util/DadaJpegSaver;->purgeAppPendingRows(Landroid/content/ContentResolver;Ljava/lang/String;)V
++
++    .line 128
++    nop
++
++    .line 129
++    new-instance p1, Ljava/lang/Thread;
++
++    new-instance v1, Lcom/oplus/camera/util/DadaJpegSaver$1;
++
++    invoke-direct {v1, v0}, Lcom/oplus/camera/util/DadaJpegSaver$1;-><init>(Landroid/content/ContentResolver;)V
++
++    const-string v0, "DadaPendingPurge"
++
++    invoke-direct {p1, v1, v0}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
++
++    .line 139
++    invoke-virtual {p1, v3}, Ljava/lang/Thread;->setDaemon(Z)V
++
++    .line 140
++    invoke-virtual {p1}, Ljava/lang/Thread;->start()V
++    :try_end_1f8
++    .catchall {:try_start_17b .. :try_end_1f8} :catchall_1f9
++
++    .line 150
++    goto :goto_215
++
++    .line 141
++    :catchall_1f9
++    move-exception p1
++
++    goto :goto_201
++
++    :catchall_1fb
++    move-exception p1
++
++    move-object p2, p3
++
++    goto :goto_201
++
++    :catchall_1fe
++    move-exception p1
++
++    move-object p2, p3
++
++    move-object p4, p2
++
++    .line 142
++    :goto_201
++    :try_start_201
++    const-string v0, "DadaJpegSaver"
++
++    const-string v1, "save: failed"
++
++    invoke-static {v0, v1, p1}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
++    :try_end_208
++    .catchall {:try_start_201 .. :try_end_208} :catchall_219
++
++    .line 143
++    if-eqz p2, :cond_213
++
++    .line 145
++    :try_start_20a
++    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
++
++    move-result-object p0
++
++    invoke-virtual {p0, p2, p3, p3}, Landroid/content/ContentResolver;->delete(Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
++    :try_end_211
++    .catchall {:try_start_20a .. :try_end_211} :catchall_212
++
++    .line 147
++    goto :goto_213
++
++    .line 146
++    :catchall_212
++    move-exception p0
++
++    .line 150
++    :cond_213
++    :goto_213
++    if-eqz p4, :cond_218
++
++    .line 152
++    :goto_215
++    invoke-virtual {p4}, Ljava/io/File;->delete()Z
++
++    .line 155
++    :cond_218
++    return-void
++
++    .line 150
++    :catchall_219
++    move-exception p0
++
++    if-eqz p4, :cond_21f
++
++    .line 152
++    invoke-virtual {p4}, Ljava/io/File;->delete()Z
++
++    .line 154
++    :cond_21f
++    throw p0
++
++    .line 50
++    :catchall_220
++    move-exception p0
++
++    :try_start_221
++    monitor-exit v0
++    :try_end_222
++    .catchall {:try_start_221 .. :try_end_222} :catchall_220
++
++    throw p0
++
++    .line 41
++    :cond_223
++    :goto_223
++    const-string p0, "DadaJpegSaver"
++
++    if-nez p1, :cond_229
++
++    const/4 p1, -0x1
++
++    goto :goto_22a
++
++    :cond_229
++    array-length p1, p1
++
++    :goto_22a
++    new-instance p2, Ljava/lang/StringBuilder;
++
++    invoke-direct {p2}, Ljava/lang/StringBuilder;-><init>()V
++
++    const-string p3, "save: skipped, len="
++
++    invoke-virtual {p2, p3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    move-result-object p2
++
++    invoke-virtual {p2, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
++
++    move-result-object p1
++
++    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
++
++    move-result-object p1
++
++    invoke-static {p0, p1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
++
++    .line 42
++    return-void
++.end method
++
++.method private static toExifOrientation(I)I
++    .registers 2
++
++    .line 198
++    const/16 v0, 0x5a
++
++    if-ne p0, v0, :cond_6
++
++    .line 199
++    const/4 p0, 0x6
++
++    return p0
++
++    .line 201
++    :cond_6
++    const/16 v0, 0xb4
++
++    if-ne p0, v0, :cond_c
++
++    .line 202
++    const/4 p0, 0x3
++
++    return p0
++
++    .line 204
++    :cond_c
++    const/16 v0, 0x10e
++
++    if-ne p0, v0, :cond_13
++
++    .line 205
++    const/16 p0, 0x8
++
++    return p0
++
++    .line 207
++    :cond_13
++    const/4 p0, 0x1
++
++    return p0
++.end method
+diff -ruN a/com/oplus/camera/util/n2.smali b/com/oplus/camera/util/n2.smali
+--- a/com/oplus/camera/util/n2.smali
++++ b/com/oplus/camera/util/n2.smali
+@@ -14,11 +14,11 @@
+ 
+ 
+ # static fields
+-.field public static e:Lcom/oplus/camera/util/l2; = null
++.field public static e:Lcom/oplus/camera/util/l2;
+ 
+-.field public static f:Lcom/oplus/camera/util/m2; = null
++.field public static f:Lcom/oplus/camera/util/m2;
+ 
+-.field public static g:Ljava/lang/String; = null
++.field public static g:Ljava/lang/String;
+ 
+ .field public static final h:Z
+ 
+diff -ruN a/dn/d.smali b/dn/d.smali
+--- a/dn/d.smali
++++ b/dn/d.smali
+@@ -4,11 +4,11 @@
+ 
+ 
+ # static fields
+-.field public static d:Z = false
++.field public static d:Z
+ 
+-.field public static e:Z = false
++.field public static e:Z
+ 
+-.field public static f:Z = false
++.field public static f:Z
+ 
+ .field public static volatile g:J
+ 
+diff -ruN a/dq/d2.smali b/dq/d2.smali
+--- a/dq/d2.smali
++++ b/dq/d2.smali
+@@ -9,7 +9,7 @@
+ 
+ 
+ # static fields
+-.field public static g:Z = false
++.field public static g:Z
+ 
+ 
+ # instance fields
+diff -ruN a/gp/d.smali b/gp/d.smali
+--- a/gp/d.smali
++++ b/gp/d.smali
+@@ -4,9 +4,9 @@
+ 
+ 
+ # static fields
+-.field public static a:Z = false
++.field public static a:Z
+ 
+-.field public static b:Ljava/lang/ref/WeakReference; = null
++.field public static b:Ljava/lang/ref/WeakReference;
+     .annotation system Ldalvik/annotation/Signature;
+         value = {
+             "Ljava/lang/ref/WeakReference<",
+@@ -16,11 +16,11 @@
+     .end annotation
+ .end field
+ 
+-.field public static c:Z = false
++.field public static c:Z
+ 
+-.field public static d:Z = false
++.field public static d:Z
+ 
+-.field public static e:Z = false
++.field public static e:Z
+ 
+ .field public static f:J
+ 
+diff -ruN a/gq/t.smali b/gq/t.smali
+--- a/gq/t.smali
++++ b/gq/t.smali
+@@ -7,7 +7,7 @@
+ 
+ 
+ # static fields
+-.field public static volatile B0:Z = false
++.field public static volatile B0:Z
+ 
+ 
+ # instance fields
+diff -ruN a/hp/q0.smali b/hp/q0.smali
+--- a/hp/q0.smali
++++ b/hp/q0.smali
+@@ -18,7 +18,7 @@
+ 
+ 
+ # static fields
+-.field public static U1:Z = false
++.field public static U1:Z
+ 
+ 
+ # instance fields
+diff -ruN a/il/f.smali b/il/f.smali
+--- a/il/f.smali
++++ b/il/f.smali
+@@ -1045,7 +1045,34 @@
+ .method public final g(F)F
+     .registers 9
+ 
++    invoke-static {}, Lcb/o;->E()Z
++
++    move-result v0
++
++    if-nez v0, :cond_16
++
++    const v0, 0x3f19999a    # 0.6f
++
++    cmpg-float v1, p1, v0
++
++    if-gez v1, :cond_e
++
++    move p1, v0
++
++    :cond_e
++    const/high16 v0, 0x41200000    # 10.0f
++
++    cmpl-float v1, p1, v0
++
++    if-lez v1, :cond_15
++
++    move p1, v0
++
++    :cond_15
++    return p1
++
+     .line 1
++    :cond_16
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 2
+@@ -1054,7 +1081,7 @@
+ 
+     .line 4
+     .line 5
+-    if-nez v0, :cond_c
++    if-nez v0, :cond_22
+ 
+     .line 6
+     .line 7
+@@ -1070,7 +1097,7 @@
+     return p1
+ 
+     .line 13
+-    :cond_c
++    :cond_22
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 14
+@@ -1083,14 +1110,14 @@
+     move-result v0
+ 
+     .line 19
+-    if-eqz v0, :cond_15
++    if-eqz v0, :cond_2b
+ 
+     .line 20
+     .line 21
+     return p1
+ 
+     .line 22
+-    :cond_15
++    :cond_2b
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 23
+@@ -1103,7 +1130,7 @@
+     move-result v0
+ 
+     .line 28
+-    if-eqz v0, :cond_23
++    if-eqz v0, :cond_39
+ 
+     .line 29
+     .line 30
+@@ -1115,11 +1142,11 @@
+ 
+     .line 33
+     .line 34
+-    goto/16 :goto_17e
++    goto/16 :goto_194
+ 
+     .line 35
+     .line 36
+-    :cond_23
++    :cond_39
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 37
+@@ -1128,7 +1155,7 @@
+ 
+     .line 39
+     .line 40
+-    if-eqz v0, :cond_37
++    if-eqz v0, :cond_4d
+ 
+     .line 41
+     .line 42
+@@ -1144,7 +1171,7 @@
+     move-result v0
+ 
+     .line 48
+-    if-eqz v0, :cond_37
++    if-eqz v0, :cond_4d
+ 
+     .line 49
+     .line 50
+@@ -1156,11 +1183,11 @@
+     move-result v0
+ 
+     .line 54
+-    goto/16 :goto_17e
++    goto/16 :goto_194
+ 
+     .line 55
+     .line 56
+-    :cond_37
++    :cond_4d
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 57
+@@ -1178,7 +1205,7 @@
+     .line 63
+     .line 64
+     .line 65
+-    if-eqz v0, :cond_60
++    if-eqz v0, :cond_76
+ 
+     .line 66
+     .line 67
+@@ -1190,7 +1217,7 @@
+     move-result v0
+ 
+     .line 71
+-    if-eqz v0, :cond_60
++    if-eqz v0, :cond_76
+ 
+     .line 72
+     .line 73
+@@ -1214,7 +1241,7 @@
+     move-result v5
+ 
+     .line 83
+-    if-eqz v5, :cond_5d
++    if-eqz v5, :cond_73
+ 
+     .line 84
+     .line 85
+@@ -1226,27 +1253,27 @@
+ 
+     .line 88
+     .line 89
+-    if-gez v0, :cond_5d
++    if-gez v0, :cond_73
+ 
+     .line 90
+     .line 91
+     move v0, v2
+ 
+     .line 92
+-    goto/16 :goto_17e
++    goto/16 :goto_194
+ 
+     .line 93
+     .line 94
+-    :cond_5d
+-    :goto_5d
++    :cond_73
++    :goto_73
+     move v0, v4
+ 
+     .line 95
+-    goto/16 :goto_17e
++    goto/16 :goto_194
+ 
+     .line 96
+     .line 97
+-    :cond_60
++    :cond_76
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 98
+@@ -1259,7 +1286,7 @@
+ 
+     .line 102
+     .line 103
+-    if-eqz v0, :cond_6e
++    if-eqz v0, :cond_84
+ 
+     .line 104
+     .line 105
+@@ -1271,11 +1298,11 @@
+     move-result v0
+ 
+     .line 109
+-    if-nez v0, :cond_98
++    if-nez v0, :cond_ae
+ 
+     .line 110
+     .line 111
+-    :cond_6e
++    :cond_84
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 112
+@@ -1288,7 +1315,7 @@
+     move-result v0
+ 
+     .line 117
+-    if-eqz v0, :cond_a6
++    if-eqz v0, :cond_bc
+ 
+     .line 118
+     .line 119
+@@ -1300,7 +1327,7 @@
+ 
+     .line 122
+     .line 123
+-    if-eqz v0, :cond_a6
++    if-eqz v0, :cond_bc
+ 
+     .line 124
+     .line 125
+@@ -1316,7 +1343,7 @@
+     move-result v0
+ 
+     .line 131
+-    if-eqz v0, :cond_a6
++    if-eqz v0, :cond_bc
+ 
+     .line 132
+     .line 133
+@@ -1356,11 +1383,11 @@
+     move-result v0
+ 
+     .line 151
+-    if-eqz v0, :cond_a6
++    if-eqz v0, :cond_bc
+ 
+     .line 152
+     .line 153
+-    :cond_98
++    :cond_ae
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 154
+@@ -1373,27 +1400,27 @@
+ 
+     .line 158
+     .line 159
+-    if-ltz v2, :cond_a1
++    if-ltz v2, :cond_b7
+ 
+     .line 160
+     .line 161
+-    goto :goto_a2
++    goto :goto_b8
+ 
+     .line 162
+-    :cond_a1
++    :cond_b7
+     move v4, v0
+ 
+     .line 163
+-    :goto_a2
++    :goto_b8
+     div-float v0, p1, v4
+ 
+     .line 164
+     .line 165
+-    goto/16 :goto_17e
++    goto/16 :goto_194
+ 
+     .line 166
+     .line 167
+-    :cond_a6
++    :cond_bc
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 168
+@@ -1402,7 +1429,7 @@
+ 
+     .line 170
+     .line 171
+-    if-eqz v0, :cond_bd
++    if-eqz v0, :cond_d3
+ 
+     .line 172
+     .line 173
+@@ -1414,7 +1441,7 @@
+     move-result v0
+ 
+     .line 177
+-    if-eqz v0, :cond_bd
++    if-eqz v0, :cond_d3
+ 
+     .line 178
+     .line 179
+@@ -1434,14 +1461,14 @@
+ 
+     .line 186
+     .line 187
+-    if-ltz v2, :cond_a1
++    if-ltz v2, :cond_b7
+ 
+     .line 188
+     .line 189
+-    goto :goto_a2
++    goto :goto_b8
+ 
+     .line 190
+-    :cond_bd
++    :cond_d3
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 191
+@@ -1457,7 +1484,7 @@
+     const/4 v3, 0x1
+ 
+     .line 197
+-    if-nez v0, :cond_15a
++    if-nez v0, :cond_170
+ 
+     .line 198
+     .line 199
+@@ -1469,7 +1496,7 @@
+ 
+     .line 202
+     .line 203
+-    if-nez v0, :cond_15a
++    if-nez v0, :cond_170
+ 
+     .line 204
+     .line 205
+@@ -1481,7 +1508,7 @@
+ 
+     .line 208
+     .line 209
+-    if-nez v0, :cond_15a
++    if-nez v0, :cond_170
+ 
+     .line 210
+     .line 211
+@@ -1497,7 +1524,7 @@
+     move-result v0
+ 
+     .line 217
+-    if-nez v0, :cond_15a
++    if-nez v0, :cond_170
+ 
+     .line 218
+     .line 219
+@@ -1509,7 +1536,7 @@
+ 
+     .line 222
+     .line 223
+-    if-nez v0, :cond_15a
++    if-nez v0, :cond_170
+ 
+     .line 224
+     .line 225
+@@ -1521,7 +1548,7 @@
+ 
+     .line 228
+     .line 229
+-    if-nez v0, :cond_15a
++    if-nez v0, :cond_170
+ 
+     .line 230
+     .line 231
+@@ -1537,21 +1564,21 @@
+     move-result v0
+ 
+     .line 237
+-    if-nez v0, :cond_15a
++    if-nez v0, :cond_170
+ 
+     .line 238
+     .line 239
+     float-to-int v0, p1
+ 
+     .line 240
+-    if-ne v3, v0, :cond_f2
++    if-ne v3, v0, :cond_108
+ 
+     .line 241
+     .line 242
+     move v2, p1
+ 
+     .line 243
+-    :cond_f2
++    :cond_108
+     invoke-static {}, Lcb/o;->E()Z
+ 
+     .line 244
+@@ -1560,7 +1587,7 @@
+     move-result v0
+ 
+     .line 247
+-    if-nez v0, :cond_10e
++    if-nez v0, :cond_124
+ 
+     .line 248
+     .line 249
+@@ -1572,7 +1599,7 @@
+ 
+     .line 252
+     .line 253
+-    if-eqz v0, :cond_10e
++    if-eqz v0, :cond_124
+ 
+     .line 254
+     .line 255
+@@ -1591,7 +1618,7 @@
+     move-result v0
+ 
+     .line 262
+-    if-eqz v0, :cond_10e
++    if-eqz v0, :cond_124
+ 
+     .line 263
+     .line 264
+@@ -1603,14 +1630,14 @@
+ 
+     .line 267
+     .line 268
+-    if-nez v0, :cond_10e
++    if-nez v0, :cond_124
+ 
+     .line 269
+     .line 270
+     move v2, p1
+ 
+     .line 271
+-    :cond_10e
++    :cond_124
+     invoke-static {}, Lcb/o;->E()Z
+ 
+     .line 272
+@@ -1619,7 +1646,7 @@
+     move-result v0
+ 
+     .line 275
+-    if-nez v0, :cond_13b
++    if-nez v0, :cond_151
+ 
+     .line 276
+     .line 277
+@@ -1631,7 +1658,7 @@
+ 
+     .line 280
+     .line 281
+-    if-eqz v0, :cond_13b
++    if-eqz v0, :cond_151
+ 
+     .line 282
+     .line 283
+@@ -1647,7 +1674,7 @@
+     move-result v0
+ 
+     .line 289
+-    if-eqz v0, :cond_13b
++    if-eqz v0, :cond_151
+ 
+     .line 290
+     .line 291
+@@ -1659,7 +1686,7 @@
+     move-result v0
+ 
+     .line 295
+-    if-nez v0, :cond_13b
++    if-nez v0, :cond_151
+ 
+     .line 296
+     .line 297
+@@ -1671,7 +1698,7 @@
+     move-result v0
+ 
+     .line 301
+-    if-eqz v0, :cond_13b
++    if-eqz v0, :cond_151
+ 
+     .line 302
+     .line 303
+@@ -1695,14 +1722,14 @@
+     move-result v0
+ 
+     .line 313
+-    if-nez v0, :cond_13b
++    if-nez v0, :cond_151
+ 
+     .line 314
+     .line 315
+     move v2, p1
+ 
+     .line 316
+-    :cond_13b
++    :cond_151
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 317
+@@ -1711,7 +1738,7 @@
+ 
+     .line 319
+     .line 320
+-    if-eqz v0, :cond_149
++    if-eqz v0, :cond_15f
+ 
+     .line 321
+     .line 322
+@@ -1723,21 +1750,21 @@
+ 
+     .line 325
+     .line 326
+-    if-nez v0, :cond_149
++    if-nez v0, :cond_15f
+ 
+     .line 327
+     .line 328
+     move v0, p1
+ 
+     .line 329
+-    goto :goto_14a
++    goto :goto_160
+ 
+     .line 330
+-    :cond_149
++    :cond_15f
+     move v0, v2
+ 
+     .line 331
+-    :goto_14a
++    :goto_160
+     iget-object v2, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 332
+@@ -1750,7 +1777,7 @@
+     move-result v2
+ 
+     .line 337
+-    if-eqz v2, :cond_17e
++    if-eqz v2, :cond_194
+ 
+     .line 338
+     .line 339
+@@ -1762,15 +1789,15 @@
+ 
+     .line 342
+     .line 343
+-    if-nez v2, :cond_17e
++    if-nez v2, :cond_194
+ 
+     .line 344
+     .line 345
+-    goto/16 :goto_5d
++    goto/16 :goto_73
+ 
+     .line 346
+     .line 347
+-    :cond_15a
++    :cond_170
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 348
+@@ -1779,7 +1806,7 @@
+ 
+     .line 350
+     .line 351
+-    if-eqz v0, :cond_165
++    if-eqz v0, :cond_17b
+ 
+     .line 352
+     .line 353
+@@ -1791,10 +1818,10 @@
+     move-result v0
+ 
+     .line 357
+-    goto :goto_17e
++    goto :goto_194
+ 
+     .line 358
+-    :cond_165
++    :cond_17b
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 359
+@@ -1807,7 +1834,7 @@
+     move-result v0
+ 
+     .line 364
+-    if-eqz v0, :cond_172
++    if-eqz v0, :cond_188
+ 
+     .line 365
+     .line 366
+@@ -1819,10 +1846,10 @@
+     move-result v0
+ 
+     .line 370
+-    goto :goto_17e
++    goto :goto_194
+ 
+     .line 371
+-    :cond_172
++    :cond_188
+     iget-object v0, p0, Lil/f;->j:Ldb/c;
+ 
+     .line 372
+@@ -1847,8 +1874,8 @@
+     move-result v0
+ 
+     .line 383
+-    :cond_17e
+-    :goto_17e
++    :cond_194
++    :goto_194
+     invoke-static {}, Lcb/o;->E()Z
+ 
+     .line 384
+@@ -1857,7 +1884,7 @@
+     move-result v2
+ 
+     .line 387
+-    if-nez v2, :cond_1c6
++    if-nez v2, :cond_1dc
+ 
+     .line 388
+     .line 389
+@@ -1869,7 +1896,7 @@
+ 
+     .line 392
+     .line 393
+-    if-nez p0, :cond_1c6
++    if-nez p0, :cond_1dc
+ 
+     .line 394
+     .line 395
+@@ -1924,7 +1951,7 @@
+ 
+     .line 419
+     .line 420
+-    if-eqz p0, :cond_1c6
++    if-eqz p0, :cond_1dc
+ 
+     .line 421
+     .line 422
+@@ -1952,7 +1979,7 @@
+ 
+     .line 433
+     .line 434
+-    if-gez v2, :cond_1c6
++    if-gez v2, :cond_1dc
+ 
+     .line 435
+     .line 436
+@@ -1993,7 +2020,7 @@
+     .line 453
+     .line 454
+     .line 455
+-    :cond_1c6
++    :cond_1dc
+     new-instance p0, Lil/d;
+ 
+     .line 456
+diff -ruN a/kp/f.smali b/kp/f.smali
+--- a/kp/f.smali
++++ b/kp/f.smali
+@@ -369,7 +369,7 @@
+ 
+     .line 8
+     .line 9
+-    goto :goto_69
++    goto :goto_68
+ 
+     .line 10
+     :cond_9
+@@ -377,7 +377,7 @@
+ 
+     .line 11
+     .line 12
+-    if-eqz v1, :cond_69
++    if-eqz v1, :cond_68
+ 
+     .line 13
+     .line 14
+@@ -393,7 +393,7 @@
+ 
+     .line 19
+     .line 20
+-    iget-boolean v3, p0, Lkp/f;->b:Z
++    const/4 v3, 0x1
+ 
+     .line 21
+     .line 22
+@@ -415,7 +415,7 @@
+ 
+     .line 31
+     .line 32
+-    if-eqz v3, :cond_37
++    if-eqz v3, :cond_36
+ 
+     .line 33
+     .line 34
+@@ -439,7 +439,7 @@
+     move-result v4
+ 
+     .line 44
+-    if-eqz v4, :cond_37
++    if-eqz v4, :cond_36
+ 
+     .line 45
+     .line 46
+@@ -455,21 +455,21 @@
+     move-result v4
+ 
+     .line 52
+-    if-eqz v4, :cond_37
++    if-eqz v4, :cond_36
+ 
+     .line 53
+     .line 54
+     const/4 v4, 0x1
+ 
+     .line 55
+-    goto :goto_38
++    goto :goto_37
+ 
+     .line 56
+-    :cond_37
++    :cond_36
+     const/4 v4, 0x0
+ 
+     .line 57
+-    :goto_38
++    :goto_37
+     invoke-virtual {v2, v4}, Landroid/view/View;->setLongClickable(Z)V
+ 
+     .line 58
+@@ -491,23 +491,23 @@
+ 
+     .line 67
+     .line 68
+-    if-nez v4, :cond_64
++    if-nez v4, :cond_63
+ 
+     .line 69
+     .line 70
+-    if-eqz v2, :cond_48
++    if-eqz v2, :cond_47
+ 
+     .line 71
+     .line 72
+-    goto :goto_64
++    goto :goto_63
+ 
+     .line 73
+-    :cond_48
++    :cond_47
+     const/high16 v1, 0x3f800000    # 1.0f
+ 
+     .line 74
+     .line 75
+-    if-eqz v3, :cond_52
++    if-eqz v3, :cond_51
+ 
+     .line 76
+     .line 77
+@@ -520,15 +520,15 @@
+     .line 80
+     .line 81
+     .line 82
+-    goto :goto_69
++    goto :goto_68
+ 
+     .line 83
+-    :cond_52
++    :cond_51
+     iget-boolean p0, p0, Lkp/f;->d:Z
+ 
+     .line 84
+     .line 85
+-    if-eqz p0, :cond_5e
++    if-eqz p0, :cond_5d
+ 
+     .line 86
+     .line 87
+@@ -545,10 +545,10 @@
+     .line 92
+     .line 93
+     .line 94
+-    goto :goto_69
++    goto :goto_68
+ 
+     .line 95
+-    :cond_5e
++    :cond_5d
+     iget-object p0, v0, Lkp/g0;->B0:Lcom/oplus/camera/control/MainShutterButton;
+ 
+     .line 96
+@@ -558,11 +558,11 @@
+     .line 98
+     .line 99
+     .line 100
+-    goto :goto_69
++    goto :goto_68
+ 
+     .line 101
+-    :cond_64
+-    :goto_64
++    :cond_63
++    :goto_63
+     iget-object p0, v0, Lkp/g0;->B0:Lcom/oplus/camera/control/MainShutterButton;
+ 
+     .line 102
+@@ -572,8 +572,8 @@
+     .line 104
+     .line 105
+     .line 106
+-    :cond_69
+-    :goto_69
++    :cond_68
++    :goto_68
+     return-void
+     .line 107
+     .line 108
+diff -ruN a/ln/b.smali b/ln/b.smali
+--- a/ln/b.smali
++++ b/ln/b.smali
+@@ -10,7 +10,7 @@
+ 
+ .field public static volatile c:I = -0x1
+ 
+-.field public static volatile d:Z = false
++.field public static volatile d:Z
+ 
+ 
+ # direct methods
+diff -ruN a/mp/f.smali b/mp/f.smali
+--- a/mp/f.smali
++++ b/mp/f.smali
+@@ -15,15 +15,15 @@
+ 
+ 
+ # static fields
+-.field public static A:Lmp/f$d; = null
++.field public static A:Lmp/f$d;
+ 
+-.field public static B:Lmp/f$d; = null
++.field public static B:Lmp/f$d;
+ 
+-.field public static C:Lmp/f$d; = null
++.field public static C:Lmp/f$d;
+ 
+-.field public static D:I = 0x0
++.field public static D:I
+ 
+-.field public static E:Z = false
++.field public static E:Z
+ 
+ .field public static F:Lcom/oplus/camera/jni/FormatConverter;
+ 
+diff -ruN a/pm/d0.smali b/pm/d0.smali
+--- a/pm/d0.smali
++++ b/pm/d0.smali
+@@ -25,13 +25,13 @@
+ # static fields
+ .field public static final I0:Ljava/lang/Object;
+ 
+-.field public static J0:Lpm/k0; = null
++.field public static J0:Lpm/k0;
+ 
+-.field public static K0:Landroid/view/Surface; = null
++.field public static K0:Landroid/view/Surface;
+ 
+-.field public static volatile L0:Z = false
++.field public static volatile L0:Z
+ 
+-.field public static volatile M0:Z = false
++.field public static volatile M0:Z
+ 
+ .field public static final N0:Landroidx/appcompat/view/menu/a;
+ 
+diff -ruN a/xo/b.smali b/xo/b.smali
+--- a/xo/b.smali
++++ b/xo/b.smali
+@@ -4,11 +4,11 @@
+ 
+ 
+ # static fields
+-.field public static a:F = 0.0f
++.field public static a:F
+ 
+-.field public static b:F = 0.0f
++.field public static b:F
+ 
+-.field public static c:Z = false
++.field public static c:Z
+ 
+ .field public static d:Landroid/graphics/Rect;
+ 
+diff -ruN a/xq/c.smali b/xq/c.smali
+--- a/xq/c.smali
++++ b/xq/c.smali
+@@ -12,7 +12,7 @@
+ 
+ 
+ # static fields
+-.field public static volatile j:Z = false
++.field public static volatile j:Z
+ 
+ 
+ # direct methods
+diff -ruN a/xq/d.smali b/xq/d.smali
+--- a/xq/d.smali
++++ b/xq/d.smali
+@@ -12,7 +12,7 @@
+ 
+ 
+ # static fields
+-.field public static volatile j:Z = false
++.field public static volatile j:Z
+ 
+ 
+ # direct methods
+diff -ruN a/yo/a.smali b/yo/a.smali
+--- a/yo/a.smali
++++ b/yo/a.smali
+@@ -4,7 +4,7 @@
+ 
+ 
+ # static fields
+-.field public static volatile a:Z = false
++.field public static volatile a:Z
+ 
+ .field public static final b:Lcom/oplus/camera/data/DataKey;
+     .annotation system Ldalvik/annotation/Signature;

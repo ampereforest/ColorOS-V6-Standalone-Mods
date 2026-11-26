@@ -1,0 +1,15 @@
+# Patch: Disable CN global regionlock checks & logging
+# Target: /my_product/cust/CN/build.prop
+--- a/my_product/cust/CN/build.prop
++++ b/my_product/cust/CN/build.prop
+@@ -1,6 +1,6 @@
+-ro.oplus.radio.global_regionlockupgrade=true
+-ro.oplus.radio.global_regionlock.log=true
+-ro.oplus.radio.global_regionlockflag=6
++ro.oplus.radio.global_regionlockupgrade=false
++ro.oplus.radio.global_regionlock.log=false
++ro.oplus.radio.global_regionlockflag=0
+ ro.oplus.radio.global_regionlock.cert=1661243744237,CN
+-ro.oplus.radio.global_regionlock.enabled=true
++ro.oplus.radio.global_regionlock.enabled=false
+ ro.oplus.radio.global_regionlock.info=CN

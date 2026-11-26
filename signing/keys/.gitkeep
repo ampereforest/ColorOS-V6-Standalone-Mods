@@ -1,0 +1,2 @@
+# Place locally generated keystores here via `bash signing/generate_keys.sh`.
+# Private keys (*.pk8, *.p12, *.jks, *.key, *.pass) are ignored by .gitignore.
